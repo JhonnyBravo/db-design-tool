@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="main">
+        <environment id="main">
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver" />
+                <property name="url"
+                    value="jdbc:mysql://localhost:3306/db_design_tool?serverTimezone=JST" />
+                <property name="username" value="" />
+                <property name="password" value="" />
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <package name="db_design_tool.domain.repository.table_master" />
+    </mappers>
+</configuration>
