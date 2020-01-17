@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- table_master からレコードを取得する。 -->
+<mapper namespace="db_design_tool.domain.repository.table_master.TableMasterRepository">
+    <resultMap id="tableMaster" type="db_design_tool.domain.model.TableMaster">
+        <id property="tableId" column="table_id" />
+        <result property="physicalName" column="physical_name" />
+        <result property="logicalName" column="logical_name" />
+        <result property="deleteFlag" column="delete_flag" />
+    </resultMap>
+    <!-- 登録されているレコードを全件取得する。 -->
+    <select id="findAll" resultMap="tableMaster">
+        SELECT * FROM table_master;
+    </select>
+    <!-- table_id をキーにレコードを検索する。 -->
+    <select id="findByTableId" resultMap="tableMaster">
+        SELECT
+        *
+        FROM
+        table_master
+        WHERE
+        table_id =
+        #{tableId};
+    </select>
+    <!-- 新規レコードを登録する。 -->
+    <insert id="create" useGeneratedKeys="true" keyProperty="tableId">
+        INSERT INTO table_master (
+        physical_name,
+        logical_name,
+        delete_flag
+        )
+        VALUES (
+        #{tableMaster.physicalName},
+        #{tableMaster.logicalName},
+        #{tableMaster.deleteFlag}
+        );
+    </insert>
+    <!-- レコードを更新する。 -->
+    <update id="update">
+        UPDATE table_master
+        SET
+        physical_name = #{tableMaster.physicalName},
+        logical_name = #{tableMaster.logicalName},
+        delete_flag = #{tableMaster.deleteFlag}
+        WHERE
+        table_id = #{tableMaster.tableId};
+    </update>
+    <!-- 既存レコードを全件削除する。 -->
+    <delete id="deleteAll">
+        DELETE FROM table_master;
+    </delete>
+    <!-- table_id の開始値を 1 にリセットする。 -->
+    <update id="resetId">
+        ALTER TABLE table_master auto_increment = 1;
+    </update>
+</mapper>
