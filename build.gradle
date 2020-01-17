@@ -11,7 +11,7 @@
 apply{
     plugin 'java'
     plugin 'eclipse-wtp'
-    plugin 'maven'
+    plugin 'maven-publish'
     plugin 'war'
     plugin 'com.bmuschko.tomcat'
 }
@@ -37,23 +37,23 @@ dependencies {
            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
 
-    compile fileTree(dir: "WebContent/WEB-INF/lib", include: '*.jar')
-    compile "org.apache.tomcat:tomcat-servlet-api:${tomcatVersion}"
-    compile "org.apache.tomcat:tomcat-jsp-api:${tomcatVersion}"
+    implementation fileTree(dir: "WebContent/WEB-INF/lib", include: '*.jar')
+    implementation "org.apache.tomcat:tomcat-servlet-api:${tomcatVersion}"
+    implementation "org.apache.tomcat:tomcat-jsp-api:${tomcatVersion}"
 
-    compile group: 'taglibs', name: 'standard', version: '1.1.2'
-    compile group: 'javax.servlet.jsp.jstl', name: 'jstl', version: '1.2'
-    compile group: 'javax.servlet.jsp.jstl', name: 'javax.servlet.jsp.jstl-api', version: '1.2.2'
+    implementation group: 'taglibs', name: 'standard', version: '1.1.2'
+    implementation group: 'javax.servlet.jsp.jstl', name: 'jstl', version: '1.2'
+    implementation group: 'javax.servlet.jsp.jstl', name: 'javax.servlet.jsp.jstl-api', version: '1.2.2'
     
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.11'
-    compile group: 'org.mybatis', name: 'mybatis', version: '3.5.3'
-    compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.1.0.Final'
-    compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
-    compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.11'
+    implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.3'
+    implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.1.0.Final'
+    implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+    implementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 
     // Use JUnit test framework
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
 
 task sourcesJar(type: Jar,dependsOn: classes){
