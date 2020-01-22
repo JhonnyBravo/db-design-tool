@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- field_master からレコードを取得する。 -->
+<mapper namespace="db_design_tool.domain.repository.field_master.FieldMasterRepository">
+    <resultMap id="fieldMaster" type="db_design_tool.domain.model.FieldMaster">
+        <id property="fieldId" column="field_id" />
+        <result property="tableId" column="table_id" />
+        <result property="no" column="no" />
+        <result property="physicalName" column="physical_name" />
+        <result property="logicalName" column="logical_name" />
+        <result property="dataType" column="data_type" />
+        <result property="dataSize" column="data_size" />
+        <result property="description" column="description" />
+        <result property="deleteFlag" column="delete_flag" />
+    </resultMap>
+    <!-- 登録されているレコードを全件取得する。 -->
+    <select id="findAll" resultMap="fieldMaster">
+        SELECT * FROM field_master;
+    </select>
+    <!-- field_id をキーにレコードを検索する。 -->
+    <select id="findByTableId" resultMap="fieldMaster">
+        SELECT
+        *
+        FROM
+        field_master
+        WHERE
+        table_id = #{tableId};
+    </select>
+    <!-- 新規レコードを登録する。 -->
+    <insert id="create" useGeneratedKeys="true" keyProperty="fieldId">
+        INSERT INTO field_master (
+        table_id,
+        no,
+        physical_name,
+        logical_name,
+        data_type,
+        data_size,
+        description,
+        delete_flag
+        )
+        VALUES
+        <foreach item="fieldMaster" collection="list" separator=",">
+            (
+            #{fieldMaster.tableId},
+            #{fieldMaster.no},
+            #{fieldMaster.physicalName},
+            #{fieldMaster.logicalName},
+            #{fieldMaster.dataType},
+            #{fieldMaster.dataSize},
+            #{fieldMaster.description},
+            #{fieldMaster.deleteFlag}
+            )
+        </foreach>
+        ;
+    </insert>
+    <!-- レコードを更新する。 -->
+    <insert id="update">
+        INSERT INTO field_master (
+        table_id,
+        field_id,
+        no,
+        physical_name,
+        logical_name,
+        data_type,
+        data_size,
+        description,
+        delete_flag
+        )
+        VALUES
+        <foreach item="fieldMaster" collection="list" separator=",">
+            (
+            #{fieldMaster.tableId},
+            #{fieldMaster.fieldId},
+            #{fieldMaster.no},
+            #{fieldMaster.physicalName},
+            #{fieldMaster.logicalName},
+            #{fieldMaster.dataType},
+            #{fieldMaster.dataSize},
+            #{fieldMaster.description},
+            #{fieldMaster.deleteFlag}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        table_id = VALUES(table_id),
+        field_id = VALUES(field_id),
+        no = VALUES(no),
+        physical_name =
+        VALUES(physical_name),
+        logical_name = VALUES(logical_name),
+        data_type = VALUES(data_type),
+        data_size = VALUES(data_size),
+        description = VALUES(description),
+        delete_flag =
+        VALUES(delete_flag);
+    </insert>
+    <!-- 既存レコードを全件削除する。 -->
+    <delete id="deleteAll">
+        DELETE FROM field_master;
+    </delete>
+    <!-- table_id の開始値を 1 にリセットする。 -->
+    <update id="resetId">
+        ALTER TABLE field_master auto_increment = 1;
+    </update>
+</mapper>
