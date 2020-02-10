@@ -22,6 +22,20 @@
         table_id =
         #{tableId};
     </select>
+    <!-- 最新の table_id を持つレコードを取得する。 -->
+    <select id="findByLatestTableId" resultMap="tableMaster">
+        SELECT
+        *
+        FROM
+        table_master
+        WHERE
+        table_id = (
+        SELECT
+        MAX(table_id) As table_id
+        FROM
+        table_master
+        );
+    </select>
     <!-- 新規レコードを登録する。 -->
     <insert id="create" useGeneratedKeys="true" keyProperty="tableId">
         INSERT INTO table_master (
