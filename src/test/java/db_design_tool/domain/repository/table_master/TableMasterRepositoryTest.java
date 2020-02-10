@@ -74,10 +74,12 @@ public class TableMasterRepositoryTest {
 
                 final List<TableMaster> recordset = repository.findAll();
                 assertThat(recordset.size(), is(1));
-                assertThat(recordset.get(0).getTableId(), is(1));
-                assertThat(recordset.get(0).getPhysicalName(), is("table1"));
-                assertThat(recordset.get(0).getLogicalName(), is("テーブル1"));
-                assertThat(recordset.get(0).getDeleteFlag(), is(0));
+
+                final TableMaster latest = repository.findByLatestTableId();
+                assertThat(latest.getTableId(), is(1));
+                assertThat(latest.getPhysicalName(), is("table1"));
+                assertThat(latest.getLogicalName(), is("テーブル1"));
+                assertThat(latest.getDeleteFlag(), is(0));
             }
         }
     }
@@ -150,7 +152,7 @@ public class TableMasterRepositoryTest {
                 final List<TableMaster> recordset = repository.findAll();
                 assertThat(recordset.size(), is(3));
 
-                final TableMaster record3 = repository.findByTableId(3);
+                final TableMaster record3 = repository.findByLatestTableId();
                 assertThat(record3.getTableId(), is(3));
                 assertThat(record3.getPhysicalName(), is("table3"));
                 assertThat(record3.getLogicalName(), is("テーブル3"));
