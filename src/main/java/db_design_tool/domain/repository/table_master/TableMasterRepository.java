@@ -14,6 +14,8 @@ import db_design_tool.domain.model.TableMaster;
 public interface TableMasterRepository {
     /**
      * @return recordset 登録されているレコードを全件取得する。
+     * @throws Exception
+     *             {@link java.lang.Exception}
      */
     public List<TableMaster> findAll() throws Exception;
 
@@ -23,9 +25,18 @@ public interface TableMasterRepository {
      * @param tableId
      *            検索対象とする table_id を指定する。
      * @return record 条件に合致するレコードを取得する。
+     * @throws Exception
+     *             {@link java.lang.Exception}
      */
     public TableMaster findByTableId(@Param("tableId") int tableId)
             throws Exception;
+
+    /**
+     * @return record 最新の table_id を持つレコードを取得する。
+     * @throws Exception
+     *             {@link java.lang.Exception}
+     */
+    public TableMaster findByLatestTableId() throws Exception;
 
     /**
      * レコードを新規登録する。
@@ -37,6 +48,8 @@ public interface TableMasterRepository {
      *         <li>true: 登録に成功したことを表す。</li>
      *         <li>false: 登録しなかったことを表す。</li>
      *         </ul>
+     * @throws Exception
+     *             {@link java.lang.Exception}
      */
     public boolean create(@Param("tableMaster") TableMaster tableMaster)
             throws Exception;
@@ -51,6 +64,8 @@ public interface TableMasterRepository {
      *         <li>true: 更新に成功したことを表す。</li>
      *         <li>false: 更新しなかったことを表す。</li>
      *         </ul>
+     * @throws Exception
+     *             {@link java.lang.Exception}
      */
     public boolean update(@Param("tableMaster") TableMaster tableMaster)
             throws Exception;
@@ -63,6 +78,8 @@ public interface TableMasterRepository {
      *         <li>true: 削除に成功したことを表す。</li>
      *         <li>false: 削除しなかったことを表す。</li>
      *         </ul>
+     * @throws Exception
+     *             {@link java.lang.Exception}
      */
     public boolean deleteAll() throws Exception;
 
@@ -74,6 +91,8 @@ public interface TableMasterRepository {
      *         <li>true: リセットに成功したことを表す。</li>
      *         <li>false: リセットしなかったことを表す。</li>
      *         </ul>
+     * @throws Exception
+     *             {@link java.lang.Exception}
      */
     public boolean resetId() throws Exception;
 }
