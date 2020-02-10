@@ -314,23 +314,25 @@ public class FieldMasterRepositoryTest {
 
                 final List<FieldMaster> curRecordset = repository
                         .findByTableId(2);
+
                 final FieldMaster record1 = curRecordset.get(0);
-                assertThat(record1.getNo(), is(2));
-                assertThat(record1.getPhysicalName(), is("update1"));
-                assertThat(record1.getLogicalName(), is("更新1"));
-                assertThat(record1.getDataType(), is("Integer"));
-                assertThat(record1.getDataSize(), is(0));
-                assertThat(record1.getDescription(), is("1つ目の更新"));
+                assertThat(record1.getNo(), is(1));
+                assertThat(record1.getPhysicalName(), is("update2"));
+                assertThat(record1.getLogicalName(), is("更新2"));
+                assertThat(record1.getDataType(), is("String"));
+                assertThat(record1.getDataSize(), is(30));
+                assertThat(record1.getDescription(), is("2つ目の更新"));
                 assertThat(record1.getDeleteFlag(), is(1));
 
                 final FieldMaster record2 = curRecordset.get(1);
-                assertThat(record2.getNo(), is(1));
-                assertThat(record2.getPhysicalName(), is("update2"));
-                assertThat(record2.getLogicalName(), is("更新2"));
-                assertThat(record2.getDataType(), is("String"));
-                assertThat(record2.getDataSize(), is(30));
-                assertThat(record2.getDescription(), is("2つ目の更新"));
+                assertThat(record2.getNo(), is(2));
+                assertThat(record2.getPhysicalName(), is("update1"));
+                assertThat(record2.getLogicalName(), is("更新1"));
+                assertThat(record2.getDataType(), is("Integer"));
+                assertThat(record2.getDataSize(), is(0));
+                assertThat(record2.getDescription(), is("1つ目の更新"));
                 assertThat(record2.getDeleteFlag(), is(1));
+
             }
         }
     }
