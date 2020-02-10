@@ -24,7 +24,9 @@
         FROM
         field_master
         WHERE
-        table_id = #{tableId};
+        table_id = #{tableId}
+        ORDER BY
+        no;
     </select>
     <!-- 新規レコードを登録する。 -->
     <insert id="create" useGeneratedKeys="true" keyProperty="fieldId">
