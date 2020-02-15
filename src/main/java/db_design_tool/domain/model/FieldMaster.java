@@ -2,18 +2,31 @@ package db_design_tool.domain.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Range;
+
 public class FieldMaster implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int tableId;
     private int fieldId;
     private int no;
+    @Size(min = 1, max = 100)
     private String physicalName;
+    @Size(min = 1, max = 100)
     private String logicalName;
+    @Size(min = 1, max = 10)
     private String dataType;
     private int dataSize;
+    @Size(min = 0, max = 255)
     private String description;
+    @Range(min = 0, max = 1)
     private int deleteFlag;
+    private String physicalNameError;
+    private String logicalNameError;
+    private String dataSizeError;
+    private String descriptionError;
 
     /**
      * @return tableId table_id を返す。
@@ -161,5 +174,65 @@ public class FieldMaster implements Serializable {
      */
     public void setDeleteFlag(int deleteFlag) {
         this.deleteFlag = deleteFlag;
+    }
+
+    /**
+     * @return physicalNameError フィールドの物理名に関するエラーメッセージを返す。
+     */
+    public String getPhysicalNameError() {
+        return physicalNameError;
+    }
+
+    /**
+     * @param physicalNameError
+     *            フィールドの物理名に関するエラーメッセージを指定する。
+     */
+    public void setPhysicalNameError(String physicalNameError) {
+        this.physicalNameError = physicalNameError;
+    }
+
+    /**
+     * @return logicalNameError フィールドの論理名に関するエラーメッセージを返す。
+     */
+    public String getLogicalNameError() {
+        return logicalNameError;
+    }
+
+    /**
+     * @param logicalNameError
+     *            フィールドの論理名に関するエラーメッセージを指定する。
+     */
+    public void setLogicalNameError(String logicalNameError) {
+        this.logicalNameError = logicalNameError;
+    }
+
+    /**
+     * @return dataSizeError フィールドのデータサイズに関するエラーメッセージを返す。
+     */
+    public String getDataSizeError() {
+        return dataSizeError;
+    }
+
+    /**
+     * @param dataSizeError
+     *            フィールドのデータサイズに関するエラーメッセージを指定する。
+     */
+    public void setDataSizeError(String dataSizeError) {
+        this.dataSizeError = dataSizeError;
+    }
+
+    /**
+     * @return descriptionError フィールドの説明に関するエラーメッセージを返す。
+     */
+    public String getDescriptionError() {
+        return descriptionError;
+    }
+
+    /**
+     * @param descriptionError
+     *            フィールドの説明に関するエラーメッセージを指定する。
+     */
+    public void setDescriptionError(String descriptionError) {
+        this.descriptionError = descriptionError;
     }
 }
