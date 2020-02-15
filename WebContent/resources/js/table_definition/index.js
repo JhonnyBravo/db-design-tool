@@ -10,9 +10,12 @@
      * @param $table 操作対象とするテーブルを指定する。
      */
     $.tableDefinition.resetNo = function ($table) {
-        $table.find("tbody th").each(function (index) {
-            $(this).text(index + 1);
-        });
+        $table.find("tbody th").each(
+                function (index) {
+                    $(this).text(index + 1).append(
+                            "<input type='hidden' name='no' value='"
+                                    + (index + 1) + "'/>");
+                });
     };
 
     /*
