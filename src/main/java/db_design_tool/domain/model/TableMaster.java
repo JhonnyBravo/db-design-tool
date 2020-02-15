@@ -2,13 +2,22 @@ package db_design_tool.domain.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Range;
+
 public class TableMaster implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int tableId;
+    @Size(min = 1, max = 100)
     private String physicalName;
+    @Size(min = 1, max = 100)
     private String logicalName;
+    @Range(min = 0, max = 1)
     private int deleteFlag;
+    private String physicalNameError;
+    private String logicalNameError;
 
     /**
      * @return tableId テーブルの ID を返す。
@@ -72,5 +81,35 @@ public class TableMaster implements Serializable {
      */
     public void setDeleteFlag(int deleteFlag) {
         this.deleteFlag = deleteFlag;
+    }
+
+    /**
+     * @return physicalNameError テーブルの物理名に関するエラーメッセージを返す。
+     */
+    public String getPhysicalNameError() {
+        return physicalNameError;
+    }
+
+    /**
+     * @param physicalNameError
+     *            テーブルの物理名に関するエラーメッセージを指定する。
+     */
+    public void setPhysicalNameError(String physicalNameError) {
+        this.physicalNameError = physicalNameError;
+    }
+
+    /**
+     * @return logicalNameError テーブルの論理名に関するエラーメッセージを返す。
+     */
+    public String getLogicalNameError() {
+        return logicalNameError;
+    }
+
+    /**
+     * @param logicalNameError
+     *            テーブルの論理名に関するエラーメッセージを指定する。
+     */
+    public void setLogicalNameError(String logicalNameError) {
+        this.logicalNameError = logicalNameError;
     }
 }
