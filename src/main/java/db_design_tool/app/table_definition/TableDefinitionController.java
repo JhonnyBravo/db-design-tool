@@ -17,6 +17,8 @@ import javax.validation.Validator;
 import db_design_tool.domain.model.FieldMaster;
 import db_design_tool.domain.model.TableDefinition;
 import db_design_tool.domain.model.TableMaster;
+import db_design_tool.domain.service.table_definition.TableDefinitionService;
+import db_design_tool.domain.service.table_definition.TableDefinitionServiceImpl;
 
 /**
  * Servlet implementation class TableDefinitionController
@@ -26,13 +28,15 @@ public class TableDefinitionController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private final TableDefinitionHelper helper;
+    private final TableDefinitionService service;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public TableDefinitionController() {
+    public TableDefinitionController() throws Exception {
         super();
         helper = new TableDefinitionHelper();
+        service = new TableDefinitionServiceImpl();
     }
 
     /**
@@ -42,6 +46,24 @@ public class TableDefinitionController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
+
+        final String tableId = request.getParameter("tableId");
+
+        if (tableId != null && !tableId.isEmpty()) {
+            try {
+                final TableDefinition tableDefinition = service
+                        .findTableDefinitionByTableId(
+                                Integer.parseInt(tableId));
+                request.setAttribute("tableMaster",
+                        tableDefinition.getTableMaster());
+                request.setAttribute("fieldMasterArray",
+                        tableDefinition.getFieldMaster());
+                request.setAttribute("tableId", tableId);
+            } catch (final Exception e) {
+                throw new IOException(e);
+            }
+        }
+
         final ServletContext context = getServletContext();
         final RequestDispatcher dispatcher = context
                 .getRequestDispatcher("/WEB-INF/table_definition/index.jsp");
@@ -115,7 +137,18 @@ public class TableDefinitionController extends HttpServlet {
 
         request.setAttribute("fieldMasterArray", fieldMasterArray);
 
-        doGet(request, response);
+        if (hasError) {
+            doGet(request, response);
+        } else {
+            try {
+                service.create(tableDefinition);
+                response.sendRedirect("/db-design-tool/home");
+            } catch (final Exception e) {
+                e.printStackTrace();
+                request.setAttribute("error", "データの保存に失敗しました。");
+                doGet(request, response);
+            }
+        }
     }
 
 }
