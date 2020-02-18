@@ -19,6 +19,11 @@
 <body>
     <jsp:include page="../components/navbar.jsp" />
     <main role="main" class="container">
+        <c:choose>
+            <c:when test="${error != null}">
+                <p>${error}</p>
+            </c:when>
+        </c:choose>
         <form method="post" action="table_definition">
             <label for="physicalTableName">テーブル名</label>
             <div class="input-group">
@@ -45,6 +50,7 @@
                     <p>${tableMaster.logicalNameError}</p>
                 </c:when>
             </c:choose>
+            <input type="hidden" name="tableId" value="${tableId}" />
             <table id="tableDefinition" class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -80,11 +86,13 @@
                                     </div>
                                     <input type="text" name="logicalFieldName" class="form-control"
                                         value="${fieldMaster.logicalName}">
-                                </div> <c:choose>
+                                </div> <input type="hidden" name="fieldId" value="${fieldMaster.fieldId}" />
+                                <c:choose>
                                     <c:when test="${fieldMaster.logicalNameError != null}">
                                         <p>${fieldMaster.logicalNameError}</p>
                                     </c:when>
                                 </c:choose>
+
                             </td>
                             <td>
                                 <div class="input-group">
