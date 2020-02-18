@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!doctype html>
 <html lang="ja">
 <head>
@@ -20,8 +21,9 @@
         <div class="card">
             <div class="card-header">テーブル</div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">テーブルマスター</li>
-                <li class="list-group-item">フィールドマスター</li>
+                <c:forEach var="tableMaster" items="${tableMasterList}">
+                    <li class="list-group-item"><a href="table_definition?tableId=${tableMaster.tableId}">${tableMaster.logicalName}</a></li>
+                </c:forEach>
             </ul>
         </div>
         <div class="card">
