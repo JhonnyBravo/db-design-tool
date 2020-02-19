@@ -298,7 +298,6 @@ public class FieldMasterRepositoryTest {
                 recordset.get(0).setDataType("Integer");
                 recordset.get(0).setDataSize(0);
                 recordset.get(0).setDescription("1つ目の更新");
-                recordset.get(0).setDeleteFlag(1);
 
                 recordset.get(1).setNo(1);
                 recordset.get(1).setPhysicalName("update2");
@@ -306,7 +305,6 @@ public class FieldMasterRepositoryTest {
                 recordset.get(1).setDataType("String");
                 recordset.get(1).setDataSize(30);
                 recordset.get(1).setDescription("2つ目の更新");
-                recordset.get(1).setDeleteFlag(1);
 
                 final boolean result = repository.update(recordset);
                 assertThat(result, is(true));
@@ -322,7 +320,7 @@ public class FieldMasterRepositoryTest {
                 assertThat(record1.getDataType(), is("String"));
                 assertThat(record1.getDataSize(), is(30));
                 assertThat(record1.getDescription(), is("2つ目の更新"));
-                assertThat(record1.getDeleteFlag(), is(1));
+                assertThat(record1.getDeleteFlag(), is(0));
 
                 final FieldMaster record2 = curRecordset.get(1);
                 assertThat(record2.getNo(), is(2));
@@ -331,7 +329,7 @@ public class FieldMasterRepositoryTest {
                 assertThat(record2.getDataType(), is("Integer"));
                 assertThat(record2.getDataSize(), is(0));
                 assertThat(record2.getDescription(), is("1つ目の更新"));
-                assertThat(record2.getDeleteFlag(), is(1));
+                assertThat(record2.getDeleteFlag(), is(0));
 
             }
         }
