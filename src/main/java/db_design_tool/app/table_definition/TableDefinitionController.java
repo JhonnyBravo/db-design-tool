@@ -1,6 +1,7 @@
 package db_design_tool.app.table_definition;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
@@ -21,7 +22,7 @@ import db_design_tool.domain.service.table_definition.TableDefinitionService;
 import db_design_tool.domain.service.table_definition.TableDefinitionServiceImpl;
 
 /**
- * Servlet implementation class TableDefinitionController
+ * テーブル定義編集画面を管理する。
  */
 @WebServlet("/table_definition")
 public class TableDefinitionController extends HttpServlet {
@@ -30,9 +31,6 @@ public class TableDefinitionController extends HttpServlet {
     private final TableDefinitionHelper helper;
     private final TableDefinitionService service;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public TableDefinitionController() throws Exception {
         super();
         helper = new TableDefinitionHelper();
@@ -40,8 +38,17 @@ public class TableDefinitionController extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     *      response)
+     * テーブル定義入力フォームの初期表示を管理する。 クエリパラメータに tableId が指定されている場合は
+     * 登録済みテーブル定義をフォームへ出力する。 指定されていない場合は空のフォームを表示する。
+     *
+     * @param request
+     *            {@link javax.servlet.http.HttpServletRequest}
+     * @param response
+     *            {@link javax.servlet.http.HttpServletResponse}
+     * @throws ServletException
+     *             {@link javax.servlet.ServletException}
+     * @throws IOException
+     *             {@link java.io.IOException}
      */
     @Override
     protected void doGet(HttpServletRequest request,
@@ -50,15 +57,22 @@ public class TableDefinitionController extends HttpServlet {
         final String tableId = request.getParameter("tableId");
 
         if (tableId != null && !tableId.isEmpty()) {
+            Map<String, String[]> paramMap = request.getParameterMap();
+
             try {
-                final TableDefinition tableDefinition = service
-                        .findTableDefinitionByTableId(
-                                Integer.parseInt(tableId));
-                request.setAttribute("tableMaster",
-                        tableDefinition.getTableMaster());
-                request.setAttribute("fieldMasterArray",
-                        tableDefinition.getFieldMaster());
-                request.setAttribute("tableId", tableId);
+
+                if (!paramMap.containsKey("physicalTableName")) {
+                    final TableDefinition tableDefinition = service
+                            .findTableDefinitionByTableId(
+                                    Integer.parseInt(tableId));
+
+                    request.setAttribute("tableMaster",
+                            tableDefinition.getTableMaster());
+                    request.setAttribute("fieldMasterArray",
+                            tableDefinition.getFieldMaster());
+                    request.setAttribute("tableId", tableId);
+                }
+
             } catch (final Exception e) {
                 throw new IOException(e);
             }
@@ -71,14 +85,21 @@ public class TableDefinitionController extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
+     * テーブル定義の登録処理を管理する。 tableId が指定されていない場合は新規登録を実行し、 指定されている場合は更新を実行する。
+     * 
+     * @param request
+     *            {@link javax.servlet.http.HttpServletRequest}
+     * @param response
+     *            {@link javax.servlet.http.HttpServletResponse}
+     * @throws ServletException
+     *             {@link javax.servlet.ServletException}
+     * @throws IOException
+     *             {@link java.io.IOException}
      */
     @Override
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         final TableMaster tableMaster = helper.convertToTableMaster(request);
-
         final FieldMaster[] fieldMasterArray = helper
                 .convertToFieldMaster(request);
 
@@ -129,6 +150,23 @@ public class TableDefinitionController extends HttpServlet {
                         }
                     });
                 }
+
+                if (fieldMaster.getDataSizeError() != null) {
+                    hasError = true;
+                }
+            }
+
+            if (tableMaster.getTableId() > 0) {
+                try {
+                    final TableDefinition savedTableDefinition = service
+                            .findTableDefinitionByTableId(
+                                    tableMaster.getTableId());
+                    tableDefinition.setFieldMaster(helper.mergeFieldMaster(
+                            savedTableDefinition.getFieldMaster(),
+                            fieldMasterArray));
+                } catch (final Exception e) {
+                    throw new IOException(e);
+                }
             }
         } else {
             hasError = true;
@@ -141,7 +179,12 @@ public class TableDefinitionController extends HttpServlet {
             doGet(request, response);
         } else {
             try {
-                service.create(tableDefinition);
+                if (tableMaster.getTableId() > 0) {
+                    service.update(tableDefinition);
+                } else {
+                    service.create(tableDefinition);
+                }
+
                 response.sendRedirect("/db-design-tool/home");
             } catch (final Exception e) {
                 e.printStackTrace();
