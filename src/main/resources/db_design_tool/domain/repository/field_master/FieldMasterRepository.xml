@@ -25,6 +25,7 @@
         field_master
         WHERE
         table_id = #{tableId}
+        AND delete_flag = 0
         ORDER BY
         no;
     </select>
@@ -85,13 +86,15 @@
         ON DUPLICATE KEY UPDATE
         table_id = VALUES(table_id),
         field_id = VALUES(field_id),
-        no = VALUES(no),
+        no =
+        VALUES(no),
         physical_name =
         VALUES(physical_name),
         logical_name = VALUES(logical_name),
         data_type = VALUES(data_type),
         data_size = VALUES(data_size),
-        description = VALUES(description),
+        description =
+        VALUES(description),
         delete_flag =
         VALUES(delete_flag);
     </insert>
