@@ -282,13 +282,6 @@ public class TableDefinitionServiceTest {
             assertThat(curField1.getNo(), is(1));
             assertThat(curField1.getPhysicalName(), is("field2"));
             assertThat(curField1.getLogicalName(), is("フィールド2"));
-
-            final FieldMaster curField2 = curFields[1];
-            assertThat(curField2.getNo(), is(2));
-            assertThat(curField2.getPhysicalName(), is("field1"));
-            assertThat(curField2.getLogicalName(), is("フィールド1"));
-            assertThat(curField2.getDeleteFlag(), is(1));
-            assertThat(curField2.getDescription(), is("廃止"));
         }
     }
 
