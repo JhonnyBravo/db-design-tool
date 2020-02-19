@@ -212,6 +212,7 @@
                             </div>
                             <input type="text" name="logicalFieldName" class="form-control">
                         </div>
+                        <input type="hidden" name="fieldId" value="0" />
                     </td>
                     <td>
                         <div class="input-group">
