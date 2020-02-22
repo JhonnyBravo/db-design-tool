@@ -57,6 +57,7 @@ public class TableDefinitionController extends HttpServlet {
         final String tableId = request.getParameter("tableId");
 
         if (tableId != null && !tableId.isEmpty()) {
+            request.setAttribute("tableId", tableId);
             Map<String, String[]> paramMap = request.getParameterMap();
 
             try {
@@ -70,9 +71,7 @@ public class TableDefinitionController extends HttpServlet {
                             tableDefinition.getTableMaster());
                     request.setAttribute("fieldMasterArray",
                             tableDefinition.getFieldMaster());
-                    request.setAttribute("tableId", tableId);
                 }
-
             } catch (final Exception e) {
                 throw new IOException(e);
             }
@@ -86,7 +85,7 @@ public class TableDefinitionController extends HttpServlet {
 
     /**
      * テーブル定義の登録処理を管理する。 tableId が指定されていない場合は新規登録を実行し、 指定されている場合は更新を実行する。
-     * 
+     *
      * @param request
      *            {@link javax.servlet.http.HttpServletRequest}
      * @param response
@@ -175,6 +174,21 @@ public class TableDefinitionController extends HttpServlet {
 
         request.setAttribute("fieldMasterArray", fieldMasterArray);
 
+        int deleteFlag = Integer.parseInt(request.getParameter("deleteFlag"));
+
+        if (deleteFlag == 1) {
+            try {
+                service.deleteByTableId(tableMaster.getTableId());
+                response.sendRedirect("/db-design-tool/home");
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+                request.setAttribute("error", "データの削除に失敗しました。");
+                doGet(request, response);
+                return;
+            }
+        }
+
         if (hasError) {
             doGet(request, response);
         } else {
@@ -193,5 +207,4 @@ public class TableDefinitionController extends HttpServlet {
             }
         }
     }
-
 }
