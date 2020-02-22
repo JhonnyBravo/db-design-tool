@@ -64,6 +64,19 @@ public interface FieldMasterRepository {
             throws Exception;
 
     /**
+     * delete_flag に 1 が設定されているレコードを削除する。
+     * 
+     * @return result
+     *         <ul>
+     *         <li>true: 削除に成功したことを表す。</li>
+     *         <li>false: 削除を実行しなかったことを表す。</li>
+     *         </ul>
+     * @throws Exception
+     *             {@link java.lang.Exception}
+     */
+    public boolean deleteByDeleteFlag() throws Exception;
+
+    /**
      * レコードを全件削除する。
      *
      * @return result
