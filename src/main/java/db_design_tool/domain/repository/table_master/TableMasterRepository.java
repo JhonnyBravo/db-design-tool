@@ -71,6 +71,22 @@ public interface TableMasterRepository {
             throws Exception;
 
     /**
+     * table_id をキーにレコードを削除する。
+     *
+     * @param tableId
+     *            削除対象とするレコードの tableId を指定する。
+     * @return result
+     *         <ul>
+     *         <li>true: 削除に成功したことを表す。</li>
+     *         <li>true: 削除しなかったことを表す。</li>
+     *         </ul>
+     * @throws Exception
+     *             {@link java.lang.Exception}
+     */
+    public boolean deleteByTableId(@Param("tableId") int tableId)
+            throws Exception;
+
+    /**
      * レコードを全件削除する。
      *
      * @return result
