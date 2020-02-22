@@ -50,7 +50,8 @@
                     <p>${tableMaster.logicalNameError}</p>
                 </c:when>
             </c:choose>
-            <input type="hidden" name="tableId" value="${tableId}" />
+            <input type="hidden" name="tableId" value="${tableId}" /> <input type="hidden"
+                name="deleteFlag" value="0" />
             <table id="tableDefinition" class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -101,59 +102,59 @@
                                     </div>
                                     <select class="custom-select" name="dataType">
                                         <c:choose>
-                                            <c:when test="${fieldMaster.dataType == 'string'}">
-                                                <option value="string" selected>String</option>
+                                            <c:when test="${fieldMaster.dataType == 1}">
+                                                <option value="1" selected>String</option>
                                             </c:when>
                                             <c:otherwise>
-                                                <option value="string">String</option>
+                                                <option value="1">String</option>
                                             </c:otherwise>
                                         </c:choose>
                                         <c:choose>
-                                            <c:when test="${fieldMaster.dataType == 'integer'}">
-                                                <option value="integer" selected>Integer</option>
+                                            <c:when test="${fieldMaster.dataType == 2}">
+                                                <option value="2" selected>Integer</option>
                                             </c:when>
                                             <c:otherwise>
-                                                <option value="integer">Integer</option>
+                                                <option value="2">Integer</option>
                                             </c:otherwise>
                                         </c:choose>
                                         <c:choose>
-                                            <c:when test="${fieldMaster.dataType == 'long'}">
-                                                <option value="long" selected>Long</option>
+                                            <c:when test="${fieldMaster.dataType == 3}">
+                                                <option value="3" selected>Long</option>
                                             </c:when>
                                             <c:otherwise>
-                                                <option value="long">Long</option>
+                                                <option value="3">Long</option>
                                             </c:otherwise>
                                         </c:choose>
                                         <c:choose>
-                                            <c:when test="${fieldMaster.dataType == 'single'}">
-                                                <option value="single" selected>Single</option>
+                                            <c:when test="${fieldMaster.dataType == 4}">
+                                                <option value="4" selected>Single</option>
                                             </c:when>
                                             <c:otherwise>
-                                                <option value="single">Single</option>
+                                                <option value="4">Single</option>
                                             </c:otherwise>
                                         </c:choose>
                                         <c:choose>
-                                            <c:when test="${fieldMaster.dataType == 'double'}">
-                                                <option value="double" selected>Double</option>
+                                            <c:when test="${fieldMaster.dataType == 5}">
+                                                <option value="5" selected>Double</option>
                                             </c:when>
                                             <c:otherwise>
-                                                <option value="double">Double</option>
+                                                <option value="5">Double</option>
                                             </c:otherwise>
                                         </c:choose>
                                         <c:choose>
-                                            <c:when test="${fieldMaster.dataType == 'date'}">
-                                                <option value="date" selected>Date</option>
+                                            <c:when test="${fieldMaster.dataType == 6}">
+                                                <option value="6" selected>Date</option>
                                             </c:when>
                                             <c:otherwise>
-                                                <option value="date">Date</option>
+                                                <option value="6">Date</option>
                                             </c:otherwise>
                                         </c:choose>
                                         <c:choose>
-                                            <c:when test="${fieldMaster.dataType == 'boolean'}">
-                                                <option value="boolean" selected>Boolean</option>
+                                            <c:when test="${fieldMaster.dataType == '7'}">
+                                                <option value="7" selected>Boolean</option>
                                             </c:when>
                                             <c:otherwise>
-                                                <option value="boolean">Boolean</option>
+                                                <option value="7">Boolean</option>
                                             </c:otherwise>
                                         </c:choose>
                                     </select>
@@ -192,6 +193,13 @@
                 </c:when>
             </c:choose>
             <button type="submit" class="btn btn-primary">保存</button>
+
+            <c:choose>
+                <c:when test="${tableId != null}">
+                    <button type="button" class="btn btn-danger">削除</button>
+                </c:when>
+            </c:choose>
+
         </form>
     </main>
     <section id="template">
@@ -211,8 +219,7 @@
                                 <span class="input-group-text">論理名</span>
                             </div>
                             <input type="text" name="logicalFieldName" class="form-control">
-                        </div>
-                        <input type="hidden" name="fieldId" value="0" />
+                        </div> <input type="hidden" name="fieldId" value="0" />
                     </td>
                     <td>
                         <div class="input-group">
@@ -220,13 +227,13 @@
                                 <span class="input-group-text">型</span>
                             </div>
                             <select class="custom-select" name="dataType">
-                                <option value="string">String</option>
-                                <option value="integer">Integer</option>
-                                <option value="long">Long</option>
-                                <option value="single">Single</option>
-                                <option value="double">Double</option>
-                                <option value="date">Date</option>
-                                <option value="boolean">Boolean</option>
+                                <option value="1">String</option>
+                                <option value="2">Integer</option>
+                                <option value="3">Long</option>
+                                <option value="4">Single</option>
+                                <option value="5">Double</option>
+                                <option value="6">Date</option>
+                                <option value="7">Boolean</option>
                             </select>
                         </div>
                         <div class="input-group">
