@@ -185,6 +185,21 @@ public class TableMasterRepositoryTest {
                 assertThat(record2.getDeleteFlag(), is(1));
             }
         }
-    }
 
+        @Test
+        public void deleteByTableId実行時にレコードを削除できてTrueが返されること()
+                throws Exception {
+            try (SqlSession session = factory.openSession()) {
+                repository = session.getMapper(TableMasterRepository.class);
+
+                boolean result = repository.deleteByTableId(1);
+                assertThat(result, is(true));
+                session.commit();
+
+                List<TableMaster> recordset = repository.findAll();
+                assertThat(recordset.size(), is(1));
+                assertThat(recordset.get(0).getTableId(), is(2));
+            }
+        }
+    }
 }
