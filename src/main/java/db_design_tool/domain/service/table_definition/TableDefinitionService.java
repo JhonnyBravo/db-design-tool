@@ -49,6 +49,16 @@ public interface TableDefinitionService {
     public void update(TableDefinition tableDefinition) throws Exception;
 
     /**
+     * table_id をキーにテーブル定義を削除する。
+     * 
+     * @param tableId
+     *            削除対象とするテーブル定義の table_id を指定する。
+     * @throws Exception
+     *             {@link java.lang.Exception}
+     */
+    public void deleteByTableId(int tableId) throws Exception;
+
+    /**
      * テーブル定義を全件削除する。
      *
      * @throws Exception
