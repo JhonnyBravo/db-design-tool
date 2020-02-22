@@ -15,11 +15,15 @@ CREATE TABLE IF NOT EXISTS field_master (
     no INT NOT NULL,
     physical_name VARCHAR(100) NOT NULL,
     logical_name VARCHAR(100) NOT NULL,
-    data_type VARCHAR(10) NOT NULL,
+    data_type INT,
     data_size INT,
     description VARCHAR(255),
     delete_flag INT NOT NULL,
-    PRIMARY KEY (field_id)
+    PRIMARY KEY (field_id),
+    INDEX (table_id),
+    FOREIGN KEY (table_id)
+        REFERENCES table_master (table_id)
+        ON DELETE CASCADE
 );
 
 -- grant all privileges on db_design_tool.* to user@localhost;
