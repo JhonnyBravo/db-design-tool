@@ -100,7 +100,18 @@ public class TableDefinitionServiceImpl implements TableDefinitionService {
             fieldMasterRepository = session
                     .getMapper(FieldMasterRepository.class);
             fieldMasterRepository.update(Arrays.asList(fieldMasterArray));
+            fieldMasterRepository.deleteByDeleteFlag();
 
+            session.commit();
+        }
+    }
+
+    @Override
+    public void deleteByTableId(int tableId) throws Exception {
+        try (SqlSession session = factory.openSession()) {
+            tableMasterRepository = session
+                    .getMapper(TableMasterRepository.class);
+            tableMasterRepository.deleteByTableId(tableId);
             session.commit();
         }
     }
