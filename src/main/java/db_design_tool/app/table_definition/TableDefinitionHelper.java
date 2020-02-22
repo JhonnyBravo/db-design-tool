@@ -69,7 +69,9 @@ public class TableDefinitionHelper {
                 fieldMaster.setLogicalName(
                         definitionMap.get("logicalFieldName")[i]);
 
-                fieldMaster.setDataType(definitionMap.get("dataType")[i]);
+                int dataType = Integer
+                        .parseInt(definitionMap.get("dataType")[i]);
+                fieldMaster.setDataType(dataType);
 
                 if (!definitionMap.get("dataSize")[i].isEmpty()) {
                     if (!definitionMap.get("dataSize")[i].matches("[0-9]*")) {
@@ -95,7 +97,7 @@ public class TableDefinitionHelper {
 
     /**
      * フォームから送信されたフィールド定義の変更差分を登録済みフィールド定義へ反映する。
-     * 
+     *
      * @param reffArray
      *            登録済みフィールド定義の配列を指定する。
      * @param diffArray
