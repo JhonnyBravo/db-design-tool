@@ -25,7 +25,6 @@
         field_master
         WHERE
         table_id = #{tableId}
-        AND delete_flag = 0
         ORDER BY
         no;
     </select>
@@ -84,13 +83,12 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE
-        table_id = VALUES(table_id),
-        field_id = VALUES(field_id),
         no =
         VALUES(no),
         physical_name =
         VALUES(physical_name),
-        logical_name = VALUES(logical_name),
+        logical_name =
+        VALUES(logical_name),
         data_type = VALUES(data_type),
         data_size = VALUES(data_size),
         description =
@@ -98,6 +96,10 @@
         delete_flag =
         VALUES(delete_flag);
     </insert>
+    <!-- delete_flag に 1 が設定されているレコードを削除する。 -->
+    <delete id="deleteByDeleteFlag">
+        DELETE FROM field_master WHERE delete_flag = 1;
+    </delete>
     <!-- 既存レコードを全件削除する。 -->
     <delete id="deleteAll">
         DELETE FROM field_master;
