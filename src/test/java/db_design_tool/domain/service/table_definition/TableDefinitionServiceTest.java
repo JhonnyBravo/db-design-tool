@@ -53,7 +53,7 @@ public class TableDefinitionServiceTest {
                 fieldMaster.setPhysicalName("field1");
                 fieldMaster.setLogicalName("フィールド1");
                 fieldMaster.setDeleteFlag(0);
-                fieldMaster.setDataType("String");
+                fieldMaster.setDataType(1);
                 fieldMaster.setDataSize(10);
                 fieldMaster.setDescription("1つ目のフィールド");
 
@@ -66,7 +66,7 @@ public class TableDefinitionServiceTest {
                 fieldMaster.setPhysicalName("field2");
                 fieldMaster.setLogicalName("フィールド2");
                 fieldMaster.setDeleteFlag(0);
-                fieldMaster.setDataType("Integer");
+                fieldMaster.setDataType(2);
                 fieldMaster.setDescription("2つ目のフィールド");
 
                 fieldMasterList.add(fieldMaster);
@@ -97,7 +97,7 @@ public class TableDefinitionServiceTest {
             assertThat(field1.getDeleteFlag(), is(0));
             assertThat(field1.getPhysicalName(), is("field1"));
             assertThat(field1.getLogicalName(), is("フィールド1"));
-            assertThat(field1.getDataType(), is("String"));
+            assertThat(field1.getDataType(), is(1));
             assertThat(field1.getDataSize(), is(10));
             assertThat(field1.getDescription(), is("1つ目のフィールド"));
 
@@ -108,7 +108,7 @@ public class TableDefinitionServiceTest {
             assertThat(field2.getDeleteFlag(), is(0));
             assertThat(field2.getPhysicalName(), is("field2"));
             assertThat(field2.getLogicalName(), is("フィールド2"));
-            assertThat(field2.getDataType(), is("Integer"));
+            assertThat(field2.getDataType(), is(2));
             assertThat(field2.getDescription(), is("2つ目のフィールド"));
         }
     }
@@ -134,7 +134,7 @@ public class TableDefinitionServiceTest {
                 fieldMaster.setPhysicalName("field1");
                 fieldMaster.setLogicalName("フィールド1");
                 fieldMaster.setDeleteFlag(0);
-                fieldMaster.setDataType("String");
+                fieldMaster.setDataType(1);
                 fieldMaster.setDataSize(10);
                 fieldMaster.setDescription("1つ目のフィールド");
 
@@ -147,7 +147,7 @@ public class TableDefinitionServiceTest {
                 fieldMaster.setPhysicalName("field2");
                 fieldMaster.setLogicalName("フィールド2");
                 fieldMaster.setDeleteFlag(0);
-                fieldMaster.setDataType("Integer");
+                fieldMaster.setDataType(2);
                 fieldMaster.setDescription("2つ目のフィールド");
 
                 fieldMasterList.add(fieldMaster);
@@ -187,7 +187,7 @@ public class TableDefinitionServiceTest {
                 fieldMaster.setPhysicalName("field1");
                 fieldMaster.setLogicalName("フィールド1");
                 fieldMaster.setDeleteFlag(0);
-                fieldMaster.setDataType("String");
+                fieldMaster.setDataType(1);
                 fieldMaster.setDataSize(10);
                 fieldMaster.setDescription("1つ目のフィールド");
 
@@ -200,7 +200,7 @@ public class TableDefinitionServiceTest {
                 fieldMaster.setPhysicalName("field2");
                 fieldMaster.setLogicalName("フィールド2");
                 fieldMaster.setDeleteFlag(0);
-                fieldMaster.setDataType("Integer");
+                fieldMaster.setDataType(2);
                 fieldMaster.setDescription("2つ目のフィールド");
 
                 fieldMasterList.add(fieldMaster);
@@ -234,7 +234,7 @@ public class TableDefinitionServiceTest {
             assertThat(field1.getDeleteFlag(), is(0));
             assertThat(field1.getPhysicalName(), is("field1"));
             assertThat(field1.getLogicalName(), is("フィールド1"));
-            assertThat(field1.getDataType(), is("String"));
+            assertThat(field1.getDataType(), is(1));
             assertThat(field1.getDataSize(), is(10));
             assertThat(field1.getDescription(), is("1つ目のフィールド"));
 
@@ -245,7 +245,7 @@ public class TableDefinitionServiceTest {
             assertThat(field2.getDeleteFlag(), is(0));
             assertThat(field2.getPhysicalName(), is("field2"));
             assertThat(field2.getLogicalName(), is("フィールド2"));
-            assertThat(field2.getDataType(), is("Integer"));
+            assertThat(field2.getDataType(), is(2));
             assertThat(field2.getDescription(), is("2つ目のフィールド"));
         }
 
@@ -257,7 +257,7 @@ public class TableDefinitionServiceTest {
             final TableMaster table1 = definition1.getTableMaster();
             table1.setPhysicalName("tblModified");
             table1.setLogicalName("更新テーブル");
-            table1.setDeleteFlag(1);
+            table1.setDeleteFlag(0);
 
             final FieldMaster[] fields = definition1.getFieldMaster();
             final FieldMaster field1 = fields[0];
@@ -266,6 +266,8 @@ public class TableDefinitionServiceTest {
             field1.setDescription("廃止");
 
             final FieldMaster field2 = fields[1];
+            field2.setPhysicalName("tblModified.field2");
+            field2.setLogicalName("更新テーブル.フィールド2");
             field2.setNo(1);
 
             service.update(definition1);
@@ -275,13 +277,15 @@ public class TableDefinitionServiceTest {
             final TableMaster curTable = curDefinition.getTableMaster();
             assertThat(curTable.getPhysicalName(), is("tblModified"));
             assertThat(curTable.getLogicalName(), is("更新テーブル"));
-            assertThat(curTable.getDeleteFlag(), is(1));
+            assertThat(curTable.getDeleteFlag(), is(0));
 
             final FieldMaster[] curFields = curDefinition.getFieldMaster();
+            assertThat(curFields.length, is(1));
+
             final FieldMaster curField1 = curFields[0];
             assertThat(curField1.getNo(), is(1));
-            assertThat(curField1.getPhysicalName(), is("field2"));
-            assertThat(curField1.getLogicalName(), is("フィールド2"));
+            assertThat(curField1.getPhysicalName(), is("tblModified.field2"));
+            assertThat(curField1.getLogicalName(), is("更新テーブル.フィールド2"));
         }
     }
 
