@@ -16,8 +16,8 @@ public class FieldMaster implements Serializable {
     private String physicalName;
     @Size(min = 1, max = 100)
     private String logicalName;
-    @Size(min = 1, max = 10)
-    private String dataType;
+    @Range(min = 1, max = 7)
+    private int dataType;
     private int dataSize;
     @Size(min = 0, max = 255)
     private String description;
@@ -106,14 +106,14 @@ public class FieldMaster implements Serializable {
     /**
      * @return dataType データ型を返す。
      */
-    public String getDataType() {
+    public int getDataType() {
         return dataType;
     }
 
     /**
      * @param dataType
      *            dataType データ型を指定する。
-     *            <ul>
+     *            <ol>
      *            <li>String</li>
      *            <li>Integer</li>
      *            <li>Long</li>
@@ -121,9 +121,9 @@ public class FieldMaster implements Serializable {
      *            <li>Double</li>
      *            <li>Boolean</li>
      *            <li>Date</li>
-     *            </ul>
+     *            </ol>
      */
-    public void setDataType(String dataType) {
+    public void setDataType(int dataType) {
         this.dataType = dataType;
     }
 
