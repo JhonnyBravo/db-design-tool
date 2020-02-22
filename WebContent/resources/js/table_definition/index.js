@@ -65,7 +65,13 @@
 }(jQuery));
 
 $(function () {
-    // 新規レコード追加処理
+    // テーブル定義削除処理
+    $("button.btn-danger").click(function () {
+        $("input[name='deleteFlag']").val(1);
+        $("form").submit();
+    });
+
+    // 新規フィールド定義追加処理
     $(".addRecord").click(
             function (e) {
                 e.preventDefault();
@@ -73,7 +79,7 @@ $(function () {
                         $("#tableDefinition tbody"));
                 $.tableDefinition.resetNo($("#tableDefinition"));
 
-                // レコード削除処理
+                // フィールド定義削除処理
                 $(".removeRecord").click(function (e) {
                     e.preventDefault();
                     $.tableDefinition.removeRecord($(this));
@@ -97,7 +103,7 @@ $(function () {
                 });
             });
 
-    // レコード削除処理
+    // フィールド定義削除処理
     $(".removeRecord").click(function (e) {
         e.preventDefault();
         $.tableDefinition.removeRecord($(this));
