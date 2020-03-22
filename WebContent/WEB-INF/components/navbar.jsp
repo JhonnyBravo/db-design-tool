@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarsDefault">
         <ul class="navbar-nav mr-auto">
             <li><a class="nav-link" href="/db-design-tool/table_definition">テーブル定義</a></li>
-            <li><a class="nav-link" href="#">クエリ定義</a></li>
+            <li><a class="nav-link" href="/db-design-tool/select_definition">クエリ定義</a></li>
         </ul>
     </div>
 </nav>
