@@ -58,6 +58,7 @@
                         <th scope="col">No.</th>
                         <th scope="col">テーブル名</th>
                         <th scope="col">結合条件</th>
+                        <th scope="col"></th>
                         <th scope="col"><a href="#" class="addRecord"><i
                                 class="material-icons md-green"> add </i></a></th>
                         <th scope="col"></th>
@@ -237,6 +238,7 @@
                 </div>
                 <div class="modal-body">
                     <form>
+                        <input type="hidden" name="no">
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">テーブル名</label> <select
                                 class="form-control" name="tableName">
@@ -264,6 +266,8 @@
                     <th scope="row">1<input type="hidden" name="no" value="1"></th>
                     <td></td>
                     <td></td>
+                    <td><a href="#" class="updateRecord"><i
+                            class="material-icons text-info"> tune </i></a></td>
                     <td><a href="#" class="removeRecord"><i
                             class="material-icons text-danger"> remove </i></a></td>
                     <td><a href="#" class="dropUpRecord"><i
