@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- table_source_definition からレコードを取得する。 -->
+<mapper
+    namespace="db_design_tool.domain.repository.table_source_definition.TableSourceDefinitionRepository">
+    <resultMap id="tableSourceDefinition"
+        type="db_design_tool.domain.model.TableSourceDefinition">
+        <id property="definitionId" column="definition_id" />
+        <result property="tableId" column="table_id" />
+        <result property="no" column="no" />
+        <result property="sourceId" column="source_id" />
+        <result property="joinCondition" column="join_condition" />
+        <result property="deleteFlag" column="delete_flag" />
+    </resultMap>
+    <!-- 登録されているレコードを全件取得する。 -->
+    <select id="findAll" resultMap="tableSourceDefinition">
+        SELECT * FROM table_source_definition;
+    </select>
+    <!-- table_id をキーにレコードを検索する。 -->
+    <select id="findByTableId" resultMap="tableSourceDefinition">
+        SELECT
+        *
+        FROM
+        table_source_definition
+        WHERE
+        table_id =
+        #{tableId}
+        ORDER BY
+        no;
+    </select>
+    <!-- 新規レコードを登録する。 -->
+    <insert id="create" useGeneratedKeys="true" keyProperty="definitionId">
+        INSERT INTO table_source_definition (
+        table_id,
+        source_id,
+        no,
+        join_condition,
+        delete_flag
+        )
+        VALUES
+        <foreach item="tableSourceDefinition" collection="list" separator=",">
+            (
+            #{tableSourceDefinition.tableId},
+            #{tableSourceDefinition.sourceId},
+            #{tableSourceDefinition.no},
+            #{tableSourceDefinition.joinCondition},
+            #{tableSourceDefinition.deleteFlag}
+            )
+        </foreach>
+        ;
+    </insert>
+    <!-- レコードを更新する。 -->
+    <insert id="update">
+        INSERT INTO table_source_definition (
+        table_id,
+        definition_id,
+        source_id,
+        no,
+        join_condition,
+        delete_flag
+        )
+        VALUES
+        <foreach item="tableSourceDefinition" collection="list" separator=",">
+            (
+            #{tableSourceDefinition.tableId},
+            #{tableSourceDefinition.definitionId},
+            #{tableSourceDefinition.sourceId},
+            #{tableSourceDefinition.no},
+            #{tableSourceDefinition.joinCondition},
+            #{tableSourceDefinition.deleteFlag}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        source_id =
+        VALUES(source_id),
+        no =
+        VALUES(no),
+        join_condition =
+        VALUES(join_condition),
+        delete_flag =
+        VALUES(delete_flag);
+    </insert>
+    <!-- delete_flag に 1 が設定されているレコードを削除する。 -->
+    <delete id="deleteByDeleteFlag">
+        DELETE FROM table_source_definition WHERE delete_flag = 1;
+    </delete>
+    <!-- 既存レコードを全件削除する。 -->
+    <delete id="deleteAll">
+        DELETE FROM table_source_definition;
+    </delete>
+    <!-- table_id の開始値を 1 にリセットする。 -->
+    <update id="resetId">
+        ALTER TABLE table_source_definition auto_increment = 1;
+    </update>
+</mapper>
