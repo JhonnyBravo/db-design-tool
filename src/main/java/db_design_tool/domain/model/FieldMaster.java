@@ -29,7 +29,7 @@ public class FieldMaster implements Serializable {
     private String descriptionError;
 
     /**
-     * @return tableId table_id を返す。
+     * @return tableId フィールド定義が紐づくテーブルの ID を返す。
      */
     public int getTableId() {
         return tableId;
@@ -37,14 +37,14 @@ public class FieldMaster implements Serializable {
 
     /**
      * @param tableId
-     *            table_id を指定する。
+     *            フィールド定義が紐づくテーブルの ID を指定する。
      */
     public void setTableId(int tableId) {
         this.tableId = tableId;
     }
 
     /**
-     * @return fieldId field_id を返す。
+     * @return fieldId フィールド定義の ID を返す。
      */
     public int getFieldId() {
         return fieldId;
@@ -52,7 +52,7 @@ public class FieldMaster implements Serializable {
 
     /**
      * @param fieldId
-     *            field_id を指定する。
+     *            フィールド定義の ID を指定する。
      */
     public void setFieldId(int fieldId) {
         this.fieldId = fieldId;
@@ -166,7 +166,7 @@ public class FieldMaster implements Serializable {
 
     /**
      * @param deleteFlag
-     *            deleteFlag 削除フラグを指定する。
+     *            削除フラグを指定する。
      *            <ul>
      *            <li>0: フィールドが削除されていないことを表す。</li>
      *            <li>1: フィールドが削除されていることを表す。</li>
