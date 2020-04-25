@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- field_source_definition からレコードを取得する。 -->
+<mapper namespace="db_design_tool.domain.repository.field_source_definition.FieldSourceDefinitionRepository">
+    <resultMap id="fieldSourceDefinition" type="db_design_tool.domain.model.FieldSourceDefinition">
+        <id property="definitionId" column="definition_id" />
+        <result property="fieldId" column="field_id" />
+        <result property="sourceDefinition" column="source_definition" />
+    </resultMap>
+    <!-- 登録されているレコードを全件取得する。 -->
+    <select id="findAll" resultMap="fieldSourceDefinition">
+        SELECT * FROM field_source_definition;
+    </select>
+    <!-- field_id をキーにレコードを検索する。 -->
+    <select id="findByFieldId" resultMap="fieldSourceDefinition">
+        SELECT
+        *
+        FROM
+        field_source_definition
+        WHERE
+        field_id = #{fieldId};
+    </select>
+    <!-- 新規レコードを登録する。 -->
+    <insert id="create" useGeneratedKeys="true" keyProperty="definitionId">
+        INSERT INTO field_source_definition (
+        field_id,
+        source_definition
+        )
+        VALUES
+        <foreach item="fieldSourceDefinition" collection="list" separator=",">
+            (
+            #{fieldSourceDefinition.fieldId},
+            #{fieldSourceDefinition.sourceDefinition}
+            )
+        </foreach>
+        ;
+    </insert>
+    <!-- レコードを更新する。 -->
+    <insert id="update">
+        INSERT INTO field_source_definition (
+        field_id,
+        definition_id,
+        source_definition
+        )
+        VALUES
+        <foreach item="fieldSourceDefinition" collection="list" separator=",">
+            (
+            #{fieldSourceDefinition.fieldId},
+            #{fieldSourceDefinition.definitionId},
+            #{fieldSourceDefinition.sourceDefinition}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        source_definition =
+        VALUES(source_definition);
+    </insert>
+    <!-- 既存レコードを全件削除する。 -->
+    <delete id="deleteAll">
+        DELETE FROM field_source_definition;
+    </delete>
+    <!-- definition_id の開始値を 1 にリセットする。 -->
+    <update id="resetId">
+        ALTER TABLE field_source_definition auto_increment = 1;
+    </update>
+</mapper>
