@@ -18,24 +18,26 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import db_design_tool.app.table_definition.TableDefinitionTestHelper;
 import db_design_tool.domain.model.FieldMaster;
 import db_design_tool.domain.model.TableMaster;
 import db_design_tool.domain.repository.table_master.TableMasterRepository;
 
 @RunWith(Enclosed.class)
 public class FieldMasterRepositoryTest {
-    public static class テーブルが空である場合 {
+    public static class フィールド定義が存在しない場合 {
+        private static TableDefinitionTestHelper helper;
         private static SqlSessionFactory factory;
         private FieldMasterRepository fieldMasterRepository;
 
         @BeforeClass
         public static void setUpBeforeClass() throws Exception {
+            helper = new TableDefinitionTestHelper();
             factory = new SqlSessionFactoryBuilder()
                     .build(Resources.getResourceAsStream("mybatis-config.xml"));
 
-            TableMaster table1 = new TableMaster();
-            table1.setPhysicalName("table1");
-            table1.setLogicalName("テーブル1");
+            final String[] params = {"table1", "テーブル1"};
+            final TableMaster table1 = helper.createTableMaster(params);
 
             try (SqlSession session = factory.openSession()) {
                 TableMasterRepository tableMasterRepository = session
@@ -44,6 +46,7 @@ public class FieldMasterRepositoryTest {
                 tableMasterRepository.deleteAll();
                 tableMasterRepository.resetId();
                 tableMasterRepository.create(table1);
+
                 session.commit();
             }
         }
@@ -98,86 +101,81 @@ public class FieldMasterRepositoryTest {
 
         @Test
         public void create実行時にレコードを登録できてtrueが返されること() throws Exception {
-            final List<FieldMaster> recordset = new ArrayList<>();
-            {
-                final FieldMaster record = new FieldMaster();
-                record.setTableId(1);
-                record.setNo(1);
-                record.setPhysicalName("field1");
-                record.setLogicalName("フィールド1");
-                record.setDataType(1);
-                record.setDataSize(10);
-                record.setDescription("1つ目のフィールド");
-                record.setDeleteFlag(0);
+            final String[] params1 = {"1", "1", "field1", "フィールド1",
+                    "1つ目のフィールド"};
+            final FieldMaster expect1 = helper.createFieldMaster(params1);
 
-                recordset.add(record);
-            }
-            {
-                final FieldMaster record = new FieldMaster();
-                record.setTableId(1);
-                record.setNo(2);
-                record.setPhysicalName("field2");
-                record.setLogicalName("フィールド2");
-                record.setDataType(6);
-                record.setDescription("2つ目のフィールド");
-                record.setDeleteFlag(0);
+            final String[] params2 = {"1", "2", "field2", "フィールド2",
+                    "2つ目のフィールド"};
+            final FieldMaster expect2 = helper.createFieldMaster(params2);
 
-                recordset.add(record);
-            }
+            final List<FieldMaster> expectList = new ArrayList<>();
+            expectList.add(expect1);
+            expectList.add(expect2);
 
             try (SqlSession session = factory.openSession()) {
                 fieldMasterRepository = session
                         .getMapper(FieldMasterRepository.class);
 
-                final boolean result = fieldMasterRepository.create(recordset);
+                final boolean result = fieldMasterRepository.create(expectList);
                 assertThat(result, is(true));
                 session.commit();
 
-                final List<FieldMaster> curRecordset = fieldMasterRepository
+                final List<FieldMaster> actualList = fieldMasterRepository
                         .findAll();
-                assertThat(curRecordset.size(), is(2));
+                assertThat(actualList.size(), is(expectList.size()));
 
-                final FieldMaster record1 = curRecordset.get(0);
-                assertThat(record1.getTableId(), is(1));
-                assertThat(record1.getFieldId(), is(1));
-                assertThat(record1.getNo(), is(1));
-                assertThat(record1.getPhysicalName(), is("field1"));
-                assertThat(record1.getLogicalName(), is("フィールド1"));
-                assertThat(record1.getDataType(), is(1));
-                assertThat(record1.getDataSize(), is(10));
-                assertThat(record1.getDeleteFlag(), is(0));
-                assertThat(record1.getDescription(), is("1つ目のフィールド"));
+                final FieldMaster actual1 = fieldMasterRepository
+                        .findByTableIdAndNo(expect1.getTableId(),
+                                expect1.getNo());
 
-                final FieldMaster record2 = curRecordset.get(1);
-                assertThat(record2.getTableId(), is(1));
-                assertThat(record2.getFieldId(), is(2));
-                assertThat(record2.getNo(), is(2));
-                assertThat(record2.getPhysicalName(), is("field2"));
-                assertThat(record2.getLogicalName(), is("フィールド2"));
-                assertThat(record2.getDataType(), is(6));
-                assertThat(record2.getDataSize(), is(0));
-                assertThat(record2.getDeleteFlag(), is(0));
-                assertThat(record2.getDescription(), is("2つ目のフィールド"));
+                assertThat(actual1.getFieldId(), is(1));
+                assertThat(actual1.getTableId(), is(expect1.getTableId()));
+                assertThat(actual1.getNo(), is(expect1.getNo()));
+                assertThat(actual1.getPhysicalName(),
+                        is(expect1.getPhysicalName()));
+                assertThat(actual1.getLogicalName(),
+                        is(expect1.getLogicalName()));
+                assertThat(actual1.getDescription(),
+                        is(expect1.getDescription()));
+                assertThat(actual1.getDeleteFlag(),
+                        is(expect1.getDeleteFlag()));
+
+                final FieldMaster actual2 = fieldMasterRepository
+                        .findByTableIdAndNo(expect2.getTableId(),
+                                expect2.getNo());
+
+                assertThat(actual2.getFieldId(), is(2));
+                assertThat(actual2.getTableId(), is(expect2.getTableId()));
+                assertThat(actual2.getNo(), is(expect2.getNo()));
+                assertThat(actual2.getPhysicalName(),
+                        is(expect2.getPhysicalName()));
+                assertThat(actual2.getLogicalName(),
+                        is(expect2.getLogicalName()));
+                assertThat(actual2.getDescription(),
+                        is(expect2.getDescription()));
+                assertThat(actual2.getDeleteFlag(),
+                        is(expect2.getDeleteFlag()));
             }
         }
     }
 
-    public static class テーブルが空ではない場合 {
+    public static class フィールド定義が存在する場合 {
+        private static TableDefinitionTestHelper helper;
         private static SqlSessionFactory factory;
         private FieldMasterRepository fieldMasterRepository;
 
         @BeforeClass
         public static void setUpBeforeClass() throws Exception {
+            helper = new TableDefinitionTestHelper();
             factory = new SqlSessionFactoryBuilder()
                     .build(Resources.getResourceAsStream("mybatis-config.xml"));
 
-            TableMaster table1 = new TableMaster();
-            table1.setPhysicalName("table1");
-            table1.setLogicalName("テーブル1");
+            String[] params1 = {"table1", "テーブル1"};
+            TableMaster table1 = helper.createTableMaster(params1);
 
-            TableMaster table2 = new TableMaster();
-            table2.setPhysicalName("table2");
-            table2.setLogicalName("テーブル2");
+            String[] params2 = {"table2", "テーブル2"};
+            TableMaster table2 = helper.createTableMaster(params2);
 
             try (SqlSession session = factory.openSession()) {
                 TableMasterRepository tableMasterRepository = session
@@ -204,66 +202,36 @@ public class FieldMasterRepositoryTest {
 
         @Before
         public void setUp() throws Exception {
-            final List<FieldMaster> recordset = new ArrayList<>();
+            final List<FieldMaster> fieldList = new ArrayList<>();
+
             // テーブル1
-            {
-                final FieldMaster record = new FieldMaster();
-                record.setTableId(1);
-                record.setNo(1);
-                record.setPhysicalName("field1");
-                record.setLogicalName("フィールド1");
-                record.setDataType(1);
-                record.setDataSize(10);
-                record.setDescription("table1.field1");
-                record.setDeleteFlag(0);
+            final String[] params1 = {"1", "1", "field1", "フィールド1",
+                    "table1.field1"};
+            final FieldMaster field1 = helper.createFieldMaster(params1);
+            fieldList.add(field1);
 
-                recordset.add(record);
-            }
-            {
-                final FieldMaster record = new FieldMaster();
-                record.setTableId(1);
-                record.setNo(2);
-                record.setPhysicalName("field2");
-                record.setLogicalName("フィールド2");
-                record.setDataType(6);
-                record.setDescription("table1.field2");
-                record.setDeleteFlag(1);
+            final String[] params2 = {"1", "2", "field2", "フィールド2",
+                    "table1.field2", "1"};
+            final FieldMaster field2 = helper.createFieldMaster(params2);
+            fieldList.add(field2);
 
-                recordset.add(record);
-            }
             // テーブル2
-            {
-                final FieldMaster record = new FieldMaster();
-                record.setTableId(2);
-                record.setNo(1);
-                record.setPhysicalName("field1");
-                record.setLogicalName("フィールド1");
-                record.setDataType(1);
-                record.setDataSize(20);
-                record.setDescription("table2.field1");
-                record.setDeleteFlag(0);
+            final String[] params3 = {"2", "1", "field1", "フィールド1",
+                    "table2.field1"};
+            final FieldMaster field3 = helper.createFieldMaster(params3);
+            fieldList.add(field3);
 
-                recordset.add(record);
-            }
-            {
-                final FieldMaster record = new FieldMaster();
-                record.setTableId(2);
-                record.setNo(2);
-                record.setPhysicalName("field2");
-                record.setLogicalName("フィールド2");
-                record.setDataType(6);
-                record.setDescription("table2.field2");
-                record.setDeleteFlag(1);
-
-                recordset.add(record);
-            }
+            final String[] params4 = {"2", "2", "field2", "フィールド2",
+                    "table2.field2", "1"};
+            final FieldMaster field4 = helper.createFieldMaster(params4);
+            fieldList.add(field4);
 
             try (SqlSession session = factory.openSession()) {
                 fieldMasterRepository = session
                         .getMapper(FieldMasterRepository.class);
                 fieldMasterRepository.deleteAll();
                 fieldMasterRepository.resetId();
-                fieldMasterRepository.create(recordset);
+                fieldMasterRepository.create(fieldList);
                 session.commit();
             }
         }
@@ -294,70 +262,65 @@ public class FieldMasterRepositoryTest {
 
         @Test
         public void create実行時にレコードを登録できてtrueが返されること() throws Exception {
-            final List<FieldMaster> recordset = new ArrayList<>();
-            {
-                final FieldMaster record = new FieldMaster();
-                record.setTableId(1);
-                record.setNo(3);
-                record.setPhysicalName("field3");
-                record.setLogicalName("フィールド3");
-                record.setDataType(1);
-                record.setDataSize(30);
-                record.setDescription("table1.field3");
-                record.setDeleteFlag(0);
+            final List<FieldMaster> expectList = new ArrayList<>();
 
-                recordset.add(record);
-            }
-            {
-                final FieldMaster record = new FieldMaster();
-                record.setTableId(1);
-                record.setNo(4);
-                record.setPhysicalName("field4");
-                record.setLogicalName("フィールド4");
-                record.setDataType(6);
-                record.setDescription("table1.field4");
-                record.setDeleteFlag(0);
+            final String[] params1 = {"1", "3", "field3", "フィールド3",
+                    "table1.field3"};
+            final FieldMaster expect1 = helper.createFieldMaster(params1);
+            expectList.add(expect1);
 
-                recordset.add(record);
-            }
+            final String[] params2 = {"1", "4", "field4", "フィールド4",
+                    "table1.field4"};
+            final FieldMaster expect2 = helper.createFieldMaster(params2);
+            expectList.add(expect2);
 
             try (SqlSession session = factory.openSession()) {
                 fieldMasterRepository = session
                         .getMapper(FieldMasterRepository.class);
 
-                final boolean result = fieldMasterRepository.create(recordset);
+                final boolean result = fieldMasterRepository.create(expectList);
                 assertThat(result, is(true));
                 session.commit();
 
-                final List<FieldMaster> curRecordset = fieldMasterRepository
+                final List<FieldMaster> actualList1 = fieldMasterRepository
                         .findAll();
-                assertThat(curRecordset.size(), is(6));
+                assertThat(actualList1.size(), is(6));
 
-                final List<FieldMaster> table1 = fieldMasterRepository
+                final List<FieldMaster> actualList2 = fieldMasterRepository
                         .findByTableId(1);
-                assertThat(table1.size(), is(4));
+                assertThat(actualList2.size(), is(4));
 
-                final FieldMaster record3 = table1.get(2);
-                assertThat(record3.getTableId(), is(1));
-                assertThat(record3.getFieldId(), is(5));
-                assertThat(record3.getNo(), is(3));
-                assertThat(record3.getPhysicalName(), is("field3"));
-                assertThat(record3.getLogicalName(), is("フィールド3"));
-                assertThat(record3.getDataType(), is(1));
-                assertThat(record3.getDataSize(), is(30));
-                assertThat(record3.getDeleteFlag(), is(0));
-                assertThat(record3.getDescription(), is("table1.field3"));
+                final FieldMaster actual1 = fieldMasterRepository
+                        .findByTableIdAndNo(expect1.getTableId(),
+                                expect1.getNo());
 
-                final FieldMaster record4 = table1.get(3);
-                assertThat(record4.getTableId(), is(1));
-                assertThat(record4.getFieldId(), is(6));
-                assertThat(record4.getNo(), is(4));
-                assertThat(record4.getPhysicalName(), is("field4"));
-                assertThat(record4.getLogicalName(), is("フィールド4"));
-                assertThat(record4.getDataType(), is(6));
-                assertThat(record4.getDataSize(), is(0));
-                assertThat(record4.getDeleteFlag(), is(0));
-                assertThat(record4.getDescription(), is("table1.field4"));
+                assertThat(actual1.getFieldId(), is(5));
+                assertThat(actual1.getTableId(), is(expect1.getTableId()));
+                assertThat(actual1.getNo(), is(expect1.getNo()));
+                assertThat(actual1.getPhysicalName(),
+                        is(expect1.getPhysicalName()));
+                assertThat(actual1.getLogicalName(),
+                        is(expect1.getLogicalName()));
+                assertThat(actual1.getDescription(),
+                        is(expect1.getDescription()));
+                assertThat(actual1.getDeleteFlag(),
+                        is(expect1.getDeleteFlag()));
+
+                final FieldMaster actual2 = fieldMasterRepository
+
+                        .findByTableIdAndNo(expect2.getTableId(),
+                                expect2.getNo());
+                assertThat(actual2.getFieldId(), is(6));
+                assertThat(actual2.getTableId(), is(expect2.getTableId()));
+                assertThat(actual2.getNo(), is(expect2.getNo()));
+                assertThat(actual2.getPhysicalName(),
+                        is(expect2.getPhysicalName()));
+                assertThat(actual2.getLogicalName(),
+                        is(expect2.getLogicalName()));
+                assertThat(actual2.getDescription(),
+                        is(expect2.getDescription()));
+                assertThat(actual2.getDeleteFlag(),
+                        is(expect2.getDeleteFlag()));
             }
         }
 
@@ -367,48 +330,57 @@ public class FieldMasterRepositoryTest {
                 fieldMasterRepository = session
                         .getMapper(FieldMasterRepository.class);
 
-                final List<FieldMaster> recordset = fieldMasterRepository
-                        .findByTableId(2);
-                assertThat(recordset.size(), is(2));
+                List<FieldMaster> expectList = new ArrayList<>();
 
-                recordset.get(0).setNo(2);
-                recordset.get(0).setPhysicalName("update1");
-                recordset.get(0).setLogicalName("更新1");
-                recordset.get(0).setDataType(2);
-                recordset.get(0).setDataSize(0);
-                recordset.get(0).setDescription("table2.update1");
+                final FieldMaster expect1 = fieldMasterRepository
+                        .findByTableIdAndNo(2, 2);
+                expect1.setPhysicalName("update1");
+                expect1.setLogicalName("更新1");
+                expect1.setDescription("table2.update1");
+                expectList.add(expect1);
 
-                recordset.get(1).setNo(1);
-                recordset.get(1).setPhysicalName("update2");
-                recordset.get(1).setLogicalName("更新2");
-                recordset.get(1).setDataType(1);
-                recordset.get(1).setDataSize(30);
-                recordset.get(1).setDescription("table2.update2");
+                final FieldMaster expect2 = fieldMasterRepository
+                        .findByTableIdAndNo(2, 1);
+                expect2.setPhysicalName("update2");
+                expect2.setLogicalName("更新2");
+                expect2.setDescription("table2.update2");
+                expectList.add(expect2);
 
-                final boolean result = fieldMasterRepository.update(recordset);
+                boolean result = fieldMasterRepository.update(expectList);
                 assertThat(result, is(true));
                 session.commit();
 
-                final List<FieldMaster> curRecordset = fieldMasterRepository
+                List<FieldMaster> actualList = fieldMasterRepository
                         .findByTableId(2);
+                assertThat(actualList.size(), is(2));
 
-                final FieldMaster record1 = curRecordset.get(0);
-                assertThat(record1.getNo(), is(1));
-                assertThat(record1.getPhysicalName(), is("update2"));
-                assertThat(record1.getLogicalName(), is("更新2"));
-                assertThat(record1.getDataType(), is(1));
-                assertThat(record1.getDataSize(), is(30));
-                assertThat(record1.getDescription(), is("table2.update2"));
-                assertThat(record1.getDeleteFlag(), is(1));
+                final FieldMaster actual1 = fieldMasterRepository
+                        .findByTableIdAndNo(expect1.getTableId(),
+                                expect1.getNo());
 
-                final FieldMaster record2 = curRecordset.get(1);
-                assertThat(record2.getNo(), is(2));
-                assertThat(record2.getPhysicalName(), is("update1"));
-                assertThat(record2.getLogicalName(), is("更新1"));
-                assertThat(record2.getDataType(), is(2));
-                assertThat(record2.getDataSize(), is(0));
-                assertThat(record2.getDescription(), is("table2.update1"));
-                assertThat(record2.getDeleteFlag(), is(0));
+                assertThat(actual1.getNo(), is(expect1.getNo()));
+                assertThat(actual1.getPhysicalName(),
+                        is(expect1.getPhysicalName()));
+                assertThat(actual1.getLogicalName(),
+                        is(expect1.getLogicalName()));
+                assertThat(actual1.getDescription(),
+                        is(expect1.getDescription()));
+                assertThat(actual1.getDeleteFlag(),
+                        is(expect1.getDeleteFlag()));
+
+                final FieldMaster actual2 = fieldMasterRepository
+                        .findByTableIdAndNo(expect2.getTableId(),
+                                expect2.getNo());
+
+                assertThat(actual2.getNo(), is(expect2.getNo()));
+                assertThat(actual2.getPhysicalName(),
+                        is(expect2.getPhysicalName()));
+                assertThat(actual2.getLogicalName(),
+                        is(expect2.getLogicalName()));
+                assertThat(actual2.getDescription(),
+                        is(expect2.getDescription()));
+                assertThat(actual2.getDeleteFlag(),
+                        is(expect2.getDeleteFlag()));
             }
         }
 
