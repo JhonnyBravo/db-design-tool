@@ -17,7 +17,7 @@
     <select id="findAll" resultMap="fieldMaster">
         SELECT * FROM field_master;
     </select>
-    <!-- field_id をキーにレコードを検索する。 -->
+    <!-- table_id をキーにレコードを検索する。 -->
     <select id="findByTableId" resultMap="fieldMaster">
         SELECT
         *
@@ -27,6 +27,16 @@
         table_id = #{tableId}
         ORDER BY
         no;
+    </select>
+    <!-- table_id と no をキーにレコードを検索する。 -->
+    <select id="findByTableIdAndNo" resultMap="fieldMaster">
+        SELECT
+        *
+        FROM
+        field_master
+        WHERE
+        table_id =
+        #{tableId} AND no=#{no};
     </select>
     <!-- 新規レコードを登録する。 -->
     <insert id="create" useGeneratedKeys="true" keyProperty="fieldId">
