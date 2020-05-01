@@ -16,13 +16,15 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import db_design_tool.app.table_definition.TableDefinitionTestHelper;
 import db_design_tool.domain.model.TableMaster;
 
 @RunWith(Enclosed.class)
 public class TableMasterRepositoryTest {
-    public static class テーブルが空である場合 {
+    public static class テーブル定義が存在しない場合 {
         private static SqlSessionFactory factory;
         private TableMasterRepository repository;
+        private final TableDefinitionTestHelper helper = new TableDefinitionTestHelper();
 
         @BeforeClass
         public static void setUpBeforeClass() throws Exception {
@@ -61,32 +63,33 @@ public class TableMasterRepositoryTest {
 
         @Test
         public void create実行時にレコードを登録できてtrueが返されること() throws Exception {
-            final TableMaster record = new TableMaster();
-            record.setPhysicalName("table1");
-            record.setLogicalName("テーブル1");
-            record.setDeleteFlag(0);
+            final String[] params = {"table1", "テーブル1"};
+            final TableMaster expect = helper.createTableMaster(params);
 
             try (SqlSession session = factory.openSession()) {
                 repository = session.getMapper(TableMasterRepository.class);
-                final boolean result = repository.create(record);
+                final boolean result = repository.create(expect);
                 assertThat(result, is(true));
                 session.commit();
 
                 final List<TableMaster> recordset = repository.findAll();
                 assertThat(recordset.size(), is(1));
 
-                final TableMaster latest = repository.findByLatestTableId();
-                assertThat(latest.getTableId(), is(1));
-                assertThat(latest.getPhysicalName(), is("table1"));
-                assertThat(latest.getLogicalName(), is("テーブル1"));
-                assertThat(latest.getDeleteFlag(), is(0));
+                final TableMaster actual = repository.findByLatestTableId();
+                assertThat(actual.getTableId(), is(1));
+                assertThat(actual.getPhysicalName(),
+                        is(expect.getPhysicalName()));
+                assertThat(actual.getLogicalName(),
+                        is(expect.getLogicalName()));
+                assertThat(actual.getDeleteFlag(), is(expect.getDeleteFlag()));
             }
         }
     }
 
-    public static class テーブルが空ではない場合 {
+    public static class テーブル定義が存在する場合 {
         private static SqlSessionFactory factory;
         private TableMasterRepository repository;
+        private final TableDefinitionTestHelper helper = new TableDefinitionTestHelper();
 
         @BeforeClass
         public static void setUpBeforeClass() throws Exception {
@@ -96,15 +99,11 @@ public class TableMasterRepositoryTest {
 
         @Before
         public void setUp() throws Exception {
-            final TableMaster record1 = new TableMaster();
-            record1.setPhysicalName("table1");
-            record1.setLogicalName("テーブル1");
-            record1.setDeleteFlag(0);
+            final String[] params1 = {"table1", "テーブル1"};
+            final TableMaster record1 = helper.createTableMaster(params1);
 
-            final TableMaster record2 = new TableMaster();
-            record2.setPhysicalName("table2");
-            record2.setLogicalName("テーブル2");
-            record2.setDeleteFlag(0);
+            final String[] params2 = {"table2", "テーブル2"};
+            final TableMaster record2 = helper.createTableMaster(params2);
 
             try (SqlSession session = factory.openSession()) {
                 repository = session.getMapper(TableMasterRepository.class);
@@ -138,25 +137,25 @@ public class TableMasterRepositoryTest {
 
         @Test
         public void create実行時にレコードを追加できてtrueが返されること() throws Exception {
-            final TableMaster record = new TableMaster();
-            record.setPhysicalName("table3");
-            record.setLogicalName("テーブル3");
-            record.setDeleteFlag(1);
+            final String[] params = {"table3", "テーブル3", "1"};
+            final TableMaster expect = helper.createTableMaster(params);
 
             try (SqlSession session = factory.openSession()) {
                 repository = session.getMapper(TableMasterRepository.class);
-                final boolean result = repository.create(record);
+                final boolean result = repository.create(expect);
                 assertThat(result, is(true));
                 session.commit();
 
                 final List<TableMaster> recordset = repository.findAll();
                 assertThat(recordset.size(), is(3));
 
-                final TableMaster record3 = repository.findByLatestTableId();
-                assertThat(record3.getTableId(), is(3));
-                assertThat(record3.getPhysicalName(), is("table3"));
-                assertThat(record3.getLogicalName(), is("テーブル3"));
-                assertThat(record3.getDeleteFlag(), is(1));
+                final TableMaster actual = repository.findByLatestTableId();
+                assertThat(actual.getTableId(), is(3));
+                assertThat(actual.getPhysicalName(),
+                        is(expect.getPhysicalName()));
+                assertThat(actual.getLogicalName(),
+                        is(expect.getLogicalName()));
+                assertThat(actual.getDeleteFlag(), is(expect.getDeleteFlag()));
             }
         }
 
@@ -165,24 +164,28 @@ public class TableMasterRepositoryTest {
             try (SqlSession session = factory.openSession()) {
                 repository = session.getMapper(TableMasterRepository.class);
 
-                final TableMaster record = repository.findByTableId(2);
+                final String[] params = {"updated", "更新", "1"};
+                final TableMaster expect = helper.createTableMaster(params);
 
-                record.setPhysicalName("update1");
-                record.setLogicalName("更新1");
-                record.setDeleteFlag(1);
+                final TableMaster original = repository.findByTableId(2);
+                original.setPhysicalName(expect.getPhysicalName());
+                original.setLogicalName(expect.getLogicalName());
+                original.setDeleteFlag(expect.getDeleteFlag());
 
-                final boolean result = repository.update(record);
+                final boolean result = repository.update(original);
                 assertThat(result, is(true));
                 session.commit();
 
                 final List<TableMaster> recordset = repository.findAll();
                 assertThat(recordset.size(), is(2));
 
-                final TableMaster record2 = repository.findByTableId(2);
-                assertThat(record2.getTableId(), is(2));
-                assertThat(record2.getPhysicalName(), is("update1"));
-                assertThat(record2.getLogicalName(), is("更新1"));
-                assertThat(record2.getDeleteFlag(), is(1));
+                final TableMaster updated = repository.findByTableId(2);
+                assertThat(updated.getTableId(), is(2));
+                assertThat(updated.getPhysicalName(),
+                        is(expect.getPhysicalName()));
+                assertThat(updated.getLogicalName(),
+                        is(expect.getLogicalName()));
+                assertThat(updated.getDeleteFlag(), is(expect.getDeleteFlag()));
             }
         }
 
