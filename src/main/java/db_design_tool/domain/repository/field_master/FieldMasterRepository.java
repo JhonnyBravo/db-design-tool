@@ -32,6 +32,20 @@ public interface FieldMasterRepository {
             throws Exception;
 
     /**
+     * table_id と no をキーにレコードを検索する。
+     * 
+     * @param tableId
+     *            検索対象とする table_id を指定する。
+     * @param no
+     *            検索対象とする no を指定する。
+     * @return record 条件に合致するレコードを取得する。
+     * @throws Exception
+     *             {@link java.lang.Exception}
+     */
+    public FieldMaster findByTableIdAndNo(@Param("tableId") int tableId,
+            @Param("no") int no) throws Exception;
+
+    /**
      * レコードを新規登録する。
      *
      * @param recordset
@@ -65,7 +79,7 @@ public interface FieldMasterRepository {
 
     /**
      * delete_flag に 1 が設定されているレコードを削除する。
-     * 
+     *
      * @return result
      *         <ul>
      *         <li>true: 削除に成功したことを表す。</li>
