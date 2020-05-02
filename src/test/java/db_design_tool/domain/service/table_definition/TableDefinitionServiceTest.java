@@ -12,17 +12,20 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import db_design_tool.app.table_definition.TableDefinitionTestHelper;
 import db_design_tool.domain.model.FieldMaster;
 import db_design_tool.domain.model.TableDefinition;
 import db_design_tool.domain.model.TableMaster;
 
 @RunWith(Enclosed.class)
 public class TableDefinitionServiceTest {
-    public static class テーブルが空である場合 {
+    public static class テーブル定義が存在しない場合 {
         private TableDefinitionService service;
+        private TableDefinitionTestHelper helper;
 
         @Before
         public void setUp() throws Exception {
+            helper = new TableDefinitionTestHelper();
             service = new TableDefinitionServiceImpl();
             service.deleteAll();
         }
@@ -40,123 +43,107 @@ public class TableDefinitionServiceTest {
 
         @Test
         public void create実行時にレコードの登録ができること() throws Exception {
-            final TableMaster tableMaster = new TableMaster();
-            tableMaster.setPhysicalName("table1");
-            tableMaster.setLogicalName("テーブル1");
-            tableMaster.setDeleteFlag(0);
+            final TableDefinition expectDefinition = new TableDefinition();
 
-            final List<FieldMaster> fieldMasterList = new ArrayList<>();
-            {
-                final FieldMaster fieldMaster = new FieldMaster();
+            // TableMaster
+            final String[] params1 = {"table1", "テーブル1"};
+            final TableMaster expectTable = helper.createTableMaster(params1);
+            expectDefinition.setTableMaster(expectTable);
 
-                fieldMaster.setNo(1);
-                fieldMaster.setPhysicalName("field1");
-                fieldMaster.setLogicalName("フィールド1");
-                fieldMaster.setDeleteFlag(0);
-                fieldMaster.setDataType(1);
-                fieldMaster.setDataSize(10);
-                fieldMaster.setDescription("1つ目のフィールド");
+            // FieldMaster
+            final List<FieldMaster> expectFieldList = new ArrayList<>();
 
-                fieldMasterList.add(fieldMaster);
-            }
-            {
-                final FieldMaster fieldMaster = new FieldMaster();
+            final String[] params2 = {"0", "1", "table1.field1", "テーブル1.フィールド1",
+                    "1 つ目のフィールド"};
+            final FieldMaster expectField1 = helper.createFieldMaster(params2);
+            expectFieldList.add(expectField1);
 
-                fieldMaster.setNo(2);
-                fieldMaster.setPhysicalName("field2");
-                fieldMaster.setLogicalName("フィールド2");
-                fieldMaster.setDeleteFlag(0);
-                fieldMaster.setDataType(2);
-                fieldMaster.setDescription("2つ目のフィールド");
+            final String[] params3 = {"0", "2", "table1.field2", "テーブル1.フィールド2",
+                    "2 つ目のフィールド"};
+            final FieldMaster expectField2 = helper.createFieldMaster(params3);
+            expectFieldList.add(expectField2);
 
-                fieldMasterList.add(fieldMaster);
-            }
+            expectDefinition.setFieldMaster(expectFieldList
+                    .toArray(new FieldMaster[expectFieldList.size()]));
 
-            final TableDefinition tableDefinition = new TableDefinition();
-            tableDefinition.setTableMaster(tableMaster);
-            tableDefinition.setFieldMaster(fieldMasterList
-                    .toArray(new FieldMaster[fieldMasterList.size()]));
+            service.create(expectDefinition);
 
-            service.create(tableDefinition);
-
-            final TableDefinition definition1 = service
+            // Assertion
+            final TableDefinition actualDefinition = service
                     .findTableDefinitionByTableId(1);
 
-            final TableMaster table1 = definition1.getTableMaster();
-            assertThat(table1.getTableId(), is(1));
-            assertThat(table1.getPhysicalName(), is("table1"));
-            assertThat(table1.getLogicalName(), is("テーブル1"));
-            assertThat(table1.getDeleteFlag(), is(0));
+            final TableMaster actualTable = actualDefinition.getTableMaster();
+            assertThat(actualTable.getTableId(), is(1));
+            assertThat(actualTable.getPhysicalName(),
+                    is(expectTable.getPhysicalName()));
+            assertThat(actualTable.getLogicalName(),
+                    is(expectTable.getLogicalName()));
+            assertThat(actualTable.getDeleteFlag(),
+                    is(expectTable.getDeleteFlag()));
 
-            final FieldMaster[] fields = definition1.getFieldMaster();
+            final FieldMaster[] actualFieldArray = actualDefinition
+                    .getFieldMaster();
 
-            final FieldMaster field1 = fields[0];
-            assertThat(field1.getNo(), is(1));
-            assertThat(field1.getFieldId(), is(1));
-            assertThat(field1.getTableId(), is(1));
-            assertThat(field1.getDeleteFlag(), is(0));
-            assertThat(field1.getPhysicalName(), is("field1"));
-            assertThat(field1.getLogicalName(), is("フィールド1"));
-            assertThat(field1.getDataType(), is(1));
-            assertThat(field1.getDataSize(), is(10));
-            assertThat(field1.getDescription(), is("1つ目のフィールド"));
+            final FieldMaster actualField1 = actualFieldArray[0];
+            assertThat(actualField1.getFieldId(), is(1));
+            assertThat(actualField1.getTableId(), is(1));
+            assertThat(actualField1.getNo(), is(expectField1.getNo()));
+            assertThat(actualField1.getPhysicalName(),
+                    is(expectField1.getPhysicalName()));
+            assertThat(actualField1.getLogicalName(),
+                    is(expectField1.getLogicalName()));
+            assertThat(actualField1.getDescription(),
+                    is(expectField1.getDescription()));
+            assertThat(actualField1.getDeleteFlag(),
+                    is(expectField1.getDeleteFlag()));
 
-            final FieldMaster field2 = fields[1];
-            assertThat(field2.getNo(), is(2));
-            assertThat(field2.getFieldId(), is(2));
-            assertThat(field2.getTableId(), is(1));
-            assertThat(field2.getDeleteFlag(), is(0));
-            assertThat(field2.getPhysicalName(), is("field2"));
-            assertThat(field2.getLogicalName(), is("フィールド2"));
-            assertThat(field2.getDataType(), is(2));
-            assertThat(field2.getDescription(), is("2つ目のフィールド"));
+            final FieldMaster actualField2 = actualFieldArray[1];
+            assertThat(actualField2.getFieldId(), is(2));
+            assertThat(actualField2.getTableId(), is(1));
+            assertThat(actualField2.getNo(), is(expectField2.getNo()));
+            assertThat(actualField2.getPhysicalName(),
+                    is(expectField2.getPhysicalName()));
+            assertThat(actualField2.getLogicalName(),
+                    is(expectField2.getLogicalName()));
+            assertThat(actualField2.getDescription(),
+                    is(expectField2.getDescription()));
+            assertThat(actualField2.getDeleteFlag(),
+                    is(expectField2.getDeleteFlag()));
         }
     }
 
-    public static class テーブルが空ではない場合 {
+    public static class テーブル定義が存在する場合 {
         private TableDefinitionService service;
+        private TableDefinitionTestHelper helper;
 
         @Before
         public void setUp() throws Exception {
+            helper = new TableDefinitionTestHelper();
             service = new TableDefinitionServiceImpl();
             service.deleteAll();
 
-            final TableMaster tableMaster = new TableMaster();
-            tableMaster.setPhysicalName("table1");
-            tableMaster.setLogicalName("テーブル1");
-            tableMaster.setDeleteFlag(0);
-
-            final List<FieldMaster> fieldMasterList = new ArrayList<>();
-            {
-                final FieldMaster fieldMaster = new FieldMaster();
-
-                fieldMaster.setNo(1);
-                fieldMaster.setPhysicalName("field1");
-                fieldMaster.setLogicalName("フィールド1");
-                fieldMaster.setDeleteFlag(0);
-                fieldMaster.setDataType(1);
-                fieldMaster.setDataSize(10);
-                fieldMaster.setDescription("1つ目のフィールド");
-
-                fieldMasterList.add(fieldMaster);
-            }
-            {
-                final FieldMaster fieldMaster = new FieldMaster();
-
-                fieldMaster.setNo(2);
-                fieldMaster.setPhysicalName("field2");
-                fieldMaster.setLogicalName("フィールド2");
-                fieldMaster.setDeleteFlag(0);
-                fieldMaster.setDataType(2);
-                fieldMaster.setDescription("2つ目のフィールド");
-
-                fieldMasterList.add(fieldMaster);
-            }
-
             final TableDefinition tableDefinition = new TableDefinition();
-            tableDefinition.setTableMaster(tableMaster);
-            tableDefinition.setFieldMaster(fieldMasterList
-                    .toArray(new FieldMaster[fieldMasterList.size()]));
+
+            // TableMaster
+            final String[] params1 = {"table1", "テーブル1"};
+            final TableMaster table1 = helper.createTableMaster(params1);
+            tableDefinition.setTableMaster(table1);
+
+            // FieldMaster
+            final List<FieldMaster> fieldList = new ArrayList<>();
+
+            final String[] params2 = {"0", "1", "table1.field1", "テーブル1.フィールド1",
+                    "1 つ目のフィールド"};
+            final FieldMaster field1 = helper.createFieldMaster(params2);
+            fieldList.add(field1);
+
+            final String[] params3 = {"0", "2", "table1.field2", "テーブル1.フィールド2",
+                    "2 つ目のフィールド"};
+            final FieldMaster field2 = helper.createFieldMaster(params3);
+            fieldList.add(field2);
+
+            tableDefinition.setFieldMaster(
+                    fieldList.toArray(new FieldMaster[fieldList.size()]));
 
             service.create(tableDefinition);
         }
@@ -174,119 +161,131 @@ public class TableDefinitionServiceTest {
 
         @Test
         public void create実行時にレコードの登録ができること() throws Exception {
-            final TableMaster tableMaster = new TableMaster();
-            tableMaster.setPhysicalName("table2");
-            tableMaster.setLogicalName("テーブル2");
-            tableMaster.setDeleteFlag(0);
-
-            final List<FieldMaster> fieldMasterList = new ArrayList<>();
-            {
-                final FieldMaster fieldMaster = new FieldMaster();
-
-                fieldMaster.setNo(1);
-                fieldMaster.setPhysicalName("field1");
-                fieldMaster.setLogicalName("フィールド1");
-                fieldMaster.setDeleteFlag(0);
-                fieldMaster.setDataType(1);
-                fieldMaster.setDataSize(10);
-                fieldMaster.setDescription("1つ目のフィールド");
-
-                fieldMasterList.add(fieldMaster);
-            }
-            {
-                final FieldMaster fieldMaster = new FieldMaster();
-
-                fieldMaster.setNo(2);
-                fieldMaster.setPhysicalName("field2");
-                fieldMaster.setLogicalName("フィールド2");
-                fieldMaster.setDeleteFlag(0);
-                fieldMaster.setDataType(2);
-                fieldMaster.setDescription("2つ目のフィールド");
-
-                fieldMasterList.add(fieldMaster);
-            }
-
             final TableDefinition tableDefinition = new TableDefinition();
-            tableDefinition.setTableMaster(tableMaster);
-            tableDefinition.setFieldMaster(fieldMasterList
-                    .toArray(new FieldMaster[fieldMasterList.size()]));
+
+            // TableMaster
+            final String[] params1 = {"table2", "テーブル2"};
+            final TableMaster expectTable = helper.createTableMaster(params1);
+            tableDefinition.setTableMaster(expectTable);
+
+            // FieldMaster
+            final List<FieldMaster> expectFieldList = new ArrayList<>();
+
+            final String[] params2 = {"0", "1", "table2.field1", "テーブル2.フィールド1",
+                    "1 つ目のフィールド"};
+            final FieldMaster expectField1 = helper.createFieldMaster(params2);
+            expectFieldList.add(expectField1);
+
+            final String[] params3 = {"0", "2", "table2.field2", "テーブル2.field2",
+                    "2 つ目のフィールド"};
+            FieldMaster expectField2 = helper.createFieldMaster(params3);
+            expectFieldList.add(expectField2);
+
+            tableDefinition.setFieldMaster(expectFieldList
+                    .toArray(new FieldMaster[expectFieldList.size()]));
 
             service.create(tableDefinition);
 
+            // Assertion
             final List<TableMaster> tables = service.findTableAll();
             assertThat(tables.size(), is(2));
 
-            final TableDefinition definition2 = service
+            final TableDefinition actualDefinition = service
                     .findTableDefinitionByTableId(2);
 
-            final TableMaster table2 = definition2.getTableMaster();
-            assertThat(table2.getTableId(), is(2));
-            assertThat(table2.getPhysicalName(), is("table2"));
-            assertThat(table2.getLogicalName(), is("テーブル2"));
-            assertThat(table2.getDeleteFlag(), is(0));
+            final TableMaster actualTable = actualDefinition.getTableMaster();
+            assertThat(actualTable.getTableId(), is(2));
+            assertThat(actualTable.getPhysicalName(),
+                    is(expectTable.getPhysicalName()));
+            assertThat(actualTable.getLogicalName(),
+                    is(expectTable.getLogicalName()));
+            assertThat(actualTable.getDeleteFlag(),
+                    is(expectTable.getDeleteFlag()));
 
-            final FieldMaster[] fields = definition2.getFieldMaster();
+            final FieldMaster[] actualFieldArray = actualDefinition
+                    .getFieldMaster();
 
-            final FieldMaster field1 = fields[0];
-            assertThat(field1.getNo(), is(1));
-            assertThat(field1.getFieldId(), is(3));
-            assertThat(field1.getTableId(), is(2));
-            assertThat(field1.getDeleteFlag(), is(0));
-            assertThat(field1.getPhysicalName(), is("field1"));
-            assertThat(field1.getLogicalName(), is("フィールド1"));
-            assertThat(field1.getDataType(), is(1));
-            assertThat(field1.getDataSize(), is(10));
-            assertThat(field1.getDescription(), is("1つ目のフィールド"));
+            final FieldMaster actualField1 = actualFieldArray[0];
+            assertThat(actualField1.getFieldId(), is(3));
+            assertThat(actualField1.getTableId(), is(2));
+            assertThat(actualField1.getNo(), is(expectField1.getNo()));
+            assertThat(actualField1.getPhysicalName(),
+                    is(expectField1.getPhysicalName()));
+            assertThat(actualField1.getLogicalName(),
+                    is(expectField1.getLogicalName()));
+            assertThat(actualField1.getDescription(),
+                    is(expectField1.getDescription()));
+            assertThat(actualField1.getDeleteFlag(),
+                    is(expectField1.getDeleteFlag()));
 
-            final FieldMaster field2 = fields[1];
-            assertThat(field2.getNo(), is(2));
-            assertThat(field2.getFieldId(), is(4));
-            assertThat(field2.getTableId(), is(2));
-            assertThat(field2.getDeleteFlag(), is(0));
-            assertThat(field2.getPhysicalName(), is("field2"));
-            assertThat(field2.getLogicalName(), is("フィールド2"));
-            assertThat(field2.getDataType(), is(2));
-            assertThat(field2.getDescription(), is("2つ目のフィールド"));
+            final FieldMaster actualField2 = actualFieldArray[1];
+            assertThat(actualField2.getFieldId(), is(4));
+            assertThat(actualField2.getTableId(), is(2));
+            assertThat(actualField2.getNo(), is(expectField2.getNo()));
+            assertThat(actualField2.getPhysicalName(),
+                    is(expectField2.getPhysicalName()));
+            assertThat(actualField2.getLogicalName(),
+                    is(expectField2.getLogicalName()));
+            assertThat(actualField2.getDescription(),
+                    is(expectField2.getDescription()));
+            assertThat(actualField2.getDeleteFlag(),
+                    is(expectField2.getDeleteFlag()));
         }
 
         @Test
         public void update実行時にレコードの更新ができること() throws Exception {
-            final TableDefinition definition1 = service
+            final TableDefinition expectDefinition = service
                     .findTableDefinitionByTableId(1);
 
-            final TableMaster table1 = definition1.getTableMaster();
-            table1.setPhysicalName("tblModified");
-            table1.setLogicalName("更新テーブル");
-            table1.setDeleteFlag(0);
+            // TableMaster
+            final TableMaster expectTable = expectDefinition.getTableMaster();
+            expectTable.setPhysicalName("table1_modified");
+            expectTable.setLogicalName("テーブル1_更新");
 
-            final FieldMaster[] fields = definition1.getFieldMaster();
-            final FieldMaster field1 = fields[0];
-            field1.setNo(2);
-            field1.setDeleteFlag(1);
-            field1.setDescription("廃止");
+            // FieldMaster
+            final FieldMaster[] expectFieldArray = expectDefinition
+                    .getFieldMaster();
 
-            final FieldMaster field2 = fields[1];
-            field2.setPhysicalName("tblModified.field2");
-            field2.setLogicalName("更新テーブル.フィールド2");
-            field2.setNo(1);
+            final FieldMaster expectField1 = expectFieldArray[0];
+            expectField1.setNo(2);
+            expectField1.setDeleteFlag(1);
+            expectField1.setDescription("廃止");
 
-            service.update(definition1);
+            final FieldMaster expectField2 = expectFieldArray[1];
+            expectField2.setNo(1);
+            expectField2.setPhysicalName("table1_modified.field2");
+            expectField2.setLogicalName("テーブル1_更新.フィールド2");
+            expectField2.setDescription("No とフィールド名を更新");
 
-            final TableDefinition curDefinition = service
+            service.update(expectDefinition);
+
+            // Assertion
+            final TableDefinition actualDefinition = service
                     .findTableDefinitionByTableId(1);
-            final TableMaster curTable = curDefinition.getTableMaster();
-            assertThat(curTable.getPhysicalName(), is("tblModified"));
-            assertThat(curTable.getLogicalName(), is("更新テーブル"));
-            assertThat(curTable.getDeleteFlag(), is(0));
 
-            final FieldMaster[] curFields = curDefinition.getFieldMaster();
-            assertThat(curFields.length, is(1));
+            final TableMaster actualTable = actualDefinition.getTableMaster();
+            assertThat(actualTable.getTableId(), is(expectTable.getTableId()));
+            assertThat(actualTable.getPhysicalName(),
+                    is(expectTable.getPhysicalName()));
+            assertThat(actualTable.getLogicalName(),
+                    is(expectTable.getLogicalName()));
+            assertThat(actualTable.getDeleteFlag(),
+                    is(expectTable.getDeleteFlag()));
 
-            final FieldMaster curField1 = curFields[0];
-            assertThat(curField1.getNo(), is(1));
-            assertThat(curField1.getPhysicalName(), is("tblModified.field2"));
-            assertThat(curField1.getLogicalName(), is("更新テーブル.フィールド2"));
+            final FieldMaster[] actualFieldArray = actualDefinition
+                    .getFieldMaster();
+            assertThat(actualFieldArray.length, is(1));
+
+            final FieldMaster actualField2 = actualFieldArray[0];
+            assertThat(actualField2.getFieldId(),
+                    is(expectField2.getFieldId()));
+            assertThat(actualField2.getNo(), is(expectField2.getNo()));
+            assertThat(actualField2.getPhysicalName(),
+                    is(expectField2.getPhysicalName()));
+            assertThat(actualField2.getLogicalName(),
+                    is(expectField2.getLogicalName()));
+            assertThat(actualField2.getDescription(),
+                    is(expectField2.getDescription()));
         }
     }
-
 }
