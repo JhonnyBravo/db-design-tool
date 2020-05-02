@@ -24,7 +24,8 @@ public class TableDefinitionTestHelper {
 
     /**
      * @param params
-     *            {tableId, no, physicalName, logicalName, description}
+     *            {tableId, no, physicalName, logicalName, description,
+     *            deleteFlag}
      * @return fieldMaster
      */
     public FieldMaster createFieldMaster(String[] params) {
