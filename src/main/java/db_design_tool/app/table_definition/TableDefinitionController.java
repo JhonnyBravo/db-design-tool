@@ -99,6 +99,8 @@ public class TableDefinitionController extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         final TableMaster tableMaster = helper.convertToTableMaster(request);
+        tableMaster.setEntityType(1);
+
         final FieldMaster[] fieldMasterArray = helper
                 .convertToFieldMaster(request);
 
