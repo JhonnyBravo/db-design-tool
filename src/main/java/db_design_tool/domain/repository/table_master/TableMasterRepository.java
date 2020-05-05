@@ -20,6 +20,18 @@ public interface TableMasterRepository {
     public List<TableMaster> findAll() throws Exception;
 
     /**
+     * entity_type をキーにレコードを検索する。
+     *
+     * @param entityType
+     *            検索対象とする entity_type を指定する。
+     * @return recordset 条件に合致するレコードを取得する。
+     * @throws Exception
+     *             {@link java.lang.Exception}
+     */
+    public List<TableMaster> findByEntityType(
+            @Param("entityType") int entityType) throws Exception;
+
+    /**
      * table_id をキーにレコードを検索する。
      *
      * @param tableId
