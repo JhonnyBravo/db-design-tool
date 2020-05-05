@@ -175,6 +175,7 @@ public class SelectDefinitionServiceTest {
 
             // クエリ名が登録できること
             TableMaster tableMaster = definition.getTableMaster();
+            assertThat(tableMaster.getEntityType(), is(2));
             assertThat(tableMaster.getPhysicalName(), is("query1"));
             assertThat(tableMaster.getLogicalName(), is("クエリ1"));
 
