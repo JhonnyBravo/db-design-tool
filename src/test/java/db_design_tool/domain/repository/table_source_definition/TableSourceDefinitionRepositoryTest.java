@@ -18,13 +18,15 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import db_design_tool.app.select_definition.SelectDefinitionTestHelper;
 import db_design_tool.domain.model.TableMaster;
 import db_design_tool.domain.model.TableSourceDefinition;
 import db_design_tool.domain.repository.table_master.TableMasterRepository;
 
 @RunWith(Enclosed.class)
 public class TableSourceDefinitionRepositoryTest {
-    public static class テーブルが空である場合 {
+    public static class クエリ定義が存在しない場合 {
+        private static SelectDefinitionTestHelper helper;
         private static SqlSessionFactory factory;
         private TableSourceDefinitionRepository tableSourceDefinitionRepository;
 
@@ -33,17 +35,16 @@ public class TableSourceDefinitionRepositoryTest {
             factory = new SqlSessionFactoryBuilder()
                     .build(Resources.getResourceAsStream("mybatis-config.xml"));
 
-            TableMaster query1 = new TableMaster();
-            query1.setPhysicalName("query1");
-            query1.setLogicalName("query1");
+            helper = new SelectDefinitionTestHelper();
 
-            TableMaster table1 = new TableMaster();
-            table1.setPhysicalName("table1");
-            table1.setLogicalName("テーブル1");
+            String[] params1 = {"query1", "クエリ1"};
+            TableMaster query1 = helper.createTableMaster(params1);
 
-            TableMaster table2 = new TableMaster();
-            table2.setPhysicalName("table2");
-            table2.setLogicalName("テーブル2");
+            String[] params2 = {"table1", "テーブル1"};
+            TableMaster table1 = helper.createTableMaster(params2);
+
+            String[] params3 = {"table2", "テーブル2"};
+            TableMaster table2 = helper.createTableMaster(params3);
 
             try (SqlSession session = factory.openSession()) {
                 TableMasterRepository tableMasterRepository = session
@@ -51,9 +52,11 @@ public class TableSourceDefinitionRepositoryTest {
 
                 tableMasterRepository.deleteAll();
                 tableMasterRepository.resetId();
+
                 tableMasterRepository.create(query1);
                 tableMasterRepository.create(table1);
                 tableMasterRepository.create(table2);
+
                 session.commit();
             }
         }
@@ -66,6 +69,7 @@ public class TableSourceDefinitionRepositoryTest {
 
                 tableMasterRepository.deleteAll();
                 tableMasterRepository.resetId();
+
                 session.commit();
             }
         }
@@ -78,6 +82,7 @@ public class TableSourceDefinitionRepositoryTest {
 
                 tableSourceDefinitionRepository.deleteAll();
                 tableSourceDefinitionRepository.resetId();
+
                 session.commit();
             }
         }
@@ -90,6 +95,7 @@ public class TableSourceDefinitionRepositoryTest {
 
                 tableSourceDefinitionRepository.deleteAll();
                 tableSourceDefinitionRepository.resetId();
+
                 session.commit();
             }
         }
@@ -108,84 +114,78 @@ public class TableSourceDefinitionRepositoryTest {
 
         @Test
         public void create実行時にレコードを登録できてtrueが返されること() throws Exception {
-            final List<TableSourceDefinition> recordset = new ArrayList<>();
-            {
-                final TableSourceDefinition record = new TableSourceDefinition();
-                record.setTableId(1);
-                record.setNo(1);
-                record.setSourceId(2);
-                record.setJoinCondition("condition1");
-                record.setDeleteFlag(0);
+            final List<TableSourceDefinition> expectList = new ArrayList<>();
 
-                recordset.add(record);
-            }
-            {
-                final TableSourceDefinition record = new TableSourceDefinition();
-                record.setTableId(1);
-                record.setNo(2);
-                record.setSourceId(3);
-                record.setJoinCondition("condition2");
-                record.setDeleteFlag(0);
+            final String[] params1 = {"1", "1", "2", "condition1"};
+            final TableSourceDefinition expect1 = helper
+                    .createTableSourceDefinition(params1);
+            expectList.add(expect1);
 
-                recordset.add(record);
-            }
+            final String[] params2 = {"1", "2", "3", "condition2"};
+            final TableSourceDefinition expect2 = helper
+                    .createTableSourceDefinition(params2);
+            expectList.add(expect2);
 
             try (SqlSession session = factory.openSession()) {
                 tableSourceDefinitionRepository = session
                         .getMapper(TableSourceDefinitionRepository.class);
 
                 final boolean result = tableSourceDefinitionRepository
-                        .create(recordset);
+                        .create(expectList);
                 assertThat(result, is(true));
                 session.commit();
 
-                final List<TableSourceDefinition> curRecordset = tableSourceDefinitionRepository
+                final List<TableSourceDefinition> actualList = tableSourceDefinitionRepository
                         .findAll();
-                assertThat(curRecordset.size(), is(2));
+                assertThat(actualList.size(), is(2));
 
-                final TableSourceDefinition record1 = curRecordset.get(0);
-                assertThat(record1.getTableId(), is(1));
-                assertThat(record1.getDefinitionId(), is(1));
-                assertThat(record1.getNo(), is(1));
-                assertThat(record1.getSourceId(), is(2));
-                assertThat(record1.getJoinCondition(), is("condition1"));
-                assertThat(record1.getDeleteFlag(), is(0));
+                final TableSourceDefinition actual1 = actualList.get(0);
+                assertThat(actual1.getDefinitionId(), is(1));
+                assertThat(actual1.getTableId(), is(expect1.getTableId()));
+                assertThat(actual1.getNo(), is(expect1.getNo()));
+                assertThat(actual1.getSourceId(), is(expect1.getSourceId()));
+                assertThat(actual1.getJoinCondition(),
+                        is(expect1.getJoinCondition()));
+                assertThat(actual1.getDeleteFlag(),
+                        is(expect1.getDeleteFlag()));
 
-                final TableSourceDefinition record2 = curRecordset.get(1);
-                assertThat(record2.getTableId(), is(1));
-                assertThat(record2.getDefinitionId(), is(2));
-                assertThat(record2.getNo(), is(2));
-                assertThat(record2.getSourceId(), is(3));
-                assertThat(record2.getJoinCondition(), is("condition2"));
-                assertThat(record2.getDeleteFlag(), is(0));
+                final TableSourceDefinition actual2 = actualList.get(1);
+                assertThat(actual2.getDefinitionId(), is(2));
+                assertThat(actual2.getTableId(), is(expect2.getTableId()));
+                assertThat(actual2.getNo(), is(expect2.getNo()));
+                assertThat(actual2.getSourceId(), is(expect2.getSourceId()));
+                assertThat(actual2.getJoinCondition(),
+                        is(expect2.getJoinCondition()));
+                assertThat(actual2.getDeleteFlag(),
+                        is(expect2.getDeleteFlag()));
             }
         }
     }
 
-    public static class テーブルが空ではない場合 {
+    public static class クエリ定義が存在する場合 {
+        private static SelectDefinitionTestHelper helper;
         private static SqlSessionFactory factory;
         private TableSourceDefinitionRepository tableSourceDefinitionRepository;
 
         @BeforeClass
         public static void setUpBeforeClass() throws Exception {
+            helper = new SelectDefinitionTestHelper();
             factory = new SqlSessionFactoryBuilder()
                     .build(Resources.getResourceAsStream("mybatis-config.xml"));
 
-            TableMaster query1 = new TableMaster();
-            query1.setPhysicalName("query1");
-            query1.setLogicalName("クエリ1");
+            SelectDefinitionTestHelper helper = new SelectDefinitionTestHelper();
 
-            TableMaster query2 = new TableMaster();
-            query2.setPhysicalName("query2");
-            query2.setLogicalName("クエリ2");
+            String[] params1 = {"query1", "クエリ1"};
+            TableMaster query1 = helper.createTableMaster(params1);
 
-            TableMaster table1 = new TableMaster();
-            table1.setPhysicalName("table1");
-            table1.setLogicalName("テーブル1");
+            String[] params2 = {"query2", "クエリ2"};
+            TableMaster query2 = helper.createTableMaster(params2);
 
-            TableMaster table2 = new TableMaster();
-            table2.setPhysicalName("table2");
-            table2.setLogicalName("テーブル2");
+            String[] params3 = {"table1", "テーブル1"};
+            TableMaster table1 = helper.createTableMaster(params3);
+
+            String[] params4 = {"table2", "テーブル2"};
+            TableMaster table2 = helper.createTableMaster(params4);
 
             try (SqlSession session = factory.openSession()) {
                 TableMasterRepository tableMasterRepository = session
@@ -193,10 +193,12 @@ public class TableSourceDefinitionRepositoryTest {
 
                 tableMasterRepository.deleteAll();
                 tableMasterRepository.resetId();
+
                 tableMasterRepository.create(query1);
                 tableMasterRepository.create(query2);
                 tableMasterRepository.create(table1);
                 tableMasterRepository.create(table2);
+
                 session.commit();
             }
         }
@@ -216,47 +218,26 @@ public class TableSourceDefinitionRepositoryTest {
         public void setUp() throws Exception {
             final List<TableSourceDefinition> recordset = new ArrayList<>();
             // クエリ1
-            {
-                final TableSourceDefinition record = new TableSourceDefinition();
-                record.setTableId(1);
-                record.setNo(1);
-                record.setSourceId(3);
-                record.setJoinCondition("query1.condition1");
-                record.setDeleteFlag(0);
+            final String[] params1 = {"1", "1", "3", "query1.condition1"};
+            final TableSourceDefinition record1 = helper
+                    .createTableSourceDefinition(params1);
+            recordset.add(record1);
 
-                recordset.add(record);
-            }
-            {
-                final TableSourceDefinition record = new TableSourceDefinition();
-                record.setTableId(1);
-                record.setNo(2);
-                record.setSourceId(4);
-                record.setJoinCondition("query1.condition2");
-                record.setDeleteFlag(1);
+            final String[] params2 = {"1", "2", "4", "query1.condition2", "1"};
+            final TableSourceDefinition record2 = helper
+                    .createTableSourceDefinition(params2);
+            recordset.add(record2);
 
-                recordset.add(record);
-            }
             // クエリ2
-            {
-                final TableSourceDefinition record = new TableSourceDefinition();
-                record.setTableId(2);
-                record.setNo(1);
-                record.setSourceId(3);
-                record.setJoinCondition("query2.condition1");
-                record.setDeleteFlag(0);
+            final String[] params3 = {"2", "1", "3", "query2.condition1"};
+            final TableSourceDefinition record3 = helper
+                    .createTableSourceDefinition(params3);
+            recordset.add(record3);
 
-                recordset.add(record);
-            }
-            {
-                final TableSourceDefinition record = new TableSourceDefinition();
-                record.setTableId(2);
-                record.setNo(2);
-                record.setSourceId(4);
-                record.setJoinCondition("query2.condition2");
-                record.setDeleteFlag(1);
-
-                recordset.add(record);
-            }
+            final String[] params4 = {"2", "2", "4", "query2.condition2", "1"};
+            final TableSourceDefinition record4 = helper
+                    .createTableSourceDefinition(params4);
+            recordset.add(record4);
 
             try (SqlSession session = factory.openSession()) {
                 tableSourceDefinitionRepository = session
@@ -294,60 +275,54 @@ public class TableSourceDefinitionRepositoryTest {
 
         @Test
         public void create実行時にレコードを登録できてtrueが返されること() throws Exception {
-            final List<TableSourceDefinition> recordset = new ArrayList<>();
-            {
-                final TableSourceDefinition record = new TableSourceDefinition();
-                record.setTableId(1);
-                record.setNo(3);
-                record.setSourceId(3);
-                record.setJoinCondition("query1.condition3");
-                record.setDeleteFlag(0);
+            final List<TableSourceDefinition> expectList = new ArrayList<>();
 
-                recordset.add(record);
-            }
-            {
-                final TableSourceDefinition record = new TableSourceDefinition();
-                record.setTableId(1);
-                record.setNo(4);
-                record.setSourceId(4);
-                record.setJoinCondition("query1.condition4");
-                record.setDeleteFlag(0);
+            final String[] params1 = {"1", "3", "3", "query1.condition3"};
+            final TableSourceDefinition expect1 = helper
+                    .createTableSourceDefinition(params1);
+            expectList.add(expect1);
 
-                recordset.add(record);
-            }
+            final String[] params2 = {"1", "4", "4", "query1.condition4"};
+            final TableSourceDefinition expect2 = helper
+                    .createTableSourceDefinition(params2);
+            expectList.add(expect2);
 
             try (SqlSession session = factory.openSession()) {
                 tableSourceDefinitionRepository = session
                         .getMapper(TableSourceDefinitionRepository.class);
 
                 final boolean result = tableSourceDefinitionRepository
-                        .create(recordset);
+                        .create(expectList);
                 assertThat(result, is(true));
                 session.commit();
 
-                final List<TableSourceDefinition> curRecordset = tableSourceDefinitionRepository
+                final List<TableSourceDefinition> actualList1 = tableSourceDefinitionRepository
                         .findAll();
-                assertThat(curRecordset.size(), is(6));
+                assertThat(actualList1.size(), is(6));
 
-                final List<TableSourceDefinition> query1 = tableSourceDefinitionRepository
+                final List<TableSourceDefinition> actualList2 = tableSourceDefinitionRepository
                         .findByTableId(1);
-                assertThat(query1.size(), is(4));
+                assertThat(actualList2.size(), is(4));
 
-                final TableSourceDefinition record3 = query1.get(2);
-                assertThat(record3.getTableId(), is(1));
-                assertThat(record3.getDefinitionId(), is(5));
-                assertThat(record3.getNo(), is(3));
-                assertThat(record3.getSourceId(), is(3));
-                assertThat(record3.getJoinCondition(), is("query1.condition3"));
-                assertThat(record3.getDeleteFlag(), is(0));
+                final TableSourceDefinition actual1 = actualList2.get(2);
+                assertThat(actual1.getDefinitionId(), is(5));
+                assertThat(actual1.getTableId(), is(expect1.getTableId()));
+                assertThat(actual1.getNo(), is(expect1.getNo()));
+                assertThat(actual1.getSourceId(), is(expect1.getSourceId()));
+                assertThat(actual1.getJoinCondition(),
+                        is(expect1.getJoinCondition()));
+                assertThat(actual1.getDeleteFlag(),
+                        is(expect1.getDeleteFlag()));
 
-                final TableSourceDefinition record4 = query1.get(3);
-                assertThat(record4.getTableId(), is(1));
-                assertThat(record4.getDefinitionId(), is(6));
-                assertThat(record4.getNo(), is(4));
-                assertThat(record4.getSourceId(), is(4));
-                assertThat(record4.getJoinCondition(), is("query1.condition4"));
-                assertThat(record4.getDeleteFlag(), is(0));
+                final TableSourceDefinition actual2 = actualList2.get(3);
+                assertThat(actual2.getDefinitionId(), is(6));
+                assertThat(actual2.getTableId(), is(expect2.getTableId()));
+                assertThat(actual2.getNo(), is(expect2.getNo()));
+                assertThat(actual2.getSourceId(), is(expect2.getSourceId()));
+                assertThat(actual2.getJoinCondition(),
+                        is(expect2.getJoinCondition()));
+                assertThat(actual2.getDeleteFlag(),
+                        is(expect2.getDeleteFlag()));
             }
         }
 
@@ -357,35 +332,39 @@ public class TableSourceDefinitionRepositoryTest {
                 tableSourceDefinitionRepository = session
                         .getMapper(TableSourceDefinitionRepository.class);
 
-                final List<TableSourceDefinition> recordset = tableSourceDefinitionRepository
+                final List<TableSourceDefinition> expectList = tableSourceDefinitionRepository
                         .findByTableId(2);
-                assertThat(recordset.size(), is(2));
 
-                recordset.get(0).setNo(2);
-                recordset.get(0).setSourceId(4);
-                recordset.get(0).setJoinCondition("query2.update1");
+                TableSourceDefinition expect1 = expectList.get(0);
+                expect1.setNo(2);
+                expect1.setSourceId(4);
+                expect1.setJoinCondition("query2.update1");
 
-                recordset.get(1).setNo(1);
-                recordset.get(1).setSourceId(3);
-                recordset.get(1).setJoinCondition("query2.update2");
+                TableSourceDefinition expect2 = expectList.get(1);
+                expect2.setNo(1);
+                expect2.setSourceId(3);
+                expect2.setJoinCondition("query2.update2");
 
                 final boolean result = tableSourceDefinitionRepository
-                        .update(recordset);
+                        .update(expectList);
                 assertThat(result, is(true));
                 session.commit();
 
-                final List<TableSourceDefinition> curRecordset = tableSourceDefinitionRepository
+                final List<TableSourceDefinition> actualList = tableSourceDefinitionRepository
                         .findByTableId(2);
+                assertThat(actualList.size(), is(2));
 
-                final TableSourceDefinition record1 = curRecordset.get(0);
-                assertThat(record1.getNo(), is(1));
-                assertThat(record1.getSourceId(), is(3));
-                assertThat(record1.getJoinCondition(), is("query2.update2"));
+                final TableSourceDefinition actual1 = actualList.get(0);
+                assertThat(actual1.getNo(), is(expect2.getNo()));
+                assertThat(actual1.getSourceId(), is(expect2.getSourceId()));
+                assertThat(actual1.getJoinCondition(),
+                        is(expect2.getJoinCondition()));
 
-                final TableSourceDefinition record2 = curRecordset.get(1);
-                assertThat(record2.getNo(), is(2));
-                assertThat(record2.getSourceId(), is(4));
-                assertThat(record2.getJoinCondition(), is("query2.update1"));
+                final TableSourceDefinition actual2 = actualList.get(1);
+                assertThat(actual2.getNo(), is(expect1.getNo()));
+                assertThat(actual2.getSourceId(), is(expect1.getSourceId()));
+                assertThat(actual2.getJoinCondition(),
+                        is(expect1.getJoinCondition()));
             }
         }
 
