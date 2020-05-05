@@ -84,6 +84,7 @@ public class TableDefinitionServiceImpl implements TableDefinitionService {
         try (SqlSession session = factory.openSession()) {
             tableMasterRepository = session
                     .getMapper(TableMasterRepository.class);
+            tableMaster.setEntityType(1);
             tableMasterRepository.create(tableMaster);
 
             final TableMaster latest = tableMasterRepository
