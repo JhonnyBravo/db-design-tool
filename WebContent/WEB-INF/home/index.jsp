@@ -21,7 +21,7 @@
         <div class="card">
             <div class="card-header">テーブル</div>
             <ul class="list-group list-group-flush">
-                <c:forEach var="tableMaster" items="${tableMasterList}">
+                <c:forEach var="tableMaster" items="${tableList}">
                     <li class="list-group-item"><a href="table_definition?tableId=${tableMaster.tableId}">${tableMaster.logicalName}</a></li>
                 </c:forEach>
             </ul>
@@ -29,7 +29,9 @@
         <div class="card">
             <div class="card-header">クエリ</div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">クエリマスター</li>
+                <c:forEach var="tableMaster" items="${queryList}">
+                    <li class="list-group-item"><a href="select_definition?tableId=${tableMaster.tableId}">${tableMaster.logicalName}</a></li>
+                </c:forEach>
             </ul>
         </div>
     </main>
