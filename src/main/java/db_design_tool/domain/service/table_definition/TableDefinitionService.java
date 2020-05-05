@@ -17,6 +17,16 @@ public interface TableDefinitionService {
     public List<TableMaster> findTableAll() throws Exception;
 
     /**
+     * @param entityType
+     *            検索対象とする entity_type を指定する。
+     * @return recordset 条件に合致するレコードを取得する。
+     * @throws Exception
+     *             {@link java.lang.Exception}
+     */
+    public List<TableMaster> findTableByEntityType(int entityType)
+            throws Exception;
+
+    /**
      * table_id をキーにテーブル定義を検索する。
      *
      * @param tableId
@@ -50,7 +60,7 @@ public interface TableDefinitionService {
 
     /**
      * table_id をキーにテーブル定義を削除する。
-     * 
+     *
      * @param tableId
      *            削除対象とするテーブル定義の table_id を指定する。
      * @throws Exception
