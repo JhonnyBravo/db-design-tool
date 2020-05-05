@@ -7,10 +7,20 @@
         <result property="physicalName" column="physical_name" />
         <result property="logicalName" column="logical_name" />
         <result property="deleteFlag" column="delete_flag" />
+        <result property="entityType" column="entity_type" />
     </resultMap>
     <!-- 登録されているレコードを全件取得する。 -->
     <select id="findAll" resultMap="tableMaster">
         SELECT * FROM table_master;
+    </select>
+    <!-- entity_type をキーにレコードを検索する。 -->
+    <select id="findByEntityType" resultMap="tableMaster">
+        SELECT
+        *
+        FROM
+        table_master
+        WHERE
+        entity_type=#{entityType};
     </select>
     <!-- table_id をキーにレコードを検索する。 -->
     <select id="findByTableId" resultMap="tableMaster">
@@ -41,12 +51,14 @@
         INSERT INTO table_master (
         physical_name,
         logical_name,
-        delete_flag
+        delete_flag,
+        entity_type
         )
         VALUES (
         #{tableMaster.physicalName},
         #{tableMaster.logicalName},
-        #{tableMaster.deleteFlag}
+        #{tableMaster.deleteFlag},
+        #{tableMaster.entityType}
         );
     </insert>
     <!-- レコードを更新する。 -->
