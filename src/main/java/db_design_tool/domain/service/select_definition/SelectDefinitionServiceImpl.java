@@ -110,6 +110,7 @@ public class SelectDefinitionServiceImpl implements SelectDefinitionService {
             // TableMaster
             tableMasterRepository = session
                     .getMapper(TableMasterRepository.class);
+            tableMaster.setEntityType(2);
             tableMasterRepository.create(tableMaster);
 
             final TableMaster latestTable = tableMasterRepository
