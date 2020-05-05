@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS table_master (
     physical_name VARCHAR(100) UNIQUE NOT NULL,
     logical_name VARCHAR(100) UNIQUE NOT NULL,
     delete_flag INT NOT NULL,
+    entity_type INT NOT NULL,
     PRIMARY KEY (table_id)
 );
 
