@@ -74,6 +74,7 @@ public class TableDefinitionServiceTest {
 
             final TableMaster actualTable = actualDefinition.getTableMaster();
             assertThat(actualTable.getTableId(), is(1));
+            assertThat(actualTable.getEntityType(), is(1));
             assertThat(actualTable.getPhysicalName(),
                     is(expectTable.getPhysicalName()));
             assertThat(actualTable.getLogicalName(),
@@ -195,6 +196,7 @@ public class TableDefinitionServiceTest {
 
             final TableMaster actualTable = actualDefinition.getTableMaster();
             assertThat(actualTable.getTableId(), is(2));
+            assertThat(actualTable.getEntityType(), is(1));
             assertThat(actualTable.getPhysicalName(),
                     is(expectTable.getPhysicalName()));
             assertThat(actualTable.getLogicalName(),
