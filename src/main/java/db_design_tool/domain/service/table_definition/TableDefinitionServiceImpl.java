@@ -39,6 +39,20 @@ public class TableDefinitionServiceImpl implements TableDefinitionService {
     }
 
     @Override
+    public List<TableMaster> findTableByEntityType(int entityType)
+            throws Exception {
+        List<TableMaster> recordset = new ArrayList<>();
+
+        try (SqlSession session = factory.openSession()) {
+            tableMasterRepository = session
+                    .getMapper(TableMasterRepository.class);
+            recordset = tableMasterRepository.findByEntityType(entityType);
+        }
+
+        return recordset;
+    }
+
+    @Override
     public TableDefinition findTableDefinitionByTableId(int tableId)
             throws Exception {
         TableMaster tableMaster = new TableMaster();
