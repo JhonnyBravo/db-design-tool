@@ -16,6 +16,8 @@ public class TableMaster implements Serializable {
     private String logicalName;
     @Range(min = 0, max = 1)
     private int deleteFlag;
+    @Range(min = 1, max = 2)
+    private int entityType;
     private String physicalNameError;
     private String logicalNameError;
 
@@ -81,6 +83,25 @@ public class TableMaster implements Serializable {
      */
     public void setDeleteFlag(int deleteFlag) {
         this.deleteFlag = deleteFlag;
+    }
+
+    /**
+     * @return entityType エンティティタイプを返す。
+     */
+    public int getEntityType() {
+        return entityType;
+    }
+
+    /**
+     * @param entityType
+     *            エンティティタイプを指定する。
+     *            <ul>
+     *            <li>1: テーブル</li>
+     *            <li>2: クエリ</li>
+     *            </ul>
+     */
+    public void setEntityType(int entityType) {
+        this.entityType = entityType;
     }
 
     /**
