@@ -44,8 +44,13 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         try {
-            final List<TableMaster> tableMasterList = service.findTableAll();
-            request.setAttribute("tableMasterList", tableMasterList);
+            final List<TableMaster> tableList = service
+                    .findTableByEntityType(1);
+            request.setAttribute("tableList", tableList);
+
+            final List<TableMaster> queryList = service
+                    .findTableByEntityType(2);
+            request.setAttribute("queryList", queryList);
 
             final ServletContext context = getServletContext();
             final RequestDispatcher dispatcher = context
