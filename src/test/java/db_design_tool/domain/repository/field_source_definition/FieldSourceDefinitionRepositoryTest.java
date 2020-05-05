@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.ibatis.io.Resources;
@@ -19,6 +18,7 @@ import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import db_design_tool.app.select_definition.SelectDefinitionTestHelper;
 import db_design_tool.domain.model.FieldMaster;
 import db_design_tool.domain.model.FieldSourceDefinition;
 import db_design_tool.domain.model.TableMaster;
@@ -27,75 +27,49 @@ import db_design_tool.domain.repository.table_master.TableMasterRepository;
 
 @RunWith(Enclosed.class)
 public class FieldSourceDefinitionRepositoryTest {
-    public static class テーブルが空である場合 {
+    public static class クエリ定義が存在しない場合 {
+        private static SelectDefinitionTestHelper helper;
         private static SqlSessionFactory factory;
         private FieldSourceDefinitionRepository fieldSourceDefinitionRepository;
 
-        private List<FieldSourceDefinition> createDefinitionList(
-                List<FieldMaster> fieldList,
-                List<FieldSourceDefinition> definitionList) {
-            FieldMaster[] fieldArray = fieldList
-                    .toArray(new FieldMaster[fieldList.size()]);
-            FieldSourceDefinition[] definitionArray = definitionList
-                    .toArray(new FieldSourceDefinition[definitionList.size()]);
-
-            for (int i = 0; i < fieldArray.length; i++) {
-                definitionArray[i].setFieldId(fieldArray[i].getFieldId());
-            }
-
-            List<FieldSourceDefinition> result = Arrays.asList(definitionArray);
-            return result;
-        }
-
         @BeforeClass
         public static void setUpBeforeClass() throws Exception {
+            helper = new SelectDefinitionTestHelper();
             factory = new SqlSessionFactoryBuilder()
                     .build(Resources.getResourceAsStream("mybatis-config.xml"));
-
-            // TableMaster
-            TableMaster query1 = new TableMaster();
-            query1.setPhysicalName("query1");
-            query1.setLogicalName("query1");
 
             try (SqlSession session = factory.openSession()) {
                 // TableMaster
                 TableMasterRepository tableMasterRepository = session
                         .getMapper(TableMasterRepository.class);
-
                 tableMasterRepository.deleteAll();
                 tableMasterRepository.resetId();
+
+                String[] params1 = {"query1", "クエリ1"};
+                TableMaster query1 = helper.createTableMaster(params1);
                 tableMasterRepository.create(query1);
 
                 // FieldMaster
-                List<FieldMaster> fieldList = new ArrayList<>();
-                TableMaster curQuery = tableMasterRepository
-                        .findByLatestTableId();
-
-                {
-                    FieldMaster field1 = new FieldMaster();
-
-                    field1.setTableId(curQuery.getTableId());
-                    field1.setNo(1);
-                    field1.setPhysicalName("field1");
-                    field1.setLogicalName("field1");
-
-                    fieldList.add(field1);
-                }
-                {
-                    FieldMaster field2 = new FieldMaster();
-
-                    field2.setTableId(curQuery.getTableId());
-                    field2.setNo(2);
-                    field2.setPhysicalName("field2");
-                    field2.setLogicalName("field2");
-
-                    fieldList.add(field2);
-                }
-
                 FieldMasterRepository fieldMasterRepository = session
                         .getMapper(FieldMasterRepository.class);
-                fieldMasterRepository.deleteAll();
                 fieldMasterRepository.resetId();
+
+                List<FieldMaster> fieldList = new ArrayList<>();
+                TableMaster latestTable = tableMasterRepository
+                        .findByLatestTableId();
+
+                String[] params2 = {"0", "1", "query1.field1", "クエリ1.フィールド1",
+                        "1 つ目のフィールド"};
+                FieldMaster field1 = helper.createFieldMaster(params2);
+                field1.setTableId(latestTable.getTableId());
+                fieldList.add(field1);
+
+                String[] params3 = {"0", "2", "query1.field2", "クエリ1.フィールド2",
+                        "2 つ目のフィールド"};
+                FieldMaster field2 = helper.createFieldMaster(params3);
+                field2.setTableId(latestTable.getTableId());
+                fieldList.add(field2);
+
                 fieldMasterRepository.create(fieldList);
 
                 session.commit();
@@ -108,15 +82,12 @@ public class FieldSourceDefinitionRepositoryTest {
                 // TableMaster
                 TableMasterRepository tableMasterRepository = session
                         .getMapper(TableMasterRepository.class);
-
                 tableMasterRepository.deleteAll();
                 tableMasterRepository.resetId();
 
                 // FieldMaster
                 FieldMasterRepository fieldMasterRepository = session
                         .getMapper(FieldMasterRepository.class);
-
-                fieldMasterRepository.deleteAll();
                 fieldMasterRepository.resetId();
 
                 session.commit();
@@ -168,84 +139,73 @@ public class FieldSourceDefinitionRepositoryTest {
                 TableMasterRepository tableMasterRepository = session
                         .getMapper(TableMasterRepository.class);
 
-                TableMaster curQuery = tableMasterRepository
+                TableMaster query1 = tableMasterRepository
                         .findByLatestTableId();
 
                 // FieldMaster
                 FieldMasterRepository fieldMasterRepository = session
                         .getMapper(FieldMasterRepository.class);
-
                 List<FieldMaster> fieldList = fieldMasterRepository
-                        .findByTableId(curQuery.getTableId());
+                        .findByTableId(query1.getTableId());
 
                 // FieldSourceDefinition
-                List<FieldSourceDefinition> definitionList = new ArrayList<>();
+                List<FieldSourceDefinition> expectDefinitionList = new ArrayList<>();
 
-                {
-                    FieldSourceDefinition definition1 = new FieldSourceDefinition();
-                    definition1.setSourceDefinition("definition1");
-                    definitionList.add(definition1);
-                }
-                {
-                    FieldSourceDefinition definition2 = new FieldSourceDefinition();
-                    definition2.setSourceDefinition("definition2");
-                    definitionList.add(definition2);
+                FieldSourceDefinition expectDefinition1 = new FieldSourceDefinition();
+                expectDefinition1.setSourceDefinition("definition1");
+                expectDefinitionList.add(expectDefinition1);
+
+                FieldSourceDefinition expectDefinition2 = new FieldSourceDefinition();
+                expectDefinition2.setSourceDefinition("definition2");
+                expectDefinitionList.add(expectDefinition2);
+
+                for (int i = 0; i < fieldList.size(); i++) {
+                    expectDefinitionList.get(i)
+                            .setFieldId(fieldList.get(i).getFieldId());
                 }
 
                 fieldSourceDefinitionRepository = session
                         .getMapper(FieldSourceDefinitionRepository.class);
 
-                boolean result = fieldSourceDefinitionRepository.create(
-                        createDefinitionList(fieldList, definitionList));
+                boolean result = fieldSourceDefinitionRepository
+                        .create(expectDefinitionList);
                 assertThat(result, is(true));
                 session.commit();
 
-                List<FieldSourceDefinition> recordset = fieldSourceDefinitionRepository
+                List<FieldSourceDefinition> actualDefinitionList = fieldSourceDefinitionRepository
                         .findAll();
-                assertThat(recordset.size(), is(2));
+                assertThat(actualDefinitionList.size(), is(2));
 
-                FieldSourceDefinition record1 = fieldSourceDefinitionRepository
-                        .findByFieldId(1);
-                assertThat(record1.getDefinitionId(), is(1));
-                assertThat(record1.getSourceDefinition(), is("definition1"));
+                FieldSourceDefinition actualDefinition1 = actualDefinitionList
+                        .get(0);
+                assertThat(actualDefinition1.getDefinitionId(), is(1));
+                assertThat(actualDefinition1.getSourceDefinition(),
+                        is(expectDefinition1.getSourceDefinition()));
 
-                FieldSourceDefinition record2 = fieldSourceDefinitionRepository
-                        .findByFieldId(2);
-                assertThat(record2.getDefinitionId(), is(2));
-                assertThat(record2.getSourceDefinition(), is("definition2"));
+                FieldSourceDefinition actualDefinition2 = actualDefinitionList
+                        .get(1);
+                assertThat(actualDefinition2.getDefinitionId(), is(2));
+                assertThat(actualDefinition2.getSourceDefinition(),
+                        is(expectDefinition2.getSourceDefinition()));
             }
         }
     }
 
-    public static class テーブルが空ではない場合 {
+    public static class クエリ定義が存在する場合 {
+        private static SelectDefinitionTestHelper helper;
         private static SqlSessionFactory factory;
+
         private FieldMasterRepository fieldMasterRepository;
         private FieldSourceDefinitionRepository fieldSourceDefinitionRepository;
 
-        private List<FieldSourceDefinition> createDefinitionList(
-                List<FieldMaster> fieldList,
-                List<FieldSourceDefinition> definitionList) {
-            FieldMaster[] fieldArray = fieldList
-                    .toArray(new FieldMaster[fieldList.size()]);
-            FieldSourceDefinition[] definitionArray = definitionList
-                    .toArray(new FieldSourceDefinition[definitionList.size()]);
-
-            for (int i = 0; i < fieldArray.length; i++) {
-                definitionArray[i].setFieldId(fieldArray[i].getFieldId());
-            }
-
-            List<FieldSourceDefinition> result = Arrays.asList(definitionArray);
-            return result;
-        }
-
         @BeforeClass
         public static void setUpBeforeClass() throws Exception {
+            helper = new SelectDefinitionTestHelper();
             factory = new SqlSessionFactoryBuilder()
                     .build(Resources.getResourceAsStream("mybatis-config.xml"));
 
-            TableMaster query1 = new TableMaster();
-            query1.setPhysicalName("query1");
-            query1.setLogicalName("query1");
+            final String[] params1 = {"query1", "クエリ1"};
+            final TableMaster query1 = helper.createTableMaster(params1);
 
             try (SqlSession session = factory.openSession()) {
                 TableMasterRepository tableMasterRepository = session
@@ -278,51 +238,47 @@ public class FieldSourceDefinitionRepositoryTest {
                 // TableMaster
                 TableMasterRepository tableMasterRepository = session
                         .getMapper(TableMasterRepository.class);
-                TableMaster curQuery = tableMasterRepository
+                TableMaster query1 = tableMasterRepository
                         .findByLatestTableId();
 
                 // FieldMaster
-                List<FieldMaster> fieldList = new ArrayList<>();
-
-                {
-                    FieldMaster field1 = new FieldMaster();
-
-                    field1.setTableId(curQuery.getTableId());
-                    field1.setNo(1);
-                    field1.setPhysicalName("field1");
-                    field1.setLogicalName("field1");
-
-                    fieldList.add(field1);
-                }
-                {
-                    FieldMaster field2 = new FieldMaster();
-
-                    field2.setTableId(curQuery.getTableId());
-                    field2.setNo(2);
-                    field2.setPhysicalName("field2");
-                    field2.setLogicalName("field2");
-
-                    fieldList.add(field2);
-                }
-
                 fieldMasterRepository = session
                         .getMapper(FieldMasterRepository.class);
                 fieldMasterRepository.deleteAll();
                 fieldMasterRepository.resetId();
+
+                List<FieldMaster> fieldList = new ArrayList<>();
+
+                final String[] params1 = {"0", "1", "query1.field1",
+                        "クエリ1.フィールド1", "1 つ目のフィールド"};
+                final FieldMaster field1 = helper.createFieldMaster(params1);
+                field1.setTableId(query1.getTableId());
+                fieldList.add(field1);
+
+                final String[] params2 = {"0", "2", "query1.field2",
+                        "クエリ1.フィールド2", "2 つ目のフィールド"};
+                final FieldMaster field2 = helper.createFieldMaster(params2);
+                field2.setTableId(query1.getTableId());
+                fieldList.add(field2);
+
                 fieldMasterRepository.create(fieldList);
 
                 // FieldSourceDefinition
                 List<FieldSourceDefinition> definitionList = new ArrayList<>();
 
-                {
-                    FieldSourceDefinition definition1 = new FieldSourceDefinition();
-                    definition1.setSourceDefinition("definition1");
-                    definitionList.add(definition1);
-                }
-                {
-                    FieldSourceDefinition definition2 = new FieldSourceDefinition();
-                    definition2.setSourceDefinition("definition2");
-                    definitionList.add(definition2);
+                final String[] params3 = {"0", "definition1"};
+                final FieldSourceDefinition definition1 = helper
+                        .createFieldSourceDefinition(params3);
+                definitionList.add(definition1);
+
+                final String[] params4 = {"0", "definition2"};
+                final FieldSourceDefinition definition2 = helper
+                        .createFieldSourceDefinition(params4);
+                definitionList.add(definition2);
+
+                for (int i = 0; i < fieldList.size(); i++) {
+                    definitionList.get(i)
+                            .setFieldId(fieldList.get(i).getFieldId());
                 }
 
                 fieldSourceDefinitionRepository = session
@@ -330,8 +286,7 @@ public class FieldSourceDefinitionRepositoryTest {
 
                 fieldSourceDefinitionRepository.deleteAll();
                 fieldSourceDefinitionRepository.resetId();
-                fieldSourceDefinitionRepository.create(
-                        createDefinitionList(fieldList, definitionList));
+                fieldSourceDefinitionRepository.create(definitionList);
 
                 session.commit();
             }
@@ -343,15 +298,12 @@ public class FieldSourceDefinitionRepositoryTest {
                 // FieldMaster
                 fieldMasterRepository = session
                         .getMapper(FieldMasterRepository.class);
-
                 fieldMasterRepository.deleteAll();
                 fieldMasterRepository.resetId();
 
                 // FieldSourceDefinition
                 fieldSourceDefinitionRepository = session
                         .getMapper(FieldSourceDefinitionRepository.class);
-
-                fieldSourceDefinitionRepository.deleteAll();
                 fieldSourceDefinitionRepository.resetId();
 
                 session.commit();
@@ -376,32 +328,23 @@ public class FieldSourceDefinitionRepositoryTest {
                 // TableMaster
                 TableMasterRepository tableMasterRepository = session
                         .getMapper(TableMasterRepository.class);
-                TableMaster curQuery = tableMasterRepository
+                TableMaster query1 = tableMasterRepository
                         .findByLatestTableId();
 
                 // FieldMaster
                 List<FieldMaster> fieldList = new ArrayList<>();
 
-                {
-                    FieldMaster field3 = new FieldMaster();
+                final String[] params1 = {"0", "3", "query1.field3",
+                        "クエリ1.フィールド3", "3 つ目のフィールド"};
+                final FieldMaster field3 = helper.createFieldMaster(params1);
+                field3.setTableId(query1.getTableId());
+                fieldList.add(field3);
 
-                    field3.setTableId(curQuery.getTableId());
-                    field3.setNo(3);
-                    field3.setPhysicalName("field3");
-                    field3.setLogicalName("field3");
-
-                    fieldList.add(field3);
-                }
-                {
-                    FieldMaster field4 = new FieldMaster();
-
-                    field4.setTableId(curQuery.getTableId());
-                    field4.setNo(4);
-                    field4.setPhysicalName("field4");
-                    field4.setLogicalName("field4");
-
-                    fieldList.add(field4);
-                }
+                final String[] params2 = {"0", "3", "query1.field4",
+                        "クエリ1.フィールド4", "4 つ目のフィールド"};
+                final FieldMaster field4 = helper.createFieldMaster(params2);
+                field4.setTableId(query1.getTableId());
+                fieldList.add(field4);
 
                 fieldMasterRepository = session
                         .getMapper(FieldMasterRepository.class);
@@ -410,22 +353,26 @@ public class FieldSourceDefinitionRepositoryTest {
                 // FieldSourceDefinition
                 List<FieldSourceDefinition> definitionList = new ArrayList<>();
 
-                {
-                    FieldSourceDefinition definition3 = new FieldSourceDefinition();
-                    definition3.setSourceDefinition("definition3");
-                    definitionList.add(definition3);
-                }
-                {
-                    FieldSourceDefinition definition4 = new FieldSourceDefinition();
-                    definition4.setSourceDefinition("definition4");
-                    definitionList.add(definition4);
+                final String[] params3 = {"0", "definition3"};
+                final FieldSourceDefinition definition3 = helper
+                        .createFieldSourceDefinition(params3);
+                definitionList.add(definition3);
+
+                final String[] params4 = {"0", "definition4"};
+                final FieldSourceDefinition definition4 = helper
+                        .createFieldSourceDefinition(params4);
+                definitionList.add(definition4);
+
+                for (int i = 0; i < fieldList.size(); i++) {
+                    definitionList.get(i)
+                            .setFieldId(fieldList.get(i).getFieldId());
                 }
 
                 fieldSourceDefinitionRepository = session
                         .getMapper(FieldSourceDefinitionRepository.class);
 
-                boolean result = fieldSourceDefinitionRepository.create(
-                        createDefinitionList(fieldList, definitionList));
+                boolean result = fieldSourceDefinitionRepository
+                        .create(definitionList);
                 assertThat(result, is(true));
                 session.commit();
 
@@ -440,23 +387,32 @@ public class FieldSourceDefinitionRepositoryTest {
             try (SqlSession session = factory.openSession()) {
                 fieldSourceDefinitionRepository = session
                         .getMapper(FieldSourceDefinitionRepository.class);
-                List<FieldSourceDefinition> recordset = fieldSourceDefinitionRepository
-                        .findAll();
-                recordset.get(1).setSourceDefinition("updated");
+
+                List<FieldSourceDefinition> expectList = new ArrayList<>();
+
+                FieldSourceDefinition expect1 = fieldSourceDefinitionRepository
+                        .findByFieldId(1);
+                expectList.add(expect1);
+
+                FieldSourceDefinition expect2 = fieldSourceDefinitionRepository
+                        .findByFieldId(2);
+                expect2.setSourceDefinition("update1");
+                expectList.add(expect2);
 
                 boolean result = fieldSourceDefinitionRepository
-                        .update(recordset);
+                        .update(expectList);
                 assertThat(result, is(true));
                 session.commit();
 
-                FieldSourceDefinition definition1 = fieldSourceDefinitionRepository
+                FieldSourceDefinition actual1 = fieldSourceDefinitionRepository
                         .findByFieldId(1);
-                assertThat(definition1.getSourceDefinition(),
-                        is("definition1"));
+                assertThat(actual1.getSourceDefinition(),
+                        is(expect1.getSourceDefinition()));
 
-                FieldSourceDefinition definition2 = fieldSourceDefinitionRepository
+                FieldSourceDefinition actual2 = fieldSourceDefinitionRepository
                         .findByFieldId(2);
-                assertThat(definition2.getSourceDefinition(), is("updated"));
+                assertThat(actual2.getSourceDefinition(),
+                        is(expect2.getSourceDefinition()));
             }
         }
     }
