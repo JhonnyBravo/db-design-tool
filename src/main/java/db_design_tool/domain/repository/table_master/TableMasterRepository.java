@@ -99,6 +99,22 @@ public interface TableMasterRepository {
             throws Exception;
 
     /**
+     * entity_type をキーにレコードを削除する。
+     * 
+     * @param entityType
+     *            削除対象とする entityType を指定する。
+     * @return result
+     *         <ul>
+     *         <li>true: 削除に成功したことを表す。</li>
+     *         <li>true: 削除しなかったことを表す。</li>
+     *         </ul>
+     * @throws Exception
+     *             {@link java.lang.Exception}
+     */
+    public boolean deleteByEntityType(@Param("entityType") int entityType)
+            throws Exception;
+
+    /**
      * レコードを全件削除する。
      *
      * @return result
