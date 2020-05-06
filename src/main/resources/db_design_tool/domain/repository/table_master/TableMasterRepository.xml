@@ -76,6 +76,11 @@
         DELETE FROM table_master
         WHERE table_id = #{tableId};
     </delete>
+    <!-- entity_type をキーにレコードを削除する。 -->
+    <delete id="deleteByEntityType">
+        DELETE FROM table_master
+        WHERE entity_type = #{entityType};
+    </delete>
     <!-- 既存レコードを全件削除する。 -->
     <delete id="deleteAll">
         DELETE FROM table_master;
