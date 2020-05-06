@@ -132,6 +132,16 @@ public class TableDefinitionServiceImpl implements TableDefinitionService {
     }
 
     @Override
+    public void deleteByEntityType(int entityType) throws Exception {
+        try (SqlSession session = factory.openSession()) {
+            tableMasterRepository = session
+                    .getMapper(TableMasterRepository.class);
+            tableMasterRepository.deleteByEntityType(entityType);
+            session.commit();
+        }
+    }
+
+    @Override
     public void deleteAll() throws Exception {
         try (SqlSession session = factory.openSession()) {
             tableMasterRepository = session
