@@ -10,11 +10,11 @@ import db_design_tool.domain.model.TableMaster;
  */
 public interface SelectDefinitionService {
     /**
-     * @return recordset TableMaster に登録されている全レコードを取得する。
+     * @return recordset TableMaster に登録されている選択クエリを全て取得する。
      * @throws Exception
      *             {@link java.lang.Exception}
      */
-    public List<TableMaster> findTableAll() throws Exception;
+    public List<TableMaster> findQueryAll() throws Exception;
 
     /**
      * table_id をキーにクエリ定義を検索する。
