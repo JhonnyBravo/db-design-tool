@@ -31,15 +31,14 @@ public class SelectDefinitionServiceImpl implements SelectDefinitionService {
                 .build(Resources.getResourceAsStream("mybatis-config.xml"));
     }
 
-    // TODO クエリのみを取得するように修正する。
     @Override
-    public List<TableMaster> findTableAll() throws Exception {
+    public List<TableMaster> findQueryAll() throws Exception {
         List<TableMaster> recordset = new ArrayList<>();
 
         try (SqlSession session = factory.openSession()) {
             tableMasterRepository = session
                     .getMapper(TableMasterRepository.class);
-            recordset = tableMasterRepository.findAll();
+            recordset = tableMasterRepository.findByEntityType(2);
         }
 
         return recordset;
