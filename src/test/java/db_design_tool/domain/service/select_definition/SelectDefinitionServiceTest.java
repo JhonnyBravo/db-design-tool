@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
+import db_design_tool.app.select_definition.SelectDefinitionTestHelper;
 import db_design_tool.domain.model.FieldMaster;
 import db_design_tool.domain.model.FieldSourceDefinition;
 import db_design_tool.domain.model.SelectDefinition;
@@ -24,389 +27,332 @@ import db_design_tool.domain.service.table_definition.TableDefinitionServiceImpl
 @RunWith(Enclosed.class)
 public class SelectDefinitionServiceTest {
     public static class クエリ定義が存在しない場合 {
-        private TableDefinitionService tableDefinitionService;
+        private static SelectDefinitionTestHelper helper;
+        private static TableDefinitionService tableDefinitionService;
         private SelectDefinitionService selectDefinitionService;
 
-        @Before
-        public void setUp() throws Exception {
-            selectDefinitionService = new SelectDefinitionServiceImpl();
-            selectDefinitionService.deleteAll();
+        @BeforeClass
+        public static void setUpBeforeClass() throws Exception {
+            helper = new SelectDefinitionTestHelper();
+            tableDefinitionService = new TableDefinitionServiceImpl();
+            tableDefinitionService.deleteAll();
 
             // ベーステーブル
             TableDefinition baseDefinition = new TableDefinition();
 
-            TableMaster baseTable = new TableMaster();
-            baseTable.setPhysicalName("base_table");
-            baseTable.setLogicalName("ベーステーブル");
-
+            String[] params1 = {"base_table", "ベーステーブル"};
+            TableMaster baseTable = helper.createTableMaster(params1);
             baseDefinition.setTableMaster(baseTable);
 
-            List<FieldMaster> fieldMasterList1 = new ArrayList<>();
+            List<FieldMaster> fieldList1 = new ArrayList<>();
 
             {
-                FieldMaster field1 = new FieldMaster();
-                field1.setNo(1);
-                field1.setPhysicalName("field1_1");
-                field1.setLogicalName("フィールド1-1");
-                fieldMasterList1.add(field1);
+                String[] params2 = {"0", "1", "base_table.field1",
+                        "ベーステーブル.フィールド1", "1 つ目のフィールド"};
+                FieldMaster field1 = helper.createFieldMaster(params2);
+                fieldList1.add(field1);
 
-                FieldMaster field2 = new FieldMaster();
-                field2.setNo(2);
-                field2.setPhysicalName("field1_2");
-                field2.setLogicalName("フィールド1-2");
-                fieldMasterList1.add(field2);
+                String[] params3 = {"0", "2", "base_table.field2",
+                        "ベーステーブル.フィールド2", "2 つ目のフィールド"};
+                FieldMaster field2 = helper.createFieldMaster(params3);
+                fieldList1.add(field2);
             }
 
-            baseDefinition.setFieldMaster(fieldMasterList1
-                    .toArray(new FieldMaster[fieldMasterList1.size()]));
+            baseDefinition.setFieldMaster(
+                    fieldList1.toArray(new FieldMaster[fieldList1.size()]));
 
-            tableDefinitionService = new TableDefinitionServiceImpl();
             tableDefinitionService.create(baseDefinition);
 
             // 結合用テーブル
             TableDefinition joinDefinition = new TableDefinition();
 
-            TableMaster joinTable = new TableMaster();
-            joinTable.setPhysicalName("join_table");
-            joinTable.setLogicalName("結合用テーブル");
-
+            String[] params4 = {"join_table", "結合用テーブル"};
+            TableMaster joinTable = helper.createTableMaster(params4);
             joinDefinition.setTableMaster(joinTable);
 
-            List<FieldMaster> fieldMasterList2 = new ArrayList<>();
+            List<FieldMaster> fieldList2 = new ArrayList<>();
 
             {
-                FieldMaster field1 = new FieldMaster();
-                field1.setNo(1);
-                field1.setPhysicalName("field2_1");
-                field1.setLogicalName("フィールド2-1");
-                fieldMasterList2.add(field1);
+                String[] params5 = {"0", "1", "join_table.field1",
+                        "結合用テーブル.フィールド1", "1 つ目のフィールド"};
+                FieldMaster field1 = helper.createFieldMaster(params5);
+                fieldList2.add(field1);
 
-                FieldMaster field2 = new FieldMaster();
-                field2.setNo(2);
-                field2.setPhysicalName("field2_2");
-                field2.setLogicalName("フィールド2-2");
-                fieldMasterList2.add(field2);
+                String[] params6 = {"0", "2", "join_table.field2",
+                        "結合用テーブル.フィールド2", "2 つ目のフィールド"};
+                FieldMaster field2 = helper.createFieldMaster(params6);
+                fieldList2.add(field2);
             }
 
-            joinDefinition.setFieldMaster(fieldMasterList2
-                    .toArray(new FieldMaster[fieldMasterList2.size()]));
+            joinDefinition.setFieldMaster(
+                    fieldList2.toArray(new FieldMaster[fieldList2.size()]));
 
             tableDefinitionService.create(joinDefinition);
         }
 
+        @AfterClass
+        public static void tearDownAfterClass() throws Exception {
+            tableDefinitionService.deleteAll();
+        }
+
+        @Before
+        public void setUp() throws Exception {
+            selectDefinitionService = new SelectDefinitionServiceImpl();
+        }
+
         @After
         public void tearDown() throws Exception {
-            selectDefinitionService.deleteAll();
+            tableDefinitionService.deleteByEntityType(2);
         }
 
         @Test
-        public void findTableAll実行時に2件のレコードが取得されること() throws Exception {
+        public void findQueryAll実行時に空のリストが返されること() throws Exception {
             List<TableMaster> tableMasterList = selectDefinitionService
-                    .findTableAll();
-            assertThat(tableMasterList.size(), is(2));
+                    .findQueryAll();
+            assertThat(tableMasterList.size(), is(0));
         }
 
         @Test
         public void create実行時にレコードの登録ができること() throws Exception {
-            SelectDefinition selectDefinition = new SelectDefinition();
+            SelectDefinition expectDefinition = new SelectDefinition();
 
             // クエリ名の定義
-            TableMaster query1 = new TableMaster();
-            query1.setPhysicalName("query1");
-            query1.setLogicalName("クエリ1");
-
-            selectDefinition.setTableMaster(query1);
+            String[] params1 = {"query1", "クエリ1"};
+            TableMaster expectTable = helper.createTableMaster(params1);
+            expectDefinition.setTableMaster(expectTable);
 
             // 取得元テーブルの定義
-            List<TableSourceDefinition> tableSourceDefinitionList = new ArrayList<>();
+            List<TableSourceDefinition> expectTableSourceList = new ArrayList<>();
 
-            TableSourceDefinition baseTable = new TableSourceDefinition();
-            baseTable.setNo(1);
-            baseTable.setSourceId(1);
-            tableSourceDefinitionList.add(baseTable);
+            String[] params2 = {"0", "1", "1", ""};
+            TableSourceDefinition expectTableSource1 = helper
+                    .createTableSourceDefinition(params2);
+            expectTableSourceList.add(expectTableSource1);
 
-            TableSourceDefinition joinTable = new TableSourceDefinition();
-            joinTable.setNo(2);
-            joinTable.setSourceId(2);
-            joinTable.setJoinCondition(
-                    "base_table.field1_1=join_table.field_2_1");
-            tableSourceDefinitionList.add(joinTable);
+            String[] params3 = {"0", "2", "2",
+                    "base_table.field1 = join_table.field1"};
+            TableSourceDefinition expectTableSource2 = helper
+                    .createTableSourceDefinition(params3);
+            expectTableSourceList.add(expectTableSource2);
 
-            selectDefinition.setTableSourceDefinition(tableSourceDefinitionList
-                    .toArray(new TableSourceDefinition[tableSourceDefinitionList
+            expectDefinition.setTableSourceDefinition(expectTableSourceList
+                    .toArray(new TableSourceDefinition[expectTableSourceList
                             .size()]));
 
             // フィールド名の定義
-            List<FieldMaster> fieldList = new ArrayList<>();
+            List<FieldMaster> expectFieldList = new ArrayList<>();
 
-            FieldMaster field1 = new FieldMaster();
-            field1.setNo(1);
-            field1.setPhysicalName("field3_1");
-            field1.setLogicalName("フィールド3_1");
-            fieldList.add(field1);
+            String[] params4 = {"0", "1", "query1.field1", "クエリ1.フィールド1",
+                    "1 つ目のフィールド"};
+            FieldMaster expectField1 = helper.createFieldMaster(params4);
+            expectFieldList.add(expectField1);
 
-            FieldMaster field2 = new FieldMaster();
-            field2.setNo(2);
-            field2.setPhysicalName("field3_2");
-            field2.setLogicalName("フィールド3_2");
-            fieldList.add(field2);
+            String[] params5 = {"0", "2", "query1.field2", "クエリ1.フィールド2",
+                    "2 つ目のフィールド"};
+            FieldMaster expectField2 = helper.createFieldMaster(params5);
+            expectFieldList.add(expectField2);
 
-            selectDefinition.setFieldMaster(
-                    fieldList.toArray(new FieldMaster[fieldList.size()]));
+            expectDefinition.setFieldMaster(expectFieldList
+                    .toArray(new FieldMaster[expectFieldList.size()]));
 
             // 取得元フィールドの定義
-            List<FieldSourceDefinition> fieldSourceList = new ArrayList<>();
+            List<FieldSourceDefinition> expectFieldSourceList = new ArrayList<>();
 
-            FieldSourceDefinition fieldSource1 = new FieldSourceDefinition();
-            fieldSource1.setSourceDefinition("base_table.field1_1");
-            fieldSourceList.add(fieldSource1);
+            String[] params6 = {"0", "base_table.field1"};
+            FieldSourceDefinition expectFieldSource1 = helper
+                    .createFieldSourceDefinition(params6);
+            expectFieldSourceList.add(expectFieldSource1);
 
-            FieldSourceDefinition fieldSource2 = new FieldSourceDefinition();
-            fieldSource2.setSourceDefinition("join_table.field2_2");
-            fieldSourceList.add(fieldSource2);
+            String[] params7 = {"0", "join_table.field2"};
+            FieldSourceDefinition expectFieldSource2 = helper
+                    .createFieldSourceDefinition(params7);
+            expectFieldSourceList.add(expectFieldSource2);
 
-            selectDefinition.setFieldSourceDefinition(fieldSourceList.toArray(
-                    new FieldSourceDefinition[fieldSourceList.size()]));
+            expectDefinition.setFieldSourceDefinition(expectFieldSourceList
+                    .toArray(new FieldSourceDefinition[expectFieldSourceList
+                            .size()]));
 
-            selectDefinitionService.create(selectDefinition);
+            selectDefinitionService.create(expectDefinition);
 
-            SelectDefinition definition = selectDefinitionService
-                    .findSelectDefinitionByTableId(3);
+            // Assertion
+            TableMaster latestQuery = selectDefinitionService.findQueryAll()
+                    .get(0);
+            SelectDefinition actualDefinition = selectDefinitionService
+                    .findSelectDefinitionByTableId(latestQuery.getTableId());
 
             // クエリ名が登録できること
-            TableMaster tableMaster = definition.getTableMaster();
-            assertThat(tableMaster.getEntityType(), is(2));
-            assertThat(tableMaster.getPhysicalName(), is("query1"));
-            assertThat(tableMaster.getLogicalName(), is("クエリ1"));
+            TableMaster actualTable = actualDefinition.getTableMaster();
+            assertThat(actualTable.getEntityType(), is(2));
+            assertThat(actualTable.getPhysicalName(),
+                    is(expectTable.getPhysicalName()));
+            assertThat(actualTable.getLogicalName(),
+                    is(expectTable.getLogicalName()));
 
             // クエリのフィールド定義が登録できること
-            FieldMaster[] fieldMasterArray = definition.getFieldMaster();
-            assertThat(fieldMasterArray.length, is(2));
+            FieldMaster[] actualFieldArray = actualDefinition.getFieldMaster();
+            assertThat(actualFieldArray.length, is(2));
 
-            assertThat(fieldMasterArray[0].getNo(), is(1));
-            assertThat(fieldMasterArray[0].getPhysicalName(), is("field3_1"));
-            assertThat(fieldMasterArray[0].getLogicalName(), is("フィールド3_1"));
+            FieldMaster actualField1 = actualFieldArray[0];
+            assertThat(actualField1.getNo(), is(expectField1.getNo()));
+            assertThat(actualField1.getPhysicalName(),
+                    is(expectField1.getPhysicalName()));
+            assertThat(actualField1.getLogicalName(),
+                    is(expectField1.getLogicalName()));
 
-            assertThat(fieldMasterArray[1].getNo(), is(2));
-            assertThat(fieldMasterArray[1].getPhysicalName(), is("field3_2"));
-            assertThat(fieldMasterArray[1].getLogicalName(), is("フィールド3_2"));
+            FieldMaster actualField2 = actualFieldArray[1];
+            assertThat(actualField2.getNo(), is(expectField2.getNo()));
+            assertThat(actualField2.getPhysicalName(),
+                    is(expectField2.getPhysicalName()));
+            assertThat(actualField2.getLogicalName(),
+                    is(expectField2.getLogicalName()));
 
             // 取得元テーブルの定義が登録できること
-            TableSourceDefinition[] tableSourceArray = definition
+            TableSourceDefinition[] actualTableSourceArray = actualDefinition
                     .getTableSourceDefinition();
-            assertThat(tableSourceArray.length, is(2));
+            assertThat(actualTableSourceArray.length, is(2));
 
-            assertThat(tableSourceArray[0].getNo(), is(1));
-            assertThat(tableSourceArray[0].getSourceId(), is(1));
+            TableSourceDefinition actualTableSource1 = actualTableSourceArray[0];
+            assertThat(actualTableSource1.getNo(),
+                    is(expectTableSource1.getNo()));
+            assertThat(actualTableSource1.getSourceId(),
+                    is(expectTableSource1.getSourceId()));
+            assertThat(actualTableSource1.getJoinCondition(),
+                    is(expectTableSource1.getJoinCondition()));
 
-            assertThat(tableSourceArray[1].getNo(), is(2));
-            assertThat(tableSourceArray[1].getSourceId(), is(2));
-            assertThat(tableSourceArray[1].getJoinCondition(),
-                    is("base_table.field1_1=join_table.field_2_1"));
+            TableSourceDefinition actualTableSource2 = actualTableSourceArray[1];
+            assertThat(actualTableSource2.getNo(),
+                    is(expectTableSource2.getNo()));
+            assertThat(actualTableSource2.getSourceId(),
+                    is(expectTableSource2.getSourceId()));
+            assertThat(actualTableSource2.getJoinCondition(),
+                    is(expectTableSource2.getJoinCondition()));
 
             // 取得元フィールドの定義が登録できること
-            FieldSourceDefinition[] fieldSourceArray = selectDefinition
+            FieldSourceDefinition[] actualFieldSourceArray = expectDefinition
                     .getFieldSourceDefinition();
-            assertThat(fieldSourceArray.length, is(2));
+            assertThat(actualFieldSourceArray.length, is(2));
 
-            assertThat(fieldSourceArray[0].getSourceDefinition(),
-                    is("base_table.field1_1"));
-            assertThat(fieldSourceArray[0].getFieldId(),
-                    is(fieldMasterArray[0].getFieldId()));
+            FieldSourceDefinition actualFieldSource1 = actualFieldSourceArray[0];
+            assertThat(actualFieldSource1.getFieldId(),
+                    is(actualField1.getFieldId()));
+            assertThat(actualFieldSource1.getSourceDefinition(),
+                    is(expectFieldSource1.getSourceDefinition()));
 
-            assertThat(fieldSourceArray[1].getSourceDefinition(),
-                    is("join_table.field2_2"));
-            assertThat(fieldSourceArray[1].getFieldId(),
-                    is(fieldMasterArray[1].getFieldId()));
+            FieldSourceDefinition actualFieldSource2 = actualFieldSourceArray[1];
+            assertThat(actualFieldSource2.getFieldId(),
+                    is(actualField2.getFieldId()));
+            assertThat(actualFieldSource2.getSourceDefinition(),
+                    is(expectFieldSource2.getSourceDefinition()));
         }
     }
 
     public static class クエリ定義が存在する場合 {
-        private TableDefinitionService tableDefinitionService;
+        private static SelectDefinitionTestHelper helper;
+        private static TableDefinitionService tableDefinitionService;
         private SelectDefinitionService selectDefinitionService;
 
-        @Before
-        public void setUp() throws Exception {
-            selectDefinitionService = new SelectDefinitionServiceImpl();
-            selectDefinitionService.deleteAll();
+        @BeforeClass
+        public static void setUpBeforeClass() throws Exception {
+            helper = new SelectDefinitionTestHelper();
+            tableDefinitionService = new TableDefinitionServiceImpl();
+            tableDefinitionService.deleteAll();
 
             // ベーステーブル
             TableDefinition baseDefinition = new TableDefinition();
 
+            String[] params1 = {"base_table", "ベーステーブル"};
+            TableMaster baseTable = helper.createTableMaster(params1);
+            baseDefinition.setTableMaster(baseTable);
+
+            List<FieldMaster> fieldList1 = new ArrayList<>();
+
             {
-                TableMaster baseTable = new TableMaster();
-                baseTable.setPhysicalName("base_table");
-                baseTable.setLogicalName("ベーステーブル");
+                String[] params2 = {"0", "1", "base_table.field1",
+                        "ベーステーブル.フィールド1", "1 つ目のフィールド"};
+                FieldMaster field1 = helper.createFieldMaster(params2);
+                fieldList1.add(field1);
 
-                baseDefinition.setTableMaster(baseTable);
-
-                List<FieldMaster> fieldMasterList1 = new ArrayList<>();
-
-                FieldMaster field1 = new FieldMaster();
-                field1.setNo(1);
-                field1.setPhysicalName("field1_1");
-                field1.setLogicalName("フィールド1-1");
-                fieldMasterList1.add(field1);
-
-                FieldMaster field2 = new FieldMaster();
-                field2.setNo(2);
-                field2.setPhysicalName("field1_2");
-                field2.setLogicalName("フィールド1-2");
-                fieldMasterList1.add(field2);
-
-                baseDefinition.setFieldMaster(fieldMasterList1
-                        .toArray(new FieldMaster[fieldMasterList1.size()]));
+                String[] params3 = {"0", "2", "base_table.field2",
+                        "ベーステーブル.フィールド2", "2 つ目のフィールド"};
+                FieldMaster field2 = helper.createFieldMaster(params3);
+                fieldList1.add(field2);
             }
 
-            tableDefinitionService = new TableDefinitionServiceImpl();
+            baseDefinition.setFieldMaster(
+                    fieldList1.toArray(new FieldMaster[fieldList1.size()]));
+
             tableDefinitionService.create(baseDefinition);
 
             // 結合用テーブル
             TableDefinition joinDefinition = new TableDefinition();
 
+            String[] params4 = {"join_table", "結合用テーブル"};
+            TableMaster joinTable = helper.createTableMaster(params4);
+            joinDefinition.setTableMaster(joinTable);
+
+            List<FieldMaster> fieldList2 = new ArrayList<>();
+
             {
-                TableMaster joinTable = new TableMaster();
-                joinTable.setPhysicalName("join_table");
-                joinTable.setLogicalName("結合用テーブル");
+                String[] params5 = {"0", "1", "join_table.field1",
+                        "結合用テーブル.フィールド1", "1 つ目のフィールド"};
+                FieldMaster field1 = helper.createFieldMaster(params5);
+                fieldList2.add(field1);
 
-                joinDefinition.setTableMaster(joinTable);
-
-                List<FieldMaster> fieldMasterList2 = new ArrayList<>();
-
-                FieldMaster field1 = new FieldMaster();
-                field1.setNo(1);
-                field1.setPhysicalName("field2_1");
-                field1.setLogicalName("フィールド2-1");
-                fieldMasterList2.add(field1);
-
-                FieldMaster field2 = new FieldMaster();
-                field2.setNo(2);
-                field2.setPhysicalName("field2_2");
-                field2.setLogicalName("フィールド2-2");
-                fieldMasterList2.add(field2);
-
-                joinDefinition.setFieldMaster(fieldMasterList2
-                        .toArray(new FieldMaster[fieldMasterList2.size()]));
+                String[] params6 = {"0", "2", "join_table.field2",
+                        "結合用テーブル.フィールド2", "2 つ目のフィールド"};
+                FieldMaster field2 = helper.createFieldMaster(params6);
+                fieldList2.add(field2);
             }
 
-            tableDefinitionService.create(joinDefinition);
+            joinDefinition.setFieldMaster(
+                    fieldList2.toArray(new FieldMaster[fieldList2.size()]));
 
+            tableDefinitionService.create(joinDefinition);
+        }
+
+        @AfterClass
+        public static void tearDownAfterClass() throws Exception {
+            tableDefinitionService.deleteAll();
+        }
+
+        @Before
+        public void setUp() throws Exception {
             // クエリ定義
             SelectDefinition selectDefinition = new SelectDefinition();
 
             // クエリ名の定義
-            {
-                TableMaster query1 = new TableMaster();
-                query1.setPhysicalName("query1");
-                query1.setLogicalName("クエリ1");
-
-                selectDefinition.setTableMaster(query1);
-
-                // 取得元テーブルの定義
-                List<TableSourceDefinition> tableSourceDefinitionList = new ArrayList<>();
-
-                TableSourceDefinition baseTable = new TableSourceDefinition();
-                baseTable.setNo(1);
-                baseTable.setSourceId(1);
-                tableSourceDefinitionList.add(baseTable);
-
-                TableSourceDefinition joinTable = new TableSourceDefinition();
-                joinTable.setNo(2);
-                joinTable.setSourceId(2);
-                joinTable.setJoinCondition(
-                        "base_table.field1_1=join_table.field_2_1");
-                tableSourceDefinitionList.add(joinTable);
-
-                selectDefinition.setTableSourceDefinition(
-                        tableSourceDefinitionList.toArray(
-                                new TableSourceDefinition[tableSourceDefinitionList
-                                        .size()]));
-
-                // フィールド名の定義
-                List<FieldMaster> fieldList = new ArrayList<>();
-
-                FieldMaster field1 = new FieldMaster();
-                field1.setNo(1);
-                field1.setPhysicalName("field3_1");
-                field1.setLogicalName("フィールド3_1");
-                fieldList.add(field1);
-
-                FieldMaster field2 = new FieldMaster();
-                field2.setNo(2);
-                field2.setPhysicalName("field3_2");
-                field2.setLogicalName("フィールド3_2");
-                fieldList.add(field2);
-
-                selectDefinition.setFieldMaster(
-                        fieldList.toArray(new FieldMaster[fieldList.size()]));
-
-                // 取得元フィールドの定義
-                List<FieldSourceDefinition> fieldSourceList = new ArrayList<>();
-
-                FieldSourceDefinition fieldSource1 = new FieldSourceDefinition();
-                fieldSource1.setSourceDefinition("base_table.field1_1");
-                fieldSourceList.add(fieldSource1);
-
-                FieldSourceDefinition fieldSource2 = new FieldSourceDefinition();
-                fieldSource2.setSourceDefinition("join_table.field2_2");
-                fieldSourceList.add(fieldSource2);
-
-                selectDefinition.setFieldSourceDefinition(fieldSourceList
-                        .toArray(new FieldSourceDefinition[fieldSourceList
-                                .size()]));
-            }
-
-            selectDefinitionService.create(selectDefinition);
-        }
-
-        @After
-        public void tearDown() throws Exception {
-            selectDefinitionService.deleteAll();
-        }
-
-        @Test
-        public void findTableAll実行時に3件のレコードが取得されること() throws Exception {
-            List<TableMaster> tableMasterList = selectDefinitionService
-                    .findTableAll();
-            assertThat(tableMasterList.size(), is(3));
-        }
-
-        @Test
-        public void create実行時にレコードの登録ができること() throws Exception {
-            SelectDefinition selectDefinition = new SelectDefinition();
-
-            // クエリ名の定義
-            TableMaster query2 = new TableMaster();
-            query2.setPhysicalName("query2");
-            query2.setLogicalName("クエリ2");
-
-            selectDefinition.setTableMaster(query2);
+            String[] params1 = {"query1", "クエリ1"};
+            TableMaster query1 = helper.createTableMaster(params1);
+            selectDefinition.setTableMaster(query1);
 
             // 取得元テーブルの定義
-            List<TableSourceDefinition> tableSourceDefinitionList = new ArrayList<>();
+            List<TableSourceDefinition> tableSourceList = new ArrayList<>();
 
-            TableSourceDefinition baseQuery = new TableSourceDefinition();
-            baseQuery.setNo(1);
-            baseQuery.setSourceId(3);
-            tableSourceDefinitionList.add(baseQuery);
+            String[] params2 = {"0", "1", "1", ""};
+            TableSourceDefinition tableSource1 = helper
+                    .createTableSourceDefinition(params2);
+            tableSourceList.add(tableSource1);
 
-            selectDefinition.setTableSourceDefinition(tableSourceDefinitionList
-                    .toArray(new TableSourceDefinition[tableSourceDefinitionList
-                            .size()]));
+            String[] params3 = {"0", "2", "2",
+                    "base_table.field1 = join_table.field1"};
+            TableSourceDefinition tableSource2 = helper
+                    .createTableSourceDefinition(params3);
+            tableSourceList.add(tableSource2);
+
+            selectDefinition.setTableSourceDefinition(tableSourceList.toArray(
+                    new TableSourceDefinition[tableSourceList.size()]));
 
             // フィールド名の定義
             List<FieldMaster> fieldList = new ArrayList<>();
 
-            FieldMaster field1 = new FieldMaster();
-            field1.setNo(1);
-            field1.setPhysicalName("field4_1");
-            field1.setLogicalName("フィールド4_1");
+            String[] params4 = {"0", "1", "query1.field1", "クエリ1.フィールド1",
+                    "1 つ目のフィールド"};
+            FieldMaster field1 = helper.createFieldMaster(params4);
             fieldList.add(field1);
 
-            FieldMaster field2 = new FieldMaster();
-            field2.setNo(2);
-            field2.setPhysicalName("field4_2");
-            field2.setLogicalName("フィールド4_2");
+            String[] params5 = {"0", "2", "query1.field2", "クエリ1.フィールド2",
+                    "2 つ目のフィールド"};
+            FieldMaster field2 = helper.createFieldMaster(params5);
             fieldList.add(field2);
 
             selectDefinition.setFieldMaster(
@@ -415,64 +361,142 @@ public class SelectDefinitionServiceTest {
             // 取得元フィールドの定義
             List<FieldSourceDefinition> fieldSourceList = new ArrayList<>();
 
-            FieldSourceDefinition fieldSource1 = new FieldSourceDefinition();
-            fieldSource1.setSourceDefinition("query1.field3_1");
+            String[] params6 = {"0", "base_table.field1"};
+            FieldSourceDefinition fieldSource1 = helper
+                    .createFieldSourceDefinition(params6);
             fieldSourceList.add(fieldSource1);
 
-            FieldSourceDefinition fieldSource2 = new FieldSourceDefinition();
-            fieldSource2.setSourceDefinition("query1.field3_2");
+            String[] params7 = {"0", "join_table.field2"};
+            FieldSourceDefinition fieldSource2 = helper
+                    .createFieldSourceDefinition(params7);
             fieldSourceList.add(fieldSource2);
 
             selectDefinition.setFieldSourceDefinition(fieldSourceList.toArray(
                     new FieldSourceDefinition[fieldSourceList.size()]));
 
+            selectDefinitionService = new SelectDefinitionServiceImpl();
             selectDefinitionService.create(selectDefinition);
+        }
 
-            List<TableMaster> tableList = selectDefinitionService
-                    .findTableAll();
-            assertThat(tableList.size(), is(4));
+        @After
+        public void tearDown() throws Exception {
+            tableDefinitionService.deleteByEntityType(2);
+        }
+
+        @Test
+        public void findQueryAll実行時に1件のレコードが返されること() throws Exception {
+            List<TableMaster> tableMasterList = selectDefinitionService
+                    .findQueryAll();
+            assertThat(tableMasterList.size(), is(1));
+        }
+
+        @Test
+        public void create実行時にレコードの登録ができること() throws Exception {
+            SelectDefinition expectDefinition = new SelectDefinition();
+
+            // クエリ名の定義
+            String[] params1 = {"query2", "クエリ2"};
+            TableMaster expectTable = helper.createTableMaster(params1);
+            expectDefinition.setTableMaster(expectTable);
+
+            // 取得元テーブルの定義
+            List<TableSourceDefinition> expectTableSourceList = new ArrayList<>();
+
+            String[] params2 = {"0", "1", "1", ""};
+            TableSourceDefinition expectTableSource1 = helper
+                    .createTableSourceDefinition(params2);
+            expectTableSourceList.add(expectTableSource1);
+
+            expectDefinition.setTableSourceDefinition(expectTableSourceList
+                    .toArray(new TableSourceDefinition[expectTableSourceList
+                            .size()]));
+
+            // フィールド名の定義
+            List<FieldMaster> expectFieldList = new ArrayList<>();
+
+            String[] params3 = {"0", "1", "query2.field1", "クエリ2.フィールド1",
+                    "1 つ目のフィールド"};
+            FieldMaster expectField1 = helper.createFieldMaster(params3);
+            expectFieldList.add(expectField1);
+
+            String[] params4 = {"0", "2", "query2.field2", "クエリ2.フィールド2",
+                    "2 つ目のフィールド"};
+            FieldMaster expectField2 = helper.createFieldMaster(params4);
+            expectFieldList.add(expectField2);
+
+            expectDefinition.setFieldMaster(expectFieldList
+                    .toArray(new FieldMaster[expectFieldList.size()]));
+
+            // 取得元フィールドの定義
+            List<FieldSourceDefinition> expectFieldSourceList = new ArrayList<>();
+
+            String[] params5 = {"0", "base_table.field1"};
+            FieldSourceDefinition expectFieldSource1 = helper
+                    .createFieldSourceDefinition(params5);
+            expectFieldSourceList.add(expectFieldSource1);
+
+            String[] params6 = {"0", "base_table.field2"};
+            FieldSourceDefinition expectFieldSource2 = helper
+                    .createFieldSourceDefinition(params6);
+            expectFieldSourceList.add(expectFieldSource2);
+
+            expectDefinition.setFieldSourceDefinition(expectFieldSourceList
+                    .toArray(new FieldSourceDefinition[expectFieldSourceList
+                            .size()]));
+
+            selectDefinitionService.create(expectDefinition);
+
+            // Assertion
+            List<TableMaster> actualTableList = selectDefinitionService
+                    .findQueryAll();
+            assertThat(actualTableList.size(), is(2));
         }
 
         @Test
         public void update実行時にレコードの更新ができること() throws Exception {
+            TableMaster latestQuery = selectDefinitionService.findQueryAll()
+                    .get(0);
+
             // 更新前のクエリ定義
-            SelectDefinition selectDefinition1 = selectDefinitionService
-                    .findSelectDefinitionByTableId(3);
+            SelectDefinition expectDefinition = selectDefinitionService
+                    .findSelectDefinitionByTableId(latestQuery.getTableId());
 
-            TableSourceDefinition[] tableSource1 = selectDefinition1
+            TableSourceDefinition[] expectTableSourceArray = expectDefinition
                     .getTableSourceDefinition();
-            tableSource1[1].setJoinCondition("updated condition");
 
-            selectDefinition1.setTableSourceDefinition(tableSource1);
+            TableSourceDefinition expectTableSource = expectTableSourceArray[1];
+            expectTableSource.setJoinCondition("updated condition");
 
-            FieldSourceDefinition[] fieldSource1 = selectDefinition1
+            FieldSourceDefinition[] expectFieldSourceArray = expectDefinition
                     .getFieldSourceDefinition();
-            fieldSource1[1].setSourceDefinition("updated field source");
+            FieldSourceDefinition expectFieldSource = expectFieldSourceArray[1];
+            expectFieldSource.setSourceDefinition("updated field source");
 
-            selectDefinition1.setFieldSourceDefinition(fieldSource1);
-
-            selectDefinitionService.update(selectDefinition1);
+            selectDefinitionService.update(expectDefinition);
 
             // 更新後のクエリ定義
-            SelectDefinition selectDefinition2 = selectDefinitionService
-                    .findSelectDefinitionByTableId(3);
+            SelectDefinition actualDefinition = selectDefinitionService
+                    .findSelectDefinitionByTableId(latestQuery.getTableId());
 
-            TableSourceDefinition[] tableSource2 = selectDefinition2
+            TableSourceDefinition[] actualTableSourceArray = actualDefinition
                     .getTableSourceDefinition();
 
-            assertThat(tableSource2[1].getNo(), is(tableSource1[1].getNo()));
-            assertThat(tableSource2[1].getSourceId(),
-                    is(tableSource1[1].getSourceId()));
-            assertThat(tableSource2[1].getJoinCondition(),
-                    is(tableSource1[1].getJoinCondition()));
+            TableSourceDefinition actualTableSource = actualTableSourceArray[1];
+            assertThat(actualTableSource.getNo(),
+                    is(expectTableSource.getNo()));
+            assertThat(actualTableSource.getSourceId(),
+                    is(expectTableSource.getSourceId()));
+            assertThat(actualTableSource.getJoinCondition(),
+                    is(expectTableSource.getJoinCondition()));
 
-            FieldSourceDefinition[] fieldSource2 = selectDefinition2
+            FieldSourceDefinition[] actualFieldSourceArray = actualDefinition
                     .getFieldSourceDefinition();
 
-            assertThat(fieldSource2[1].getFieldId(),
-                    is(fieldSource1[1].getFieldId()));
-            assertThat(fieldSource2[1].getSourceDefinition(),
-                    is(fieldSource1[1].getSourceDefinition()));
+            FieldSourceDefinition actualFieldSource = actualFieldSourceArray[1];
+            assertThat(actualFieldSource.getFieldId(),
+                    is(expectFieldSource.getFieldId()));
+            assertThat(actualFieldSource.getSourceDefinition(),
+                    is(expectFieldSource.getSourceDefinition()));
         }
     }
 }
