@@ -69,6 +69,16 @@ public interface TableDefinitionService {
     public void deleteByTableId(int tableId) throws Exception;
 
     /**
+     * entity_type をキーにテーブル定義を削除する。
+     * 
+     * @param entityType
+     *            削除対象とするテーブル定義の entity_type を指定する。
+     * @throws Exception
+     *             {@link java.lang.Exception}
+     */
+    public void deleteByEntityType(int entityType) throws Exception;
+
+    /**
      * テーブル定義を全件削除する。
      *
      * @throws Exception
