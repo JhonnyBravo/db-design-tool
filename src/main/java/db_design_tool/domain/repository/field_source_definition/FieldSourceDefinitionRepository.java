@@ -20,6 +20,18 @@ public interface FieldSourceDefinitionRepository {
     public List<FieldSourceDefinition> findAll() throws Exception;
 
     /**
+     * table_id をキーにレコードを検索する。
+     *
+     * @param tableId
+     *            検索対象とする table_id を指定する。
+     * @return recordset 条件に合致するレコードを取得する。
+     * @throws Exception
+     *             {@link java.lang.Exception}
+     */
+    public List<FieldSourceDefinition> findByTableId(
+            @Param("tableId") int tableId) throws Exception;
+
+    /**
      * field_id をキーにレコードを検索する。
      *
      * @param fieldId
