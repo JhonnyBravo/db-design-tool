@@ -323,6 +323,43 @@ public class FieldSourceDefinitionRepositoryTest {
         }
 
         @Test
+        public void findByTableId実行時に2件のレコードが返されること() throws Exception {
+            try (SqlSession session = factory.openSession()) {
+                // TableMaster
+                TableMasterRepository tableMasterRepository = session
+                        .getMapper(TableMasterRepository.class);
+                TableMaster query1 = tableMasterRepository
+                        .findByLatestTableId();
+
+                // FieldSourceDefinition
+                fieldSourceDefinitionRepository = session
+                        .getMapper(FieldSourceDefinitionRepository.class);
+                FieldSourceDefinition expectDefinition1 = fieldSourceDefinitionRepository
+                        .findByFieldId(1);
+                FieldSourceDefinition expectDefinition2 = fieldSourceDefinitionRepository
+                        .findByFieldId(2);
+
+                List<FieldSourceDefinition> actualDefinitionList = fieldSourceDefinitionRepository
+                        .findByTableId(query1.getTableId());
+                assertThat(actualDefinitionList.size(), is(2));
+
+                FieldSourceDefinition actualDefinition1 = actualDefinitionList
+                        .get(0);
+                assertThat(actualDefinition1.getDefinitionId(),
+                        is(expectDefinition1.getDefinitionId()));
+                assertThat(actualDefinition1.getSourceDefinition(),
+                        is(expectDefinition1.getSourceDefinition()));
+
+                FieldSourceDefinition actualDefinition2 = actualDefinitionList
+                        .get(1);
+                assertThat(actualDefinition2.getDefinitionId(),
+                        is(expectDefinition2.getDefinitionId()));
+                assertThat(actualDefinition2.getSourceDefinition(),
+                        is(expectDefinition2.getSourceDefinition()));
+            }
+        }
+
+        @Test
         public void create実行時にレコードを登録できてtrueが返されること() throws Exception {
             try (SqlSession session = factory.openSession()) {
                 // TableMaster
