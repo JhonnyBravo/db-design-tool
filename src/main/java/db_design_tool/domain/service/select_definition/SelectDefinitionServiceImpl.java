@@ -79,14 +79,8 @@ public class SelectDefinitionServiceImpl implements SelectDefinitionService {
             // FieldSourceDefinition
             fieldSourceDefinitionRepository = session
                     .getMapper(FieldSourceDefinitionRepository.class);
-
-            // View 用意するか取得系クエリの SQL を書き直すかした方が良さそう。
-            for (FieldMaster fieldMaster : fieldMasterList) {
-                FieldSourceDefinition fieldSourceDefinition = fieldSourceDefinitionRepository
-                        .findByFieldId(fieldMaster.getFieldId());
-                fieldSourceDefinitionList.add(fieldSourceDefinition);
-            }
-
+            fieldSourceDefinitionList = fieldSourceDefinitionRepository
+                    .findByTableId(tableId);
             selectDefinition.setFieldSourceDefinition(fieldSourceDefinitionList
                     .toArray(new FieldSourceDefinition[fieldSourceDefinitionList
                             .size()]));
