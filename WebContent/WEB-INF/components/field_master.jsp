@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<table id="tableDefinition" class="table">
+<table id="fieldMaster" class="table">
     <thead class="thead-dark">
         <tr>
             <th scope="col">No.</th>
@@ -15,14 +15,14 @@
     <tbody>
         <c:forEach var="fieldMaster" items="${fieldMasterArray}" varStatus="status">
             <tr>
-                <th scope="row">${fieldMaster.no}<input type="hidden" name="no"
+                <th scope="row">${fieldMaster.no}<input type="hidden" name="fieldMaster.no"
                     value="${fieldMaster.no}" /></th>
                 <td>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">物理名</span>
                         </div>
-                        <input type="text" name="physicalFieldName" class="form-control"
+                        <input type="text" name="fieldMaster.physicalName" class="form-control"
                             value="${fieldMaster.physicalName}">
                     </div> <c:choose>
                         <c:when test="${fieldMaster.physicalNameError != null}">
@@ -33,21 +33,20 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">論理名</span>
                         </div>
-                        <input type="text" name="logicalFieldName" class="form-control"
+                        <input type="text" name="fieldMaster.logicalName" class="form-control"
                             value="${fieldMaster.logicalName}">
-                    </div> <input type="hidden" name="fieldId" value="${fieldMaster.fieldId}" /> <c:choose>
+                    </div> <input type="hidden" name="fieldMaster.fieldId" value="${fieldMaster.fieldId}" /> <c:choose>
                         <c:when test="${fieldMaster.logicalNameError != null}">
                             <p>${fieldMaster.logicalNameError}</p>
                         </c:when>
                     </c:choose>
-
                 </td>
                 <td>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">型</span>
                         </div>
-                        <select class="custom-select" name="dataType">
+                        <select class="custom-select" name="fieldMaster.dataType">
                             <c:choose>
                                 <c:when test="${fieldMaster.dataType == 1}">
                                     <option value="1" selected>String</option>
@@ -110,7 +109,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">桁数</span>
                         </div>
-                        <input type="text" name="dataSize" class="form-control"
+                        <input type="text" name="fieldMaster.dataSize" class="form-control"
                             value="${fieldMaster.dataSize}">
                     </div> <c:choose>
                         <c:when test="${fieldMaster.dataSizeError != null}">
@@ -118,7 +117,7 @@
                         </c:when>
                     </c:choose>
                 </td>
-                <td><textarea name="description" class="form-control" rows="3">${fieldMaster.description}</textarea>
+                <td><textarea name="fieldMaster.description" class="form-control" rows="3">${fieldMaster.description}</textarea>
                     <c:choose>
                         <c:when test="${fieldMaster.descriptionError != null}">
                             <p>${fieldMaster.descriptionError}</p>
