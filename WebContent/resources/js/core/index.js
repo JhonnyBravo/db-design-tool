@@ -7,7 +7,7 @@
             $(this).find("tbody th").each(
                     function (index) {
                         $(this).text(index + 1).append(
-                                "<input type='hidden' name='no' value='"
+                                "<input type='hidden' name='fieldMaster.no' value='"
                                         + (index + 1) + "'/>");
                     });
         },
