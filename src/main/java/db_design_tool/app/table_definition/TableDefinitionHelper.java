@@ -22,14 +22,16 @@ public class TableDefinitionHelper {
     public TableMaster convertToTableMaster(HttpServletRequest request) {
         final TableMaster tableMaster = new TableMaster();
 
-        final String tableId = request.getParameter("tableId");
+        final String tableId = request.getParameter("tableMaster.tableId");
 
         if (tableId != null && !tableId.isEmpty()) {
             tableMaster.setTableId(Integer.parseInt(tableId));
         }
 
-        tableMaster.setPhysicalName(request.getParameter("physicalTableName"));
-        tableMaster.setLogicalName(request.getParameter("logicalTableName"));
+        tableMaster.setPhysicalName(
+                request.getParameter("tableMaster.physicalName"));
+        tableMaster.setLogicalName(
+                request.getParameter("tableMaster.logicalName"));
 
         return tableMaster;
     }
@@ -44,46 +46,50 @@ public class TableDefinitionHelper {
     public FieldMaster[] convertToFieldMaster(HttpServletRequest request) {
         final Map<String, String[]> definitionMap = request.getParameterMap();
         FieldMaster[] fieldMasterArray = null;
-        final String tableId = request.getParameter("tableId");
+        final String tableId = request.getParameter("tableMaster.tableId");
 
-        if (definitionMap.containsKey("no")) {
+        if (definitionMap.containsKey("fieldMaster.no")) {
             final List<FieldMaster> fieldMasterList = new ArrayList<>();
 
-            for (int i = 0; i < definitionMap.get("no").length; i++) {
+            for (int i = 0; i < definitionMap
+                    .get("fieldMaster.no").length; i++) {
                 final FieldMaster fieldMaster = new FieldMaster();
 
                 if (tableId != null && !tableId.isEmpty()) {
                     fieldMaster.setTableId(Integer.parseInt(tableId));
 
-                    final int fieldId = Integer
-                            .parseInt(definitionMap.get("fieldId")[i]);
+                    final int fieldId = Integer.parseInt(
+                            definitionMap.get("fieldMaster.fieldId")[i]);
                     fieldMaster.setFieldId(fieldId);
                 }
 
-                final int no = Integer.parseInt(definitionMap.get("no")[i]);
+                final int no = Integer
+                        .parseInt(definitionMap.get("fieldMaster.no")[i]);
                 fieldMaster.setNo(no);
 
                 fieldMaster.setPhysicalName(
-                        definitionMap.get("physicalFieldName")[i]);
+                        definitionMap.get("fieldMaster.physicalName")[i]);
 
                 fieldMaster.setLogicalName(
-                        definitionMap.get("logicalFieldName")[i]);
+                        definitionMap.get("fieldMaster.logicalName")[i]);
 
                 int dataType = Integer
-                        .parseInt(definitionMap.get("dataType")[i]);
+                        .parseInt(definitionMap.get("fieldMaster.dataType")[i]);
                 fieldMaster.setDataType(dataType);
 
-                if (!definitionMap.get("dataSize")[i].isEmpty()) {
-                    if (!definitionMap.get("dataSize")[i].matches("[0-9]*")) {
+                if (!definitionMap.get("fieldMaster.dataSize")[i].isEmpty()) {
+                    if (!definitionMap.get("fieldMaster.dataSize")[i]
+                            .matches("[0-9]*")) {
                         fieldMaster.setDataSizeError("数値を指定してください。");
                     } else {
-                        final int dataSize = Integer
-                                .parseInt(definitionMap.get("dataSize")[i]);
+                        final int dataSize = Integer.parseInt(
+                                definitionMap.get("fieldMaster.dataSize")[i]);
                         fieldMaster.setDataSize(dataSize);
                     }
                 }
 
-                fieldMaster.setDescription(definitionMap.get("description")[i]);
+                fieldMaster.setDescription(
+                        definitionMap.get("fieldMaster.description")[i]);
 
                 fieldMasterList.add(fieldMaster);
             }
