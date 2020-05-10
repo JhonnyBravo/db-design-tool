@@ -1,77 +1,77 @@
 @charset "UTF-8";
 
 div.input-group {
-    margin-top: 2.5px;
+  margin-top: 2.5px;
 }
 
 .material-icons.md-green {
-    color: rgb(0, 255, 0);
+  color: rgb(0, 255, 0);
 }
 
 #template {
-    display: none;
+  display: none;
 }
 
 /*
- * #tableDefinition
+ * #fieldMaster
  */
-#tableDefinition {
-    width: 100%;
-    margin-top: 10px;
+#fieldMaster {
+  width: 100%;
+  margin-top: 10px;
 }
 
 /*
- * #tableDefinition th
+ * #fieldMaster th
  */
-#tableDefinition th {
-    vertical-align: middle;
+#fieldMaster th {
+  vertical-align: middle;
 }
 
-#tableDefinition th:nth-child(1) {
-    width: 5%;
+#fieldMaster th:nth-child(1) {
+  width: 5%;
 }
 
-#tableDefinition th:nth-child(2) {
-    width: 30%;
+#fieldMaster th:nth-child(2) {
+  width: 30%;
 }
 
-#tableDefinition th:nth-child(3) {
-    width: 15%;
+#fieldMaster th:nth-child(3) {
+  width: 15%;
 }
 
-#tableDefinition th:nth-child(4) {
-    width: 40%;
+#fieldMaster th:nth-child(4) {
+  width: 40%;
 }
 
-#tableDefinition th:nth-child(5) {
-    width: 5%;
+#fieldMaster th:nth-child(5) {
+  width: 5%;
 }
 
-#tableDefinition th:nth-child(6) {
-    width: 5%;
+#fieldMaster th:nth-child(6) {
+  width: 5%;
 }
 
 /*
- * #tableDefinition td
+ * #fieldMaster td
  */
-#tableDefinition td:nth-child(2) {
-    width: 30%;
+#fieldMaster td:nth-child(2) {
+  width: 30%;
 }
 
-#tableDefinition td:nth-child(3) {
-    width: 15%;
+#fieldMaster td:nth-child(3) {
+  width: 15%;
 }
 
-#tableDefinition td:nth-child(4) {
-    width: 40%;
+#fieldMaster td:nth-child(4) {
+  width: 40%;
 }
 
-#tableDefinition td:nth-child(5) {
-    width: 5%;
-    vertical-align: middle;
+#fieldMaster td:nth-child(5) {
+  width: 5%;
+  vertical-align: middle;
 }
 
-#tableDefinition td:nth-child(6) {
-    width: 5%;
-    vertical-align: middle;
+#fieldMaster td:nth-child(6) {
+  width: 5%;
+  vertical-align: middle;
 }
