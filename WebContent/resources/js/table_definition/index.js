@@ -4,7 +4,7 @@
 $(function () {
     // テーブル定義削除処理
     $("button.btn-danger").click(function () {
-        $("input[name='deleteFlag']").val(1);
+        $("input[name='tableMaster.deleteFlag']").val(1);
         $("form").submit();
     });
 
@@ -12,15 +12,15 @@ $(function () {
     $(".addRecord").click(
             function (e) {
                 e.preventDefault();
-                $("#tableDefinition").fieldMaster("addRecord",
-                        $("#definitionTemplate tbody tr"));
-                $("#tableDefinition").fieldMaster("resetNo");
+                $("#fieldMaster").fieldMaster("addRecord",
+                        $("#fieldMasterTemplate tbody tr"));
+                $("#fieldMaster").fieldMaster("resetNo");
 
                 // フィールド定義削除処理
                 $(".removeRecord").click(function (e) {
                     e.preventDefault();
                     $(this).fieldMaster("removeRecord");
-                    $("#tableDefinition").fieldMaster("resetNo");
+                    $("#fieldMaster").fieldMaster("resetNo");
                 });
 
                 // 一つ上に移動する。
@@ -28,7 +28,7 @@ $(function () {
                 $(".dropUpRecord").click(function (e) {
                     e.preventDefault();
                     $(this).fieldMaster("dropUpRecord");
-                    $("#tableDefinition").fieldMaster("resetNo");
+                    $("#fieldMaster").fieldMaster("resetNo");
                 });
 
                 // 一つ下に移動する。
@@ -36,7 +36,7 @@ $(function () {
                 $(".dropDownRecord").click(function (e) {
                     e.preventDefault();
                     $(this).fieldMaster("dropDownRecord");
-                    $("#tableDefinition").fieldMaster("resetNo");
+                    $("#fieldMaster").fieldMaster("resetNo");
                 });
             });
 
@@ -44,20 +44,20 @@ $(function () {
     $(".removeRecord").click(function (e) {
         e.preventDefault();
         $(this).fieldMaster("removeRecord");
-        $("#tableDefinition").fieldMaster("resetNo");
+        $("#fieldMaster").fieldMaster("resetNo");
     });
 
     // 一つ上に移動する。
     $(".dropUpRecord").click(function (e) {
         e.preventDefault();
         $(this).fieldMaster("dropUpRecord");
-        $("#tableDefinition").fieldMaster("resetNo");
+        $("#fieldMaster").fieldMaster("resetNo");
     });
 
     // 一つ下に移動する。
     $(".dropDownRecord").click(function (e) {
         e.preventDefault();
         $(this).fieldMaster("dropDownRecord");
-        $("#tableDefinition").fieldMaster("resetNo");
+        $("#fieldMaster").fieldMaster("resetNo");
     });
 });
