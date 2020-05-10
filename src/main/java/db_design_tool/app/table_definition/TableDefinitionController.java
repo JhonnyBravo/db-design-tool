@@ -60,7 +60,7 @@ public class TableDefinitionController extends HttpServlet {
 
             try {
 
-                if (!paramMap.containsKey("physicalTableName")) {
+                if (!paramMap.containsKey("tableMaster.physicalName")) {
                     final TableDefinition tableDefinition = service
                             .findTableDefinitionByTableId(
                                     Integer.parseInt(tableId));
@@ -138,7 +138,8 @@ public class TableDefinitionController extends HttpServlet {
 
         request.setAttribute("fieldMasterArray", fieldMasterArray);
 
-        int deleteFlag = Integer.parseInt(request.getParameter("deleteFlag"));
+        int deleteFlag = Integer
+                .parseInt(request.getParameter("tableMaster.deleteFlag"));
 
         if (deleteFlag == 1) {
             try {
