@@ -9,60 +9,60 @@ $(function () {
     });
 
     // 新規フィールド定義追加処理
-    $("#tableDefinition .addRecord").click(
+    $("#fieldSourceDefinition .addRecord").click(
             function (e) {
                 e.preventDefault();
-                $("#tableDefinition").fieldMaster("addRecord",
-                        $("#definitionTemplate tbody tr"));
-                $("#tableDefinition").fieldMaster("resetNo");
+                $("#fieldSourceDefinition").fieldMaster("addRecord",
+                        $("#fieldSourceDefinitionTemplate tbody tr"));
+                $("#fieldSourceDefinition").fieldMaster("resetNo");
 
                 // フィールド定義削除処理
-                $("#tableDefinition .removeRecord").click(function (e) {
+                $("#fieldSourceDefinition .removeRecord").click(function (e) {
                     e.preventDefault();
                     $(this).fieldMaster("removeRecord");
-                    $("#tableDefinition").fieldMaster("resetNo");
+                    $("#fieldSourceDefinition").fieldMaster("resetNo");
                 });
 
                 // 一つ上に移動する。
-                $("#tableDefinition .dropUpRecord").off("click");
-                $("#tableDefinition .dropUpRecord").click(function (e) {
+                $("#fieldSourceDefinition .dropUpRecord").off("click");
+                $("#fieldSourceDefinition .dropUpRecord").click(function (e) {
                     e.preventDefault();
                     $(this).fieldMaster("dropUpRecord");
-                    $("#tableDefinition").fieldMaster("resetNo");
+                    $("#fieldSourceDefinition").fieldMaster("resetNo");
                 });
 
                 // 一つ下に移動する。
-                $("#tableDefinition .dropDownRecord").off("click");
-                $("#tableDefinition .dropDownRecord").click(function (e) {
+                $("#fieldSourceDefinition .dropDownRecord").off("click");
+                $("#fieldSourceDefinition .dropDownRecord").click(function (e) {
                     e.preventDefault();
                     $(this).fieldMaster("dropDownRecord");
-                    $("#tableDefinition").fieldMaster("resetNo");
+                    $("#fieldSourceDefinition").fieldMaster("resetNo");
                 });
             });
 
     // フィールド定義削除処理
-    $("#tableDefinition .removeRecord").click(function (e) {
+    $("#fieldSourceDefinition .removeRecord").click(function (e) {
         e.preventDefault();
         $(this).fieldMaster("removeRecord");
-        $("#tableDefinition").fieldMaster("resetNo");
+        $("#fieldSourceDefinition").fieldMaster("resetNo");
     });
 
     // 一つ上に移動する。
-    $("#tableDefinition .dropUpRecord").click(function (e) {
+    $("#fieldSourceDefinition .dropUpRecord").click(function (e) {
         e.preventDefault();
         $(this).fieldMaster("dropUpRecord");
-        $("#tableDefinition").fieldMaster("resetNo");
+        $("#fieldSourceDefinition").fieldMaster("resetNo");
     });
 
     // 一つ下に移動する。
-    $("#tableDefinition .dropDownRecord").click(function (e) {
+    $("#fieldSourceDefinition .dropDownRecord").click(function (e) {
         e.preventDefault();
         $(this).fieldMaster("dropDownRecord");
-        $("#tableDefinition").fieldMaster("resetNo");
+        $("#fieldSourceDefinition").fieldMaster("resetNo");
     });
 
     // 新規結合テーブル編集用ダイアログを起動する。
-    $("#joinDefinition .addRecord").click(
+    $("#tableSourceDefinition .addRecord").click(
             function (e) {
                 e.preventDefault();
                 var definition = $("#joinDefinitionModal").sourceDialog(
@@ -79,26 +79,26 @@ $(function () {
                         "getDefinition");
 
                 if (definition.no != "0") {
-                    $("#joinDefinition tbody").sourceMaster("updateRecord",
+                    $("#tableSourceDefinition tbody").sourceMaster("updateRecord",
                             definition);
                     $("#joinDefinitionModal").modal("hide");
                     return;
                 }
 
-                $("#joinDefinition tbody").sourceMaster("addRecord",
-                        $("#joinDefinitionTemplate tbody tr"), definition);
-                $("#joinDefinition").sourceMaster("resetNo");
+                $("#tableSourceDefinition tbody").sourceMaster("addRecord",
+                        $("#tableSourceDefinitionTemplate tbody tr"), definition);
+                $("#tableSourceDefinition").sourceMaster("resetNo");
 
                 // 結合テーブル削除処理
-                $("#joinDefinition .removeRecord").click(function (e) {
+                $("#tableSourceDefinition .removeRecord").click(function (e) {
                     e.preventDefault();
                     $(this).sourceMaster("removeRecord");
-                    $("#joinDefinition").sourceMaster("resetNo");
+                    $("#tableSourceDefinition").sourceMaster("resetNo");
                 });
 
                 // 結合テーブル編集ダイアログ起動処理
-                $("#joinDefinition .updateRecord").off("click");
-                $("#joinDefinition .updateRecord").click(function (e) {
+                $("#tableSourceDefinition .updateRecord").off("click");
+                $("#tableSourceDefinition .updateRecord").click(function (e) {
                     e.preventDefault();
                     var definition = $(this).sourceMaster("getDefinition");
                     $("#joinDefinitionModal").sourceDialog("init", definition);
@@ -106,44 +106,44 @@ $(function () {
                 });
 
                 // 一つ上に移動する。
-                $("#joinDefinition .dropUpRecord").off("click");
-                $("#joinDefinition .dropUpRecord").click(function (e) {
+                $("#tableSourceDefinition .dropUpRecord").off("click");
+                $("#tableSourceDefinition .dropUpRecord").click(function (e) {
                     e.preventDefault();
                     $(this).sourceMaster("dropUpRecord");
-                    $("#joinDefinition").sourceMaster("resetNo");
+                    $("#tableSourceDefinition").sourceMaster("resetNo");
                 });
 
                 // 一つ下に移動する。
-                $("#joinDefinition .dropDownRecord").off("click");
-                $("#joinDefinition .dropDownRecord").click(function (e) {
+                $("#tableSourceDefinition .dropDownRecord").off("click");
+                $("#tableSourceDefinition .dropDownRecord").click(function (e) {
                     e.preventDefault();
                     $(this).sourceMaster("dropDownRecord");
-                    $("#joinDefinition").sourceMaster("resetNo");
+                    $("#tableSourceDefinition").sourceMaster("resetNo");
                 });
 
                 $("#joinDefinitionModal").modal("hide");
             });
 
     // 結合テーブル削除処理
-    $("#joinDefinition .removeRecord").click(function (e) {
+    $("#tableSourceDefinition .removeRecord").click(function (e) {
         e.preventDefault();
         $(this).sourceMaster("removeRecord");
-        $("#joinDefinition").sourceMaster("resetNo");
+        $("#tableSourceDefinition").sourceMaster("resetNo");
     });
 
     // 一つ上に移動する。
-    $("#joinDefinition .dropUpRecord").off("click");
-    $("#joinDefinition .dropUpRecord").click(function (e) {
+    $("#tableSourceDefinition .dropUpRecord").off("click");
+    $("#tableSourceDefinition .dropUpRecord").click(function (e) {
         e.preventDefault();
         $(this).sourceMaster("dropUpRecord");
-        $("#joinDefinition").sourceMaster("resetNo");
+        $("#tableSourceDefinition").sourceMaster("resetNo");
     });
 
     // 一つ下に移動する。
-    $("#joinDefinition .dropDownRecord").off("click");
-    $("#joinDefinition .dropDownRecord").click(function (e) {
+    $("#tableSourceDefinition .dropDownRecord").off("click");
+    $("#tableSourceDefinition .dropDownRecord").click(function (e) {
         e.preventDefault();
         $(this).sourceMaster("dropDownRecord");
-        $("#joinDefinition").sourceMaster("resetNo");
+        $("#tableSourceDefinition").sourceMaster("resetNo");
     });
 });
