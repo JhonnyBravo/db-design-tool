@@ -51,8 +51,8 @@ public class TableDefinitionController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-
         final String tableId = request.getParameter("tableId");
+        request.setAttribute("entityType", 1);
 
         if (tableId != null && !tableId.isEmpty()) {
             request.setAttribute("tableId", tableId);
