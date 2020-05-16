@@ -4,11 +4,19 @@
          * No 列の自動採番を実行する。
          */
         resetNo : function () {
+            var entityType = $("input[name='tableMaster.entityType']").val();
+
+            if (entityType == 1) {
+                var name = "fieldMaster.no";
+            } else if (entityType == 2) {
+                var name = "fieldSourceDefinition.no";
+            }
+
             $(this).find("tbody th").each(
                     function (index) {
                         $(this).text(index + 1).append(
-                                "<input type='hidden' name='fieldMaster.no' value='"
-                                        + (index + 1) + "'/>");
+                                "<input type='hidden' name='" + name
+                                        + "' value='" + (index + 1) + "'/>");
                     });
         },
         /**
@@ -136,7 +144,7 @@
                             $(this).find("tbody th").each(
                                     function (index) {
                                         $(this).text(index + 1).append(
-                                                "<input type='hidden' name='joinNo' value='"
+                                                "<input type='hidden' name='tableSourceDefinition.no' value='"
                                                         + (index + 1) + "'/>");
                                     });
                         },
@@ -158,7 +166,7 @@
                             $tableName.text(definition.tableName);
 
                             // テーブル ID
-                            var $tableIdInput = $("<input type='hidden' name='joinTableId'>");
+                            var $tableIdInput = $("<input type='hidden' name='tableSourceDefinition.sourceId'>");
                             $tableIdInput.val(definition.tableId);
                             $tableName.append($tableIdInput);
 
@@ -166,7 +174,7 @@
                             var $condition = template.find("td").eq(1);
                             $condition.text(definition.condition);
 
-                            var $conditionInput = $("<input type='hidden' name='joinCondition'>");
+                            var $conditionInput = $("<input type='hidden' name='tableSourceDefinition.joinCondition'>");
                             $conditionInput.val(definition.condition);
                             $condition.append($conditionInput);
 
@@ -182,14 +190,14 @@
                          */
                         updateRecord : function (definition) {
                             var $no = $(this).find(
-                                    "input[name='joinNo'][value='"
+                                    "input[name='tableSourceDefinition.no'][value='"
                                             + definition.no + "']").parent();
 
                             // テーブル名とテーブル ID の更新
                             var $tableName = $no.next();
 
                             var $tableIdInput = $tableName
-                                    .find("input[name='joinTableId']");
+                                    .find("input[name='tableSourceDefinition.sourceId']");
                             $tableIdInput.val(definition.tableId);
 
                             $tableName.text(definition.tableName);
@@ -199,7 +207,7 @@
                             var $condition = $tableName.next();
 
                             var $conditionInput = $condition
-                                    .find("input[name='joinCondition']");
+                                    .find("input[name='tableSourceDefinition.joinCondition']");
                             $conditionInput.val(definition.condition);
 
                             $condition.text(definition.condition);
@@ -214,12 +222,17 @@
                             var record = $(this).parent().parent();
                             var definition = {};
 
-                            definition.no = record.find("input[name='joinNo']")
+                            definition.no = record.find(
+                                    "input[name='tableSourceDefinition.no']")
                                     .val();
-                            definition.tableId = record.find(
-                                    "input[name='joinTableId']").val();
-                            definition.condition = record.find(
-                                    "input[name='joinCondition']").val();
+                            definition.tableId = record
+                                    .find(
+                                            "input[name='tableSourceDefinition.sourceId']")
+                                    .val();
+                            definition.condition = record
+                                    .find(
+                                            "input[name='tableSourceDefinition.joinCondition']")
+                                    .val();
 
                             return definition;
                         }
