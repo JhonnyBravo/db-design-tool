@@ -13,6 +13,7 @@ public class TableSourceDefinition implements Serializable {
     private int definitionId;
     private int no;
     private int sourceId;
+    private String sourceName;
     @Size(min = 0, max = 255)
     private String joinCondition;
     @Range(min = 0, max = 1)
@@ -61,6 +62,21 @@ public class TableSourceDefinition implements Serializable {
      */
     public void setSourceId(int sourceId) {
         this.sourceId = sourceId;
+    }
+
+    /**
+     * @return sourceName 取得元テーブルの物理名を返す。
+     */
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    /**
+     * @param sourceName
+     *            取得元テーブルの物理名を指定する。
+     */
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
     }
 
     /**
