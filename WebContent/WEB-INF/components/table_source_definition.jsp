@@ -21,9 +21,16 @@
                     value="${tableSourceDefinition.definitionId}">
                 </th>
                 <td>${tableSourceDefinition.sourceName}<input type="hidden"
-                    name="tableSourceDefinition.sourceId" value="${tableSourceDefinition.sourceId}"></td>
-                <td><input type="hidden" name="tableDefinition.joinCondition"
-                    value="${tableDefinition.joinCondition}"></td>
+                    name="tableSourceDefinition.sourceId" value="${tableSourceDefinition.sourceId}">
+                    <input type="hidden" name="tableSourceDefinition.sourceName"
+                    value="${tableSourceDefinition.sourceName}"></td>
+                <td>${tableSourceDefinition.joinCondition}<input type="hidden"
+                    name="tableSourceDefinition.joinCondition"
+                    value="${tableSourceDefinition.joinCondition}"> <c:choose>
+                        <c:when test="${tableSourceDefinition.joinConditionError != null}">
+                            <p>${tableSourceDefinition.joinConditionError}</p>
+                        </c:when>
+                    </c:choose></td>
                 <td><a href="#" class="updateRecord"><i class="material-icons text-info">
                             tune </i></a></td>
                 <td><a href="#" class="removeRecord"><i class="material-icons text-danger">
@@ -35,3 +42,8 @@
         </c:forEach>
     </tbody>
 </table>
+<c:choose>
+    <c:when test="${tableSourceDefinitionError != null}">
+        <p>${tableSourceDefinitionError}</p>
+    </c:when>
+</c:choose>
