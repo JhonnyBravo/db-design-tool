@@ -18,6 +18,7 @@ public class TableSourceDefinition implements Serializable {
     private String joinCondition;
     @Range(min = 0, max = 1)
     private int deleteFlag;
+    private String joinConditionError;
 
     /**
      * @return tableId 定義が紐づくテーブルの ID を返す。
@@ -126,5 +127,20 @@ public class TableSourceDefinition implements Serializable {
      */
     public void setDeleteFlag(int deleteFlag) {
         this.deleteFlag = deleteFlag;
+    }
+
+    /**
+     * @return joinConditionError 結合条件に関するエラーメッセージを返す。
+     */
+    public String getJoinConditionError() {
+        return joinConditionError;
+    }
+
+    /**
+     * @param joinConditionError
+     *            結合条件に関するエラーメッセージを指定する。
+     */
+    public void setJoinConditionError(String joinConditionError) {
+        this.joinConditionError = joinConditionError;
     }
 }
