@@ -47,30 +47,20 @@ public class SelectDefinitionServiceImpl implements SelectDefinitionService {
     @Override
     public SelectDefinition findSelectDefinitionByTableId(int tableId)
             throws Exception {
-        TableMaster tableMaster = new TableMaster();
-        List<FieldMaster> fieldMasterList = new ArrayList<>();
-        List<TableSourceDefinition> tableSourceDefinitionList = new ArrayList<>();
-        List<FieldSourceDefinition> fieldSourceDefinitionList = new ArrayList<>();
         final SelectDefinition selectDefinition = new SelectDefinition();
 
         try (SqlSession session = factory.openSession()) {
             // TableMaster
             tableMasterRepository = session
                     .getMapper(TableMasterRepository.class);
-            tableMaster = tableMasterRepository.findByTableId(tableId);
+            TableMaster tableMaster = tableMasterRepository
+                    .findByTableId(tableId);
             selectDefinition.setTableMaster(tableMaster);
-
-            // FieldMaster
-            fieldMasterRepository = session
-                    .getMapper(FieldMasterRepository.class);
-            fieldMasterList = fieldMasterRepository.findByTableId(tableId);
-            selectDefinition.setFieldMaster(fieldMasterList
-                    .toArray(new FieldMaster[fieldMasterList.size()]));
 
             // TableSourceDefinition
             tableSourceDefinitionRepository = session
                     .getMapper(TableSourceDefinitionRepository.class);
-            tableSourceDefinitionList = tableSourceDefinitionRepository
+            List<TableSourceDefinition> tableSourceDefinitionList = tableSourceDefinitionRepository
                     .findByTableId(tableId);
             selectDefinition.setTableSourceDefinition(tableSourceDefinitionList
                     .toArray(new TableSourceDefinition[tableSourceDefinitionList
@@ -79,11 +69,16 @@ public class SelectDefinitionServiceImpl implements SelectDefinitionService {
             // FieldSourceDefinition
             fieldSourceDefinitionRepository = session
                     .getMapper(FieldSourceDefinitionRepository.class);
-            fieldSourceDefinitionList = fieldSourceDefinitionRepository
+            List<FieldSourceDefinition> fieldSourceDefinitionList = fieldSourceDefinitionRepository
                     .findByTableId(tableId);
-            selectDefinition.setFieldSourceDefinition(fieldSourceDefinitionList
+            FieldSourceDefinition[] fieldSourceDefinitionArray = fieldSourceDefinitionList
                     .toArray(new FieldSourceDefinition[fieldSourceDefinitionList
-                            .size()]));
+                            .size()]);
+            selectDefinition
+                    .setFieldSourceDefinition(fieldSourceDefinitionArray);
+
+            // FieldMaster
+            selectDefinition.setFieldMaster(fieldSourceDefinitionArray);
         }
 
         return selectDefinition;
