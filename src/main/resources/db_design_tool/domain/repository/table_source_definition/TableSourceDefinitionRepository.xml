@@ -9,24 +9,46 @@
         <result property="tableId" column="table_id" />
         <result property="no" column="no" />
         <result property="sourceId" column="source_id" />
+        <result property="sourceName" column="source_name" />
         <result property="joinCondition" column="join_condition" />
         <result property="deleteFlag" column="delete_flag" />
     </resultMap>
     <!-- 登録されているレコードを全件取得する。 -->
     <select id="findAll" resultMap="tableSourceDefinition">
-        SELECT * FROM table_source_definition;
+        SELECT
+        table_source_definition.definition_id,
+        table_source_definition.table_id,
+        table_source_definition.no,
+        table_source_definition.source_id,
+        table_master.physical_name AS source_name,
+        table_source_definition.join_condition,
+        table_source_definition.delete_flag
+        FROM
+        table_source_definition
+        INNER JOIN table_master
+        ON table_source_definition.source_id =
+        table_master.table_id;
     </select>
     <!-- table_id をキーにレコードを検索する。 -->
     <select id="findByTableId" resultMap="tableSourceDefinition">
         SELECT
-        *
+        table_source_definition.definition_id,
+        table_source_definition.table_id,
+        table_source_definition.no,
+        table_source_definition.source_id,
+        table_master.physical_name AS source_name,
+        table_source_definition.join_condition,
+        table_source_definition.delete_flag
         FROM
         table_source_definition
+        INNER JOIN table_master
+        ON table_source_definition.source_id =
+        table_master.table_id
         WHERE
-        table_id =
+        table_source_definition.table_id =
         #{tableId}
         ORDER BY
-        no;
+        table_source_definition.no;
     </select>
     <!-- 新規レコードを登録する。 -->
     <insert id="create" useGeneratedKeys="true" keyProperty="definitionId">
