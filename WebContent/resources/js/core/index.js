@@ -162,13 +162,17 @@
                             var template = $template.clone();
 
                             // テーブル名
-                            var $tableName = template.find("td").eq(0);
-                            $tableName.text(definition.tableName);
+                            var $tableNameInput = $("<input type='hidden' name='tableSourceDefinition.sourceName'>");
+                            $tableNameInput.val(definition.tableName);
 
                             // テーブル ID
                             var $tableIdInput = $("<input type='hidden' name='tableSourceDefinition.sourceId'>");
                             $tableIdInput.val(definition.tableId);
+
+                            var $tableName = template.find("td").eq(0);
+                            $tableName.text(definition.tableName);
                             $tableName.append($tableIdInput);
+                            $tableName.append($tableNameInput);
 
                             // 結合条件
                             var $condition = template.find("td").eq(1);
@@ -196,12 +200,17 @@
                             // テーブル名とテーブル ID の更新
                             var $tableName = $no.next();
 
+                            var $tableNameInput = $tableName
+                                    .find("input[name='tableSourceDefinition.sourceName']");
+                            $tableNameInput.val(definition.tableName);
+
                             var $tableIdInput = $tableName
                                     .find("input[name='tableSourceDefinition.sourceId']");
                             $tableIdInput.val(definition.tableId);
 
                             $tableName.text(definition.tableName);
                             $tableName.append($tableIdInput);
+                            $tableName.append($tableNameInput);
 
                             // 結合条件の更新
                             var $condition = $tableName.next();
