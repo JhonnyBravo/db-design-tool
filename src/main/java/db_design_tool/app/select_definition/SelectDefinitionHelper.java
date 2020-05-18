@@ -24,29 +24,35 @@ public class SelectDefinitionHelper extends TableDefinitionHelper {
             HttpServletRequest request) {
         final Map<String, String[]> definitionMap = request.getParameterMap();
         TableSourceDefinition[] tableSourceDefinitionArray = null;
-        final String tableId = request.getParameter("tableId");
+        final String tableId = request.getParameter("tableMaster.tableId");
 
-        if (definitionMap.containsKey("joinNo")) {
+        if (definitionMap.containsKey("tableSourceDefinition.no")) {
             final List<TableSourceDefinition> tableSourceDefinitionList = new ArrayList<>();
 
-            for (int i = 0; i < definitionMap.get("joinNo").length; i++) {
+            for (int i = 0; i < definitionMap
+                    .get("tableSourceDefinition.no").length; i++) {
                 final TableSourceDefinition tableSourceDefinition = new TableSourceDefinition();
 
                 if (tableId != null && !tableId.isEmpty()) {
                     tableSourceDefinition.setTableId(Integer.parseInt(tableId));
-                    tableSourceDefinition.setDefinitionId(Integer.parseInt(
-                            definitionMap.get("joinDefinitionId")[i]));
+                    tableSourceDefinition
+                            .setDefinitionId(Integer.parseInt(definitionMap.get(
+                                    "tableSourceDefinition.definitionId")[i]));
                 }
 
-                final int no = Integer.parseInt(definitionMap.get("joinNo")[i]);
+                final int no = Integer.parseInt(
+                        definitionMap.get("tableSourceDefinition.no")[i]);
                 tableSourceDefinition.setNo(no);
 
-                final int sourceId = Integer
-                        .parseInt(definitionMap.get("joinTableId")[i]);
+                final int sourceId = Integer.parseInt(
+                        definitionMap.get("tableSourceDefinition.sourceId")[i]);
                 tableSourceDefinition.setSourceId(sourceId);
 
-                tableSourceDefinition.setJoinCondition(
-                        definitionMap.get("joinCondition")[i]);
+                tableSourceDefinition.setSourceName(definitionMap
+                        .get("tableSourceDefinition.sourceName")[i]);
+
+                tableSourceDefinition.setJoinCondition(definitionMap
+                        .get("tableSourceDefinition.joinCondition")[i]);
 
                 tableSourceDefinitionList.add(tableSourceDefinition);
             }
@@ -70,26 +76,58 @@ public class SelectDefinitionHelper extends TableDefinitionHelper {
             HttpServletRequest request) {
         final Map<String, String[]> definitionMap = request.getParameterMap();
         FieldSourceDefinition[] fieldSourceDefinitionArray = null;
-        final String tableId = request.getParameter("tableId");
+        final String tableId = request.getParameter("tableMaster.tableId");
 
-        if (definitionMap.containsKey("no")) {
+        if (definitionMap.containsKey("fieldSourceDefinition.no")) {
             final List<FieldSourceDefinition> fieldSourceDefinitionList = new ArrayList<>();
 
-            for (int i = 0; i < definitionMap.get("no").length; i++) {
+            for (int i = 0; i < definitionMap
+                    .get("fieldSourceDefinition.no").length; i++) {
                 final FieldSourceDefinition fieldSourceDefinition = new FieldSourceDefinition();
 
                 if (tableId != null && !tableId.isEmpty()) {
-                    int fieldId = Integer
-                            .parseInt(definitionMap.get("fieldId")[i]);
+                    fieldSourceDefinition.setTableId(Integer.parseInt(tableId));
+
+                    final int fieldId = Integer.parseInt(definitionMap
+                            .get("fieldSourceDefinition.fieldId")[i]);
                     fieldSourceDefinition.setFieldId(fieldId);
 
-                    int definitionId = Integer.parseInt(
-                            definitionMap.get("fieldDefinitionId")[i]);
+                    final int definitionId = Integer.parseInt(definitionMap
+                            .get("fieldSourceDefinition.definitionId")[i]);
                     fieldSourceDefinition.setDefinitionId(definitionId);
                 }
 
-                fieldSourceDefinition.setSourceDefinition(
-                        definitionMap.get("recordSource")[i]);
+                fieldSourceDefinition.setSourceDefinition(definitionMap
+                        .get("fieldSourceDefinition.sourceDefinition")[i]);
+
+                final int no = Integer.parseInt(
+                        definitionMap.get("fieldSourceDefinition.no")[i]);
+                fieldSourceDefinition.setNo(no);
+
+                fieldSourceDefinition.setPhysicalName(definitionMap
+                        .get("fieldSourceDefinition.physicalName")[i]);
+
+                fieldSourceDefinition.setLogicalName(definitionMap
+                        .get("fieldSourceDefinition.logicalName")[i]);
+
+                int dataType = Integer.parseInt(
+                        definitionMap.get("fieldSourceDefinition.dataType")[i]);
+                fieldSourceDefinition.setDataType(dataType);
+
+                if (!definitionMap.get("fieldSourceDefinition.dataSize")[i]
+                        .isEmpty()) {
+                    if (!definitionMap.get("fieldSourceDefinition.dataSize")[i]
+                            .matches("[0-9]*")) {
+                        fieldSourceDefinition.setDataSizeError("数値を指定してください。");
+                    } else {
+                        final int dataSize = Integer.parseInt(definitionMap
+                                .get("fieldSourceDefinition.dataSize")[i]);
+                        fieldSourceDefinition.setDataSize(dataSize);
+                    }
+                }
+
+                fieldSourceDefinition.setDescription(definitionMap
+                        .get("fieldSourceDefinition.description")[i]);
 
                 fieldSourceDefinitionList.add(fieldSourceDefinition);
             }
