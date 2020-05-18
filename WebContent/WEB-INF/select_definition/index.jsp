@@ -28,11 +28,7 @@
             <jsp:include page="../components/table_master.jsp" />
             <jsp:include page="../components/table_source_definition.jsp" />
             <jsp:include page="../components/field_source_definition.jsp" />
-            <c:choose>
-                <c:when test="${fieldSourceDefinitionError != null}">
-                    <p>${fieldSourceDefinitionError}</p>
-                </c:when>
-            </c:choose>
+
             <button type="submit" class="btn btn-primary">保存</button>
 
             <c:choose>
