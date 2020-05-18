@@ -10,7 +10,7 @@ import db_design_tool.domain.model.FieldMaster;
 import db_design_tool.domain.model.TableMaster;
 
 public class TableDefinitionValidator {
-    private final Validator validator;
+    protected final Validator validator;
 
     public TableDefinitionValidator() {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
