@@ -8,38 +8,80 @@
         <id property="definitionId" column="definition_id" />
         <result property="fieldId" column="field_id" />
         <result property="sourceDefinition" column="source_definition" />
+        <!-- field_master から継承 -->
+        <result property="tableId" column="table_id" />
+        <result property="no" column="no" />
+        <result property="physicalName" column="physical_name" />
+        <result property="logicalName" column="logical_name" />
+        <result property="dataType" column="data_type" />
+        <result property="dataSize" column="data_size" />
+        <result property="description" column="description" />
+        <result property="deleteFlag" column="delete_flag" />
     </resultMap>
     <!-- 登録されているレコードを全件取得する。 -->
     <select id="findAll" resultMap="fieldSourceDefinition">
-        SELECT * FROM field_source_definition ORDER BY
-        definition_id;
+        SELECT
+        field_source_definition.definition_id,
+        field_source_definition.field_id,
+        field_source_definition.source_definition,
+        field_master.table_id,
+        field_master.no,
+        field_master.physical_name,
+        field_master.logical_name,
+        field_master.data_type,
+        field_master.data_size,
+        field_master.description,
+        field_master.delete_flag
+        FROM
+        field_source_definition
+        INNER JOIN field_master
+        ON field_source_definition.field_id = field_master.field_id
+        ORDER BY
+        field_source_definition.definition_id;
     </select>
     <!-- table_id をキーにレコードを検索する。 -->
     <select id="findByTableId" resultMap="fieldSourceDefinition">
         SELECT
         field_source_definition.definition_id,
         field_source_definition.field_id,
-        field_source_definition.source_definition
+        field_source_definition.source_definition,
+        field_master.table_id,
+        field_master.no,
+        field_master.physical_name,
+        field_master.logical_name,
+        field_master.data_type,
+        field_master.data_size,
+        field_master.description,
+        field_master.delete_flag
         FROM
-        table_master
-        INNER JOIN field_master
-        ON table_master.table_id = field_master.table_id
-        INNER JOIN
         field_source_definition
-        ON field_master.field_id = field_source_definition.field_id
+        INNER JOIN field_master
+        ON field_source_definition.field_id = field_master.field_id
         WHERE
-        table_master.table_id = #{tableId}
+        field_master.table_id = #{tableId}
         ORDER BY
         field_master.no;
     </select>
     <!-- field_id をキーにレコードを検索する。 -->
     <select id="findByFieldId" resultMap="fieldSourceDefinition">
         SELECT
-        *
+        field_source_definition.definition_id,
+        field_source_definition.field_id,
+        field_source_definition.source_definition,
+        field_master.table_id,
+        field_master.no,
+        field_master.physical_name,
+        field_master.logical_name,
+        field_master.data_type,
+        field_master.data_size,
+        field_master.description,
+        field_master.delete_flag
         FROM
         field_source_definition
+        INNER JOIN field_master
+        ON field_source_definition.field_id = field_master.field_id
         WHERE
-        field_id =
+        field_source_definition.field_id =
         #{fieldId};
     </select>
     <!-- 新規レコードを登録する。 -->
