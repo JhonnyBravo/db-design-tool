@@ -4,28 +4,13 @@ import java.io.Serializable;
 
 import javax.validation.constraints.Size;
 
-public class FieldSourceDefinition implements Serializable {
+public class FieldSourceDefinition extends FieldMaster implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private int fieldId;
     private int definitionId;
     @Size(min = 1, max = 255)
     private String sourceDefinition;
-
-    /**
-     * @return fieldId 定義が紐づくフィールドの ID を返す。
-     */
-    public int getFieldId() {
-        return fieldId;
-    }
-
-    /**
-     * @param fieldId
-     *            定義が紐づくフィールドの ID を指定する。
-     */
-    public void setFieldId(int fieldId) {
-        this.fieldId = fieldId;
-    }
+    private String sourceDefinitionError;
 
     /**
      * @return definitionId 定義の ID を返す。
@@ -55,5 +40,20 @@ public class FieldSourceDefinition implements Serializable {
      */
     public void setSourceDefinition(String sourceDefinition) {
         this.sourceDefinition = sourceDefinition;
+    }
+
+    /**
+     * @return sourceDefinitionError データ取得元の定義に関するエラーメッセージを返す。
+     */
+    public String getSourceDefinitionError() {
+        return sourceDefinitionError;
+    }
+
+    /**
+     * @param sourceDefinitionError
+     *            データ取得元の定義に関するエラーメッセージを指定する。
+     */
+    public void setSourceDefinitionError(String sourceDefinitionError) {
+        this.sourceDefinitionError = sourceDefinitionError;
     }
 }
