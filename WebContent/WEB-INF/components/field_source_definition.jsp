@@ -36,7 +36,7 @@
                         </div>
                         <input type="text" name="fieldSourceDefinition.logicalName"
                             class="form-control" value="${fieldSourceDefinition.logicalName}">
-                    </div> <input type="hidden" name="fieldSourceDefinition.fieldId" value="0"
+                    </div> <input type="hidden" name="fieldSourceDefinition.fieldId"
                     value="${fieldSourceDefinition.fieldId}"> <c:choose>
                         <c:when test="${fieldSourceDefinition.logicalNameError != null}">
                             <p>${fieldSourceDefinition.logicalNameError}</p>
