@@ -50,20 +50,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <input type="hidden" name="no">
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">テーブル名</label> <select
-                                class="form-control" name="tableName">
-                                <option value="1">Table 1</option>
-                                <option value="2">Query 1</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="message-text" class="col-form-label">結合条件</label>
-                            <textarea class="form-control" rows="5" name="condition"></textarea>
-                        </div>
-                    </form>
+                    <input type="hidden" name="no">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">テーブル名</label> <select
+                            class="form-control" name="tableName">
+                            <option value="1">Table 1</option>
+                            <option value="2">Query 1</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">結合条件</label>
+                        <textarea class="form-control" rows="5" name="condition"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
