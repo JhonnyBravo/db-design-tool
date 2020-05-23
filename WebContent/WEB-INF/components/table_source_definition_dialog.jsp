@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <div class="modal" id="joinDefinitionModal" tabindex="-1" role="dialog"
     aria-labelledby="joinDefinitionModalLabel">
     <div class="modal-dialog" role="document">
@@ -16,7 +17,7 @@
                     <label for="recipient-name" class="col-form-label">テーブル名</label> <select
                         class="form-control" name="tableName">
                         <c:forEach var="tableMaster" items="${tableMasterList}">
-                            <option value="${tableMaster.tableId}">
+                            <option value="${fn:escapeXml(tableMaster.tableId)}">
                                 <c:out value="${tableMaster.physicalName}" />
                             </option>
                         </c:forEach>
