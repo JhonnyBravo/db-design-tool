@@ -32,6 +32,19 @@ public class SelectDefinitionServiceImpl implements SelectDefinitionService {
     }
 
     @Override
+    public List<TableMaster> findEntityAll() throws Exception {
+        List<TableMaster> recordset = new ArrayList<>();
+
+        try (SqlSession session = factory.openSession()) {
+            tableMasterRepository = session
+                    .getMapper(TableMasterRepository.class);
+            recordset = tableMasterRepository.findAll();
+        }
+
+        return recordset;
+    }
+
+    @Override
     public List<TableMaster> findQueryAll() throws Exception {
         List<TableMaster> recordset = new ArrayList<>();
 
