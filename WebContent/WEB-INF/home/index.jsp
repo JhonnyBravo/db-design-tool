@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!doctype html>
 <html lang="ja">
 <head>
@@ -23,7 +24,7 @@
             <ul class="list-group list-group-flush">
                 <c:forEach var="tableMaster" items="${tableList}">
                     <li class="list-group-item"><a
-                        href="table_definition?tableId=${tableMaster.tableId}"><c:out
+                        href="table_definition?tableId=${fn:escapeXml(tableMaster.tableId)}"><c:out
                                 value="${tableMaster.logicalName}" /></a></li>
                 </c:forEach>
             </ul>
@@ -33,7 +34,7 @@
             <ul class="list-group list-group-flush">
                 <c:forEach var="tableMaster" items="${queryList}">
                     <li class="list-group-item"><a
-                        href="select_definition?tableId=${tableMaster.tableId}"><c:out
+                        href="select_definition?tableId=${fn:escapeXml(tableMaster.tableId)}"><c:out
                                 value="${tableMaster.logicalName}" /></a></li>
                 </c:forEach>
             </ul>
