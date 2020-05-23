@@ -17,19 +17,6 @@ import javax.servlet.annotation.WebFilter;
 public class ContentTypeFilter implements Filter {
 
     /**
-     * Default constructor.
-     */
-    public ContentTypeFilter() {
-    }
-
-    /**
-     * @see Filter#destroy()
-     */
-    @Override
-    public void destroy() {
-    }
-
-    /**
      * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
      */
     @Override
@@ -40,11 +27,12 @@ public class ContentTypeFilter implements Filter {
         chain.doFilter(request, response);
     }
 
-    /**
-     * @see Filter#init(FilterConfig)
-     */
     @Override
-    public void init(FilterConfig fConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    @Override
+    public void destroy() {
     }
 
 }
