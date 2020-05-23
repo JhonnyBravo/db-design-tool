@@ -14,7 +14,9 @@
 </div>
 <c:choose>
     <c:when test="${tableMaster.physicalNameError != null}">
-        <p>${tableMaster.physicalNameError}</p>
+        <p>
+            <c:out value="${tableMaster.physicalNameError}" />
+        </p>
     </c:when>
 </c:choose>
 <div class="input-group">
@@ -26,7 +28,9 @@
 </div>
 <c:choose>
     <c:when test="${tableMaster.logicalNameError != null}">
-        <p>${tableMaster.logicalNameError}</p>
+        <p>
+            <c:out value="${tableMaster.logicalNameError}" />
+        </p>
     </c:when>
 </c:choose>
 <input type="hidden" name="tableMaster.tableId" value="${tableId}" />
