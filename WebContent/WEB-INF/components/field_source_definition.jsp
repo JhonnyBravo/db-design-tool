@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <table id="fieldSourceDefinition" class="table">
     <thead class="thead-dark">
         <tr>
@@ -16,15 +17,17 @@
     <tbody>
         <c:forEach var="fieldSourceDefinition" items="${fieldSourceDefinitionArray}">
             <tr>
-                <th scope="row">${fieldSourceDefinition.no}<input type="hidden"
-                    name="fieldSourceDefinition.no" value="${fieldSourceDefinition.no}"></th>
+                <th scope="row"><c:out value="${fieldSourceDefinition.no}" /><input
+                    type="hidden" name="fieldSourceDefinition.no"
+                    value="${fn:escapeXml(fieldSourceDefinition.no)}"></th>
                 <td>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">物理名</span>
                         </div>
                         <input type="text" name="fieldSourceDefinition.physicalName"
-                            class="form-control" value="${fieldSourceDefinition.physicalName}">
+                            class="form-control"
+                            value="${fn:escapeXml(fieldSourceDefinition.physicalName)}">
                     </div> <c:choose>
                         <c:when test="${fieldSourceDefinition.physicalNameError != null}">
                             <p>
@@ -37,9 +40,10 @@
                             <span class="input-group-text">論理名</span>
                         </div>
                         <input type="text" name="fieldSourceDefinition.logicalName"
-                            class="form-control" value="${fieldSourceDefinition.logicalName}">
+                            class="form-control"
+                            value="${fn:escapeXml(fieldSourceDefinition.logicalName)}">
                     </div> <input type="hidden" name="fieldSourceDefinition.fieldId"
-                    value="${fieldSourceDefinition.fieldId}"> <c:choose>
+                    value="${fn:escapeXml(fieldSourceDefinition.fieldId)}"> <c:choose>
                         <c:when test="${fieldSourceDefinition.logicalNameError != null}">
                             <p>
                                 <c:out value="${fieldSourceDefinition.logicalNameError}" />
@@ -116,7 +120,8 @@
                             <span class="input-group-text">桁数</span>
                         </div>
                         <input type="text" name="fieldSourceDefinition.dataSize"
-                            class="form-control" value="${fieldSourceDefinition.dataSize}">
+                            class="form-control"
+                            value="${fn:escapeXml(fieldSourceDefinition.dataSize)}">
                     </div> <c:choose>
                         <c:when test="${fieldSourceDefinition.dataSizeError != null}">
                             <p>
@@ -129,7 +134,7 @@
                         class="form-control" rows="3"><c:out
                             value="${fieldSourceDefinition.sourceDefinition}" /></textarea> <input
                     type="hidden" name="fieldSourceDefinition.definitionId"
-                    value="${fieldSourceDefinition.definitionId}"> <c:choose>
+                    value="${fn:escapeXml(fieldSourceDefinition.definitionId)}"> <c:choose>
                         <c:when test="${fieldSourceDefinition.sourceDefinitionError != null}">
                             <p>
                                 <c:out value="${fieldSourceDefinition.sourceDefinitionError}" />
@@ -137,7 +142,8 @@
                         </c:when>
                     </c:choose></td>
                 <td><textarea name="fieldSourceDefinition.description" class="form-control"
-                        rows="3"><c:out value="${fieldSourceDefinition.description}" /></textarea> <c:choose>
+                        rows="3"><c:out value="${fieldSourceDefinition.description}" /></textarea>
+                    <c:choose>
                         <c:when test="${fieldSourceDefinition.descriptionError != null}">
                             <p>
                                 <c:out value="${fieldSourceDefinition.descriptionError}" />
