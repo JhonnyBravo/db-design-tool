@@ -27,7 +27,9 @@
                             class="form-control" value="${fieldSourceDefinition.physicalName}">
                     </div> <c:choose>
                         <c:when test="${fieldSourceDefinition.physicalNameError != null}">
-                            <p>${fieldSourceDefinition.physicalNameError}</p>
+                            <p>
+                                <c:out value="${fieldSourceDefinition.physicalNameError}" />
+                            </p>
                         </c:when>
                     </c:choose>
                     <div class="input-group">
@@ -39,7 +41,9 @@
                     </div> <input type="hidden" name="fieldSourceDefinition.fieldId"
                     value="${fieldSourceDefinition.fieldId}"> <c:choose>
                         <c:when test="${fieldSourceDefinition.logicalNameError != null}">
-                            <p>${fieldSourceDefinition.logicalNameError}</p>
+                            <p>
+                                <c:out value="${fieldSourceDefinition.logicalNameError}" />
+                            </p>
                         </c:when>
                     </c:choose>
                 </td>
@@ -115,22 +119,29 @@
                             class="form-control" value="${fieldSourceDefinition.dataSize}">
                     </div> <c:choose>
                         <c:when test="${fieldSourceDefinition.dataSizeError != null}">
-                            <p>${fieldSourceDefinition.dataSizeError}</p>
+                            <p>
+                                <c:out value="${fieldSourceDefinition.dataSizeError}" />
+                            </p>
                         </c:when>
                     </c:choose>
                 </td>
                 <td><textarea name="fieldSourceDefinition.sourceDefinition"
-                        class="form-control" rows="3">${fieldSourceDefinition.sourceDefinition}</textarea>
-                    <input type="hidden" name="fieldSourceDefinition.definitionId"
+                        class="form-control" rows="3"><c:out
+                            value="${fieldSourceDefinition.sourceDefinition}" /></textarea> <input
+                    type="hidden" name="fieldSourceDefinition.definitionId"
                     value="${fieldSourceDefinition.definitionId}"> <c:choose>
                         <c:when test="${fieldSourceDefinition.sourceDefinitionError != null}">
-                            <p>${fieldSourceDefinition.sourceDefinitionError}</p>
+                            <p>
+                                <c:out value="${fieldSourceDefinition.sourceDefinitionError}" />
+                            </p>
                         </c:when>
                     </c:choose></td>
                 <td><textarea name="fieldSourceDefinition.description" class="form-control"
-                        rows="3">${fieldSourceDefinition.description}</textarea> <c:choose>
+                        rows="3"><c:out value="${fieldSourceDefinition.description}" /></textarea> <c:choose>
                         <c:when test="${fieldSourceDefinition.descriptionError != null}">
-                            <p>${fieldSourceDefinition.descriptionError}</p>
+                            <p>
+                                <c:out value="${fieldSourceDefinition.descriptionError}" />
+                            </p>
                         </c:when>
                     </c:choose></td>
                 <td><a href="#" class="removeRecord"><i class="material-icons text-danger">
@@ -144,6 +155,8 @@
 </table>
 <c:choose>
     <c:when test="${fieldSourceDefinitionError != null}">
-        <p>${fieldSourceDefinitionError}</p>
+        <p>
+            <c:out value="${fieldSourceDefinitionError}" />
+        </p>
     </c:when>
 </c:choose>
