@@ -4,7 +4,7 @@
 $(function () {
     // テーブル定義削除処理
     $("button.btn-danger").click(function () {
-        $("input[name='deleteFlag']").val(1);
+        $("input[name='tableMaster.deleteFlag']").val(1);
         $("form").submit();
     });
 
@@ -79,14 +79,15 @@ $(function () {
                         "getDefinition");
 
                 if (definition.no != "0") {
-                    $("#tableSourceDefinition tbody").sourceMaster("updateRecord",
-                            definition);
+                    $("#tableSourceDefinition tbody").sourceMaster(
+                            "updateRecord", definition);
                     $("#joinDefinitionModal").modal("hide");
                     return;
                 }
 
                 $("#tableSourceDefinition tbody").sourceMaster("addRecord",
-                        $("#tableSourceDefinitionTemplate tbody tr"), definition);
+                        $("#tableSourceDefinitionTemplate tbody tr"),
+                        definition);
                 $("#tableSourceDefinition").sourceMaster("resetNo");
 
                 // 結合テーブル削除処理
