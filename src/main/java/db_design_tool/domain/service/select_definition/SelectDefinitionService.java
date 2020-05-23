@@ -10,6 +10,13 @@ import db_design_tool.domain.model.TableMaster;
  */
 public interface SelectDefinitionService {
     /**
+     * @return recordset TableMaster に登録されているテーブル・クエリを全て取得する。
+     * @throws Exception
+     *             {@link java.lang.Exception}
+     */
+    public List<TableMaster> findEntityAll() throws Exception;
+
+    /**
      * @return recordset TableMaster に登録されている選択クエリを全て取得する。
      * @throws Exception
      *             {@link java.lang.Exception}
