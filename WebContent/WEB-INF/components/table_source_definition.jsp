@@ -15,18 +15,20 @@
     <tbody>
         <c:forEach var="tableSourceDefinition" items="${tableSourceDefinitionArray}">
             <tr>
-                <th scope="row">${tableSourceDefinition.no}<input type="hidden"
-                    name="tableSourceDefinition.no" value="${tableSourceDefinition.no}">
-                </th>
-                <td>${tableSourceDefinition.sourceName}<input type="hidden"
+                <th scope="row"><c:out value="${tableSourceDefinition.no}" /> <input
+                    type="hidden" name="tableSourceDefinition.no"
+                    value="${tableSourceDefinition.no}"></th>
+                <td><c:out value="${tableSourceDefinition.sourceName}" /><input type="hidden"
                     name="tableSourceDefinition.sourceId" value="${tableSourceDefinition.sourceId}">
                     <input type="hidden" name="tableSourceDefinition.sourceName"
                     value="${tableSourceDefinition.sourceName}"></td>
-                <td>${tableSourceDefinition.joinCondition}<input type="hidden"
-                    name="tableSourceDefinition.joinCondition"
+                <td><c:out value="${tableSourceDefinition.joinCondition}" /><input
+                    type="hidden" name="tableSourceDefinition.joinCondition"
                     value="${tableSourceDefinition.joinCondition}"> <c:choose>
                         <c:when test="${tableSourceDefinition.joinConditionError != null}">
-                            <p>${tableSourceDefinition.joinConditionError}</p>
+                            <p>
+                                <c:out value="${tableSourceDefinition.joinConditionError}" />
+                            </p>
                         </c:when>
                     </c:choose></td>
                 <td><a href="#" class="updateRecord"><i class="material-icons text-info">
@@ -43,6 +45,8 @@
 </table>
 <c:choose>
     <c:when test="${tableSourceDefinitionError != null}">
-        <p>${tableSourceDefinitionError}</p>
+        <p>
+            <c:out value="${tableSourceDefinitionError}" />
+        </p>
     </c:when>
 </c:choose>
