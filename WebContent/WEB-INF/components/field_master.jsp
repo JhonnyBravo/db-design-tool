@@ -15,8 +15,8 @@
     <tbody>
         <c:forEach var="fieldMaster" items="${fieldMasterArray}" varStatus="status">
             <tr>
-                <th scope="row">${fieldMaster.no}<input type="hidden" name="fieldMaster.no"
-                    value="${fieldMaster.no}" /></th>
+                <th scope="row"><c:out value="${fieldMaster.no}" /><input type="hidden"
+                    name="fieldMaster.no" value="${fieldMaster.no}" /></th>
                 <td>
                     <div class="input-group">
                         <div class="input-group-prepend">
@@ -26,7 +26,9 @@
                             value="${fieldMaster.physicalName}">
                     </div> <c:choose>
                         <c:when test="${fieldMaster.physicalNameError != null}">
-                            <p>${fieldMaster.physicalNameError}</p>
+                            <p>
+                                <c:out value="${fieldMaster.physicalNameError}" />
+                            </p>
                         </c:when>
                     </c:choose>
                     <div class="input-group">
@@ -35,9 +37,12 @@
                         </div>
                         <input type="text" name="fieldMaster.logicalName" class="form-control"
                             value="${fieldMaster.logicalName}">
-                    </div> <input type="hidden" name="fieldMaster.fieldId" value="${fieldMaster.fieldId}" /> <c:choose>
+                    </div> <input type="hidden" name="fieldMaster.fieldId" value="${fieldMaster.fieldId}" />
+                    <c:choose>
                         <c:when test="${fieldMaster.logicalNameError != null}">
-                            <p>${fieldMaster.logicalNameError}</p>
+                            <p>
+                                <c:out value="${fieldMaster.logicalNameError}" />
+                            </p>
                         </c:when>
                     </c:choose>
                 </td>
@@ -113,14 +118,18 @@
                             value="${fieldMaster.dataSize}">
                     </div> <c:choose>
                         <c:when test="${fieldMaster.dataSizeError != null}">
-                            <p>${fieldMaster.dataSizeError}</p>
+                            <p>
+                                <c:out value="${fieldMaster.dataSizeError}" />
+                            </p>
                         </c:when>
                     </c:choose>
                 </td>
-                <td><textarea name="fieldMaster.description" class="form-control" rows="3">${fieldMaster.description}</textarea>
-                    <c:choose>
+                <td><textarea name="fieldMaster.description" class="form-control" rows="3"><c:out
+                            value="${fieldMaster.description}" /></textarea> <c:choose>
                         <c:when test="${fieldMaster.descriptionError != null}">
-                            <p>${fieldMaster.descriptionError}</p>
+                            <p>
+                                <c:out value="${fieldMaster.descriptionError}" />
+                            </p>
                         </c:when>
                     </c:choose></td>
                 <td><a href="#" class="removeRecord"><i class="material-icons text-danger">
@@ -134,6 +143,8 @@
 </table>
 <c:choose>
     <c:when test="${fieldMasterError != null}">
-        <p>${fieldMasterError}</p>
+        <p>
+            <c:out value="${fieldMasterError}" />
+        </p>
     </c:when>
 </c:choose>
