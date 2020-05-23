@@ -21,7 +21,9 @@
     <main role="main" class="container">
         <c:choose>
             <c:when test="${error != null}">
-                <p>${error}</p>
+                <p>
+                    <c:out value="${error}" />
+                </p>
             </c:when>
         </c:choose>
         <form method="post" action="table_definition">
