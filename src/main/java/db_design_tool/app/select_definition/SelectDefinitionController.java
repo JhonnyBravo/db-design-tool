@@ -163,9 +163,13 @@ public class SelectDefinitionController extends HttpServlet {
                 }
 
                 if (fieldSourceDefinitionArray != null) {
-                    selectDefinition.setFieldMaster(helper.mergeFieldMaster(
-                            savedSelectDefinition.getFieldMaster(),
-                            fieldSourceDefinitionArray));
+                    selectDefinition.setFieldSourceDefinition(
+                            helper.mergeFieldSourceDefinition(
+                                    savedSelectDefinition
+                                            .getFieldSourceDefinition(),
+                                    fieldSourceDefinitionArray));
+                    selectDefinition.setFieldMaster(
+                            selectDefinition.getFieldSourceDefinition());
                 }
             } catch (Exception e) {
                 throw new IOException(e);
