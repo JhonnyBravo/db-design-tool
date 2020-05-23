@@ -179,4 +179,45 @@ public class SelectDefinitionHelper extends TableDefinitionHelper {
                 .toArray(new TableSourceDefinition[mergedList.size()]);
         return mergedArray;
     }
+
+    /**
+     * フォームから送信されたクエリ定義の変更差分を登録済みクエリ定義へ反映する。
+     *
+     * @param reffArray
+     *            登録済みクエリ定義の配列を指定する。
+     * @param diffArray
+     *            フォームから送信されたクエリ定義の配列を指定する。
+     * @return recordset 変更差分を反映したクエリ定義の配列を返す。
+     */
+    public FieldSourceDefinition[] mergeFieldSourceDefinition(
+            FieldSourceDefinition[] reffArray,
+            FieldSourceDefinition[] diffArray) {
+        List<FieldSourceDefinition> mergedList = new ArrayList<>(
+                Arrays.asList(diffArray));
+
+        // 削除フラグの設定
+        final List<FieldSourceDefinition> reffList = Arrays.asList(reffArray);
+        final Iterator<FieldSourceDefinition> reffIt = reffList.iterator();
+
+        while (reffIt.hasNext()) {
+            final FieldSourceDefinition reff = reffIt.next();
+            boolean isDeleted = true;
+
+            for (final FieldSourceDefinition diff : diffArray) {
+                if (reff.getFieldId() == diff.getFieldId()) {
+                    isDeleted = false;
+                }
+            }
+
+            if (isDeleted) {
+                reff.setDeleteFlag(1);
+                mergedList.add(reff);
+            }
+        }
+
+        final FieldSourceDefinition[] mergedArray = mergedList
+                .toArray(new FieldSourceDefinition[mergedList.size()]);
+        return mergedArray;
+    }
+
 }
