@@ -1,6 +1,7 @@
 package db_design_tool.app.select_definition;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -55,12 +56,18 @@ public class SelectDefinitionController extends HttpServlet {
         final String tableId = request.getParameter("tableId");
         request.setAttribute("entityType", 2);
 
+        try {
+            final List<TableMaster> tableMasterList = service.findEntityAll();
+            request.setAttribute("tableMasterList", tableMasterList);
+        } catch (Exception e) {
+            throw new IOException(e);
+        }
+
         if (tableId != null && !tableId.isEmpty()) {
             request.setAttribute("tableId", tableId);
             Map<String, String[]> paramMap = request.getParameterMap();
 
             try {
-
                 if (!paramMap.containsKey("tableMaster.physicalName")) {
                     final SelectDefinition selectDefinition = service
                             .findSelectDefinitionByTableId(
