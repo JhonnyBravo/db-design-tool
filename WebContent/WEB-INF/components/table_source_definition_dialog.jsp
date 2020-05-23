@@ -16,7 +16,9 @@
                     <label for="recipient-name" class="col-form-label">テーブル名</label> <select
                         class="form-control" name="tableName">
                         <c:forEach var="tableMaster" items="${tableMasterList}">
-                            <option value="${tableMaster.tableId}">${tableMaster.physicalName}</option>
+                            <option value="${tableMaster.tableId}">
+                                <c:out value="${tableMaster.physicalName}" />
+                            </option>
                         </c:forEach>
                     </select>
                 </div>
