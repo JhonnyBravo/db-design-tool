@@ -21,7 +21,9 @@
     <main role="main" class="container">
         <c:choose>
             <c:when test="${error != null}">
-                <p>${error}</p>
+                <p>
+                    <c:out value="${error}" />
+                </p>
             </c:when>
         </c:choose>
         <form method="post" action="select_definition">
@@ -36,7 +38,6 @@
                     <button type="button" class="btn btn-danger">削除</button>
                 </c:when>
             </c:choose>
-
         </form>
     </main>
     <jsp:include page="../components/table_source_definition_dialog.jsp" />
