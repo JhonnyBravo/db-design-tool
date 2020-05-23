@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <table id="fieldMaster" class="table">
     <thead class="thead-dark">
         <tr>
@@ -16,14 +17,14 @@
         <c:forEach var="fieldMaster" items="${fieldMasterArray}" varStatus="status">
             <tr>
                 <th scope="row"><c:out value="${fieldMaster.no}" /><input type="hidden"
-                    name="fieldMaster.no" value="${fieldMaster.no}" /></th>
+                    name="fieldMaster.no" value="${fn:escapeXml(fieldMaster.no)}" /></th>
                 <td>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">物理名</span>
                         </div>
                         <input type="text" name="fieldMaster.physicalName" class="form-control"
-                            value="${fieldMaster.physicalName}">
+                            value="${fn:escapeXml(fieldMaster.physicalName)}">
                     </div> <c:choose>
                         <c:when test="${fieldMaster.physicalNameError != null}">
                             <p>
@@ -36,9 +37,9 @@
                             <span class="input-group-text">論理名</span>
                         </div>
                         <input type="text" name="fieldMaster.logicalName" class="form-control"
-                            value="${fieldMaster.logicalName}">
-                    </div> <input type="hidden" name="fieldMaster.fieldId" value="${fieldMaster.fieldId}" />
-                    <c:choose>
+                            value="${fn:escapeXml(fieldMaster.logicalName)}">
+                    </div> <input type="hidden" name="fieldMaster.fieldId"
+                    value="${fn:escapeXml(fieldMaster.fieldId)}" /> <c:choose>
                         <c:when test="${fieldMaster.logicalNameError != null}">
                             <p>
                                 <c:out value="${fieldMaster.logicalNameError}" />
@@ -115,7 +116,7 @@
                             <span class="input-group-text">桁数</span>
                         </div>
                         <input type="text" name="fieldMaster.dataSize" class="form-control"
-                            value="${fieldMaster.dataSize}">
+                            value="${fn:escapeXml(fieldMaster.dataSize)}">
                     </div> <c:choose>
                         <c:when test="${fieldMaster.dataSizeError != null}">
                             <p>
