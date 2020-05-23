@@ -16,9 +16,7 @@
         <c:forEach var="tableSourceDefinition" items="${tableSourceDefinitionArray}">
             <tr>
                 <th scope="row">${tableSourceDefinition.no}<input type="hidden"
-                    name="tableSourceDefinition.no" value="${tableSourceDefinition.no}"> <input
-                    type="hidden" name="tableSourceDefinition.definitionId"
-                    value="${tableSourceDefinition.definitionId}">
+                    name="tableSourceDefinition.no" value="${tableSourceDefinition.no}">
                 </th>
                 <td>${tableSourceDefinition.sourceName}<input type="hidden"
                     name="tableSourceDefinition.sourceId" value="${tableSourceDefinition.sourceId}">
@@ -32,7 +30,8 @@
                         </c:when>
                     </c:choose></td>
                 <td><a href="#" class="updateRecord"><i class="material-icons text-info">
-                            tune </i></a></td>
+                            tune </i></a> <input type="hidden" name="tableSourceDefinition.definitionId"
+                    value="${tableSourceDefinition.definitionId}"></td>
                 <td><a href="#" class="removeRecord"><i class="material-icons text-danger">
                             remove </i></a></td>
                 <td><a href="#" class="dropUpRecord"><i class="material-icons text-info">
