@@ -7,7 +7,8 @@
             <td>Table1.field1 = Table2.field1 <input type="hidden"
                 name="tableDefinition.joinCondition"></td>
             <td><a href="#" class="updateRecord"><i class="material-icons text-info">
-                        tune </i></a></td>
+                        tune </i></a> <input type="hidden" name="tableSourceDefinition.definitionId"
+                value="0"></td>
             <td><a href="#" class="removeRecord"><i class="material-icons text-danger">
                         remove </i></a></td>
             <td><a href="#" class="dropUpRecord"><i class="material-icons text-info">
