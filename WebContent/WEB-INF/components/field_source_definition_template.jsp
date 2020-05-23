@@ -42,7 +42,7 @@
             </td>
             <td><textarea name="fieldSourceDefinition.sourceDefinition" class="form-control"
                     rows="3"></textarea> <input type="hidden"
-                name="fieldSourceDefinition.definitionId"></td>
+                name="fieldSourceDefinition.definitionId" value="0"></td>
             <td><textarea name="fieldSourceDefinition.description" class="form-control"
                     rows="3"></textarea></td>
             <td><a href="#" class="removeRecord"><i class="material-icons text-danger">
