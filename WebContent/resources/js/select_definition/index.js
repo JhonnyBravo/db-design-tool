@@ -132,6 +132,14 @@ $(function () {
         $("#tableSourceDefinition").sourceMaster("resetNo");
     });
 
+    // 結合テーブル編集ダイアログ起動処理
+    $("#tableSourceDefinition .updateRecord").click(function (e) {
+        e.preventDefault();
+        var definition = $(this).sourceMaster("getDefinition");
+        $("#joinDefinitionModal").sourceDialog("init", definition);
+        $("#joinDefinitionModal").modal("show");
+    });
+
     // 一つ上に移動する。
     $("#tableSourceDefinition .dropUpRecord").off("click");
     $("#tableSourceDefinition .dropUpRecord").click(function (e) {
