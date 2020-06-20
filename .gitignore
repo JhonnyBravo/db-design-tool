@@ -12,6 +12,11 @@ local.properties
 .settings/
 .loadpath
 
+# JavaScript
+dist
+node_modules
+package-lock.json
+
 # External tool builders
 .externalToolBuilders/
 
