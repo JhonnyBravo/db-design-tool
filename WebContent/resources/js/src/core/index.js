@@ -38,6 +38,6 @@ $.fn.sourceMaster = function ( method ) {
     } else {
         $.error( `${ method }: 未定義のメソッドです。` );
     }
-}
+};
 
 export default $;
