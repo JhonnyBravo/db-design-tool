@@ -1,4 +1,5 @@
 import $ from "jquery";
+
 export default {
     /**
      * 結合条件入力ダイアログの画面表示を初期化する。
@@ -9,7 +10,7 @@ export default {
      *  condition: 結合条件
      * }
      */
-    init: function ( definition ) {
+    init ( definition ) {
         $( this ).find( "input[name='no']" ).val( definition.no );
         $( this ).find( "select[name='tableName']" ).val( definition.tableId );
         $( this ).find( "textarea[name='condition']" ).val( definition.condition );
@@ -23,7 +24,7 @@ export default {
      *  condition: 結合条件
      * }
      */
-    getDefinition: function () {
+    getDefinition () {
         var definition = {};
 
         definition.no = $( this ).find( "input[name='no']" ).val();
@@ -43,7 +44,7 @@ export default {
      *  condition: 結合条件
      * }
      */
-    createDefinition: function () {
+    createDefinition () {
         var definition = {};
 
         definition.no = 0;
@@ -53,4 +54,4 @@ export default {
 
         return definition;
     }
-}
+};
