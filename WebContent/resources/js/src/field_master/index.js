@@ -4,13 +4,14 @@ export default {
     /**
      * No 列の自動採番を実行する。
      */
-    resetNo: function () {
-        var entityType = $( "input[name='tableMaster.entityType']" ).val();
+    resetNo () {
+        var entityType = parseInt( $( "input[name='tableMaster.entityType']" ).val() );
+        var name;
 
-        if ( entityType == 1 ) {
-            var name = "fieldMaster.no";
-        } else if ( entityType == 2 ) {
-            var name = "fieldSourceDefinition.no";
+        if ( entityType === 1 ) {
+            name = "fieldMaster.no";
+        } else if ( entityType === 2 ) {
+            name = "fieldSourceDefinition.no";
         }
 
         $( this ).find( "tbody th" ).each(
@@ -22,19 +23,19 @@ export default {
      * 新規レコードをテーブルへ追加する。
      * @param $template コピー対象とするテンプレートを指定する。
      */
-    addRecord: function ( $template ) {
+    addRecord ( $template ) {
         $( this ).find( "tbody" ).append( $template.clone() );
     },
     /**
      * レコードを削除する。
      */
-    removeRecord: function () {
+    removeRecord () {
         $( this ).parent().parent().remove();
     },
     /**
      * レコードを一つ上に移動する。
      */
-    dropUpRecord: function () {
+    dropUpRecord () {
         var src = $( this ).parent().parent();
         var dst = src.prev();
         src.insertBefore( dst );
@@ -42,9 +43,9 @@ export default {
     /**
      * レコードを一つ下に移動する。
      */
-    dropDownRecord: function () {
+    dropDownRecord () {
         var src = $( this ).parent().parent();
         var dst = src.next();
         src.insertAfter( dst );
     }
-}
+};
