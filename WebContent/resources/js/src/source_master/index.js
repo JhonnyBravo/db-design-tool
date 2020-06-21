@@ -6,7 +6,7 @@ sourceMaster = $.extend( sourceMaster, {
     /**
      * No 列の自動採番を実行する。
      */
-    resetNo: function () {
+    resetNo () {
         $( this ).find( "tbody th" ).each(
             function ( index ) {
                 $( this ).text( index + 1 ).append( `<input type='hidden' name='tableSourceDefinition.no' value='${ index + 1 }'/>` );
@@ -22,7 +22,7 @@ sourceMaster = $.extend( sourceMaster, {
      *  condition: 結合条件
      * }
      */
-    addRecord: function ( $template, definition ) {
+    addRecord ( $template, definition ) {
         var template = $template.clone();
 
         // テーブル名
@@ -58,7 +58,7 @@ sourceMaster = $.extend( sourceMaster, {
      *  condition: 結合条件
      * }
      */
-    updateRecord: function ( definition ) {
+    updateRecord ( definition ) {
         var $no = $( this ).find( `input[name='tableSourceDefinition.no'][value='${ definition.no }']` ).parent();
 
         // テーブル名とテーブル ID の更新
@@ -91,7 +91,7 @@ sourceMaster = $.extend( sourceMaster, {
      *  condition: 結合条件
      * }
      */
-    getDefinition: function () {
+    getDefinition () {
         var record = $( this ).parent().parent();
         var definition = {};
 
