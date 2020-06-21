@@ -1,5 +1,4 @@
 import $ from "../core";
-import Dialog from "../dialog";
 
 $( function () {
     // テーブル定義削除処理
@@ -63,7 +62,7 @@ $( function () {
             var definition = $( "#joinDefinitionModal" ).sourceDialog(
                 "createDefinition" );
             $( "#joinDefinitionModal" ).sourceDialog( "init", definition );
-            Dialog.open( "#joinDefinitionModal" );
+            $( "#joinDefinitionModal" ).modal( "show" );
         } );
 
     $( "#joinDefinitionModal button.btn-primary" ).click(
@@ -76,7 +75,7 @@ $( function () {
             if ( definition.no != "0" ) {
                 $( "#tableSourceDefinition tbody" ).sourceMaster(
                     "updateRecord", definition );
-                Dialog.close( "#joinDefinitionModal" );
+                $( "#joinDefinitionModal" ).modal( "hide" );
                 return;
             }
 
@@ -98,7 +97,7 @@ $( function () {
                 e.preventDefault();
                 var definition = $( this ).sourceMaster( "getDefinition" );
                 $( "#joinDefinitionModal" ).sourceDialog( "init", definition );
-                Dialog.open( "#joinDefinitionModal" );
+                $( "#joinDefinitionModal" ).modal( "show" );
             } );
 
             // 一つ上に移動する。
@@ -117,7 +116,7 @@ $( function () {
                 $( "#tableSourceDefinition" ).sourceMaster( "resetNo" );
             } );
 
-            Dialog.close( "#joinDefinitionModal" );
+            $( "#joinDefinitionModal" ).modal( "hide" );
         } );
     // 結合テーブル削除処理
     $( "#tableSourceDefinition .removeRecord" ).click( function ( e ) {
@@ -130,7 +129,7 @@ $( function () {
         e.preventDefault();
         var definition = $( this ).sourceMaster( "getDefinition" );
         $( "#joinDefinitionModal" ).sourceDialog( "init", definition );
-        Dialog.open( "#joinDefinitionModal" );
+        $( "#joinDefinitionModal" ).modal( "show" );
     } );
     // 一つ上に移動する。
     $( "#tableSourceDefinition .dropUpRecord" ).off( "click" );
