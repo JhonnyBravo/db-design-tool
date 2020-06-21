@@ -117,4 +117,5 @@ sourceSets {
 war {
     exclude 'WEB-INF/lib/**'
     exclude 'WEB-INF/classes/**'
+    exclude 'node_modules'
 }
