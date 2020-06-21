@@ -72,7 +72,7 @@ $( function () {
             var definition = $( "#joinDefinitionModal" ).sourceDialog(
                 "getDefinition" );
 
-            if ( definition.no != "0" ) {
+            if ( parseInt( definition.no ) !== 0 ) {
                 $( "#tableSourceDefinition tbody" ).sourceMaster(
                     "updateRecord", definition );
                 $( "#joinDefinitionModal" ).modal( "hide" );
