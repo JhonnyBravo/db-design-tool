@@ -1,4 +1,4 @@
-import $ from "jquery";
+import "bootstrap";
 import FieldMaster from "../field_master";
 import SourceDialog from "../source_dialog";
 import SourceMaster from "../source_master";
