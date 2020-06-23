@@ -117,5 +117,9 @@ sourceSets {
 war {
     exclude 'WEB-INF/lib/**'
     exclude 'WEB-INF/classes/**'
-    exclude 'node_modules'
+    exclude 'resources/js/node_modules/**'
+    exclude 'resources/js/src/**'
+    exclude 'resources/js/.babelrc'
+    exclude 'resources/js/*.json'
+    exclude 'resources/js/webpack.config.js'
 }
