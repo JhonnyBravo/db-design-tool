@@ -1,6 +1,7 @@
 package db_design_tool.app.table_definition;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -11,9 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import db_design_tool.domain.model.DataTypeMaster;
 import db_design_tool.domain.model.FieldMaster;
 import db_design_tool.domain.model.TableDefinition;
 import db_design_tool.domain.model.TableMaster;
+import db_design_tool.domain.service.data_type_master.DataTypeMasterService;
+import db_design_tool.domain.service.data_type_master.DataTypeMasterServiceImpl;
 import db_design_tool.domain.service.table_definition.TableDefinitionService;
 import db_design_tool.domain.service.table_definition.TableDefinitionServiceImpl;
 
@@ -26,13 +30,15 @@ public class TableDefinitionController extends HttpServlet {
 
     private final TableDefinitionHelper helper;
     private final TableDefinitionValidator validator;
-    private final TableDefinitionService service;
+    private final TableDefinitionService tableDefinitionService;
+    private final DataTypeMasterService dataTypeMasterService;
 
     public TableDefinitionController() throws Exception {
         super();
         helper = new TableDefinitionHelper();
         validator = new TableDefinitionValidator();
-        service = new TableDefinitionServiceImpl();
+        tableDefinitionService = new TableDefinitionServiceImpl();
+        dataTypeMasterService = new DataTypeMasterServiceImpl();
     }
 
     /**
@@ -54,14 +60,20 @@ public class TableDefinitionController extends HttpServlet {
         final String tableId = request.getParameter("tableId");
         request.setAttribute("entityType", 1);
 
+        try {
+            List<DataTypeMaster> dataTypeList = dataTypeMasterService.findAll();
+            request.setAttribute("dataTypeList", dataTypeList);
+        } catch (Exception e) {
+            throw new IOException(e);
+        }
+
         if (tableId != null && !tableId.isEmpty()) {
             request.setAttribute("tableId", tableId);
             Map<String, String[]> paramMap = request.getParameterMap();
 
             try {
-
                 if (!paramMap.containsKey("tableMaster.physicalName")) {
-                    final TableDefinition tableDefinition = service
+                    final TableDefinition tableDefinition = tableDefinitionService
                             .findTableDefinitionByTableId(
                                     Integer.parseInt(tableId));
 
@@ -121,7 +133,7 @@ public class TableDefinitionController extends HttpServlet {
 
             if (tableMaster.getTableId() > 0) {
                 try {
-                    final TableDefinition savedTableDefinition = service
+                    final TableDefinition savedTableDefinition = tableDefinitionService
                             .findTableDefinitionByTableId(
                                     tableMaster.getTableId());
                     tableDefinition.setFieldMaster(helper.mergeFieldMaster(
@@ -143,7 +155,8 @@ public class TableDefinitionController extends HttpServlet {
 
         if (deleteFlag == 1) {
             try {
-                service.deleteByTableId(tableMaster.getTableId());
+                tableDefinitionService
+                        .deleteByTableId(tableMaster.getTableId());
                 response.sendRedirect("/db-design-tool/home");
                 return;
             } catch (Exception e) {
@@ -159,9 +172,9 @@ public class TableDefinitionController extends HttpServlet {
         } else {
             try {
                 if (tableMaster.getTableId() > 0) {
-                    service.update(tableDefinition);
+                    tableDefinitionService.update(tableDefinition);
                 } else {
-                    service.create(tableDefinition);
+                    tableDefinitionService.create(tableDefinition);
                 }
 
                 response.sendRedirect("/db-design-tool/home");
