@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <table id="fieldSourceDefinitionTemplate" class="table">
     <tbody>
         <tr>
@@ -24,13 +26,11 @@
                         <span class="input-group-text">型</span>
                     </div>
                     <select class="custom-select" name="fieldSourceDefinition.dataType">
-                        <option value="1">String</option>
-                        <option value="2">Integer</option>
-                        <option value="3">Long</option>
-                        <option value="4">Single</option>
-                        <option value="5">Double</option>
-                        <option value="6">Date</option>
-                        <option value="7">Boolean</option>
+                        <c:forEach var="dataType" items="${dataTypeList}">
+                            <option value="${fn:escapeXml(dataType.id)}">
+                                <c:out value="${dataType.typeName}" />
+                            </option>
+                        </c:forEach>
                     </select>
                 </div>
                 <div class="input-group">
