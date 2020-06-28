@@ -1,6 +1,12 @@
 create database if not exists db_design_tool;
 use db_design_tool;
 
+CREATE TABLE IF NOT EXISTS data_type_master (
+    id INT AUTO_INCREMENT,
+    name VARCHAR(10),
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS table_master (
     table_id INT AUTO_INCREMENT,
     physical_name VARCHAR(100) UNIQUE NOT NULL,
@@ -21,9 +27,12 @@ CREATE TABLE IF NOT EXISTS field_master (
     description VARCHAR(255),
     delete_flag INT NOT NULL,
     PRIMARY KEY (field_id),
-    INDEX (table_id),
+    INDEX (table_id , data_type),
     FOREIGN KEY (table_id)
         REFERENCES table_master (table_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (data_type)
+        REFERENCES data_type_master (id)
         ON DELETE CASCADE
 );
 
@@ -52,4 +61,11 @@ CREATE TABLE IF NOT EXISTS field_source_definition (
         ON DELETE CASCADE
 );
 
--- grant all privileges on db_design_tool.* to user@localhost;
+/*create user if not exists user@localhost identified by "p@ssward";
+grant all privileges on db_design_tool.* to user@localhost;*/
+
+/*insert into data_type_master(name)values("INT");
+insert into data_type_master(name)values("DOUBLE");
+insert into data_type_master(name)values("VARCHAR");
+insert into data_type_master(name)values("DATETIME");
+insert into data_type_master(name)values("BOOL");*/
