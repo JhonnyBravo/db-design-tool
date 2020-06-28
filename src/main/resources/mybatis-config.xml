@@ -16,6 +16,7 @@
         </environment>
     </environments>
     <mappers>
+        <package name="db_design_tool.domain.repository.data_type_master" />
         <package name="db_design_tool.domain.repository.table_master" />
         <package name="db_design_tool.domain.repository.field_master" />
         <package name="db_design_tool.domain.repository.table_source_definition" />
