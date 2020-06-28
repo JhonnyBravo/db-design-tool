@@ -12,10 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import db_design_tool.domain.model.DataTypeMaster;
 import db_design_tool.domain.model.FieldSourceDefinition;
 import db_design_tool.domain.model.SelectDefinition;
 import db_design_tool.domain.model.TableMaster;
 import db_design_tool.domain.model.TableSourceDefinition;
+import db_design_tool.domain.service.data_type_master.DataTypeMasterService;
+import db_design_tool.domain.service.data_type_master.DataTypeMasterServiceImpl;
 import db_design_tool.domain.service.select_definition.SelectDefinitionService;
 import db_design_tool.domain.service.select_definition.SelectDefinitionServiceImpl;
 
@@ -28,13 +31,15 @@ public class SelectDefinitionController extends HttpServlet {
 
     private final SelectDefinitionHelper helper;
     private final SelectDefinitionValidator validator;
-    private final SelectDefinitionService service;
+    private final SelectDefinitionService selectDefinitionService;
+    private final DataTypeMasterService dataTypeMasterService;
 
     public SelectDefinitionController() throws Exception {
         super();
         helper = new SelectDefinitionHelper();
         validator = new SelectDefinitionValidator();
-        service = new SelectDefinitionServiceImpl();
+        selectDefinitionService = new SelectDefinitionServiceImpl();
+        dataTypeMasterService = new DataTypeMasterServiceImpl();
     }
 
     /**
@@ -57,7 +62,15 @@ public class SelectDefinitionController extends HttpServlet {
         request.setAttribute("entityType", 2);
 
         try {
-            final List<TableMaster> tableMasterList = service.findEntityAll();
+            List<DataTypeMaster> dataTypeList = dataTypeMasterService.findAll();
+            request.setAttribute("dataTypeList", dataTypeList);
+        } catch (Exception e) {
+            throw new IOException(e);
+        }
+
+        try {
+            final List<TableMaster> tableMasterList = selectDefinitionService
+                    .findEntityAll();
             request.setAttribute("tableMasterList", tableMasterList);
         } catch (Exception e) {
             throw new IOException(e);
@@ -69,7 +82,7 @@ public class SelectDefinitionController extends HttpServlet {
 
             try {
                 if (!paramMap.containsKey("tableMaster.physicalName")) {
-                    final SelectDefinition selectDefinition = service
+                    final SelectDefinition selectDefinition = selectDefinitionService
                             .findSelectDefinitionByTableId(
                                     Integer.parseInt(tableId));
 
@@ -157,7 +170,7 @@ public class SelectDefinitionController extends HttpServlet {
         // 登録済みクエリ定義と画面から送信されたフォームデータをマージする。
         if (tableMaster.getTableId() > 0) {
             try {
-                SelectDefinition savedSelectDefinition = service
+                SelectDefinition savedSelectDefinition = selectDefinitionService
                         .findSelectDefinitionByTableId(
                                 tableMaster.getTableId());
 
@@ -195,7 +208,8 @@ public class SelectDefinitionController extends HttpServlet {
 
         if (deleteFlag == 1) {
             try {
-                service.deleteByTableId(tableMaster.getTableId());
+                selectDefinitionService
+                        .deleteByTableId(tableMaster.getTableId());
                 response.sendRedirect("/db-design-tool/home");
                 return;
             } catch (Exception e) {
@@ -211,9 +225,9 @@ public class SelectDefinitionController extends HttpServlet {
         } else {
             try {
                 if (tableMaster.getTableId() > 0) {
-                    service.update(selectDefinition);
+                    selectDefinitionService.update(selectDefinition);
                 } else {
-                    service.create(selectDefinition);
+                    selectDefinitionService.create(selectDefinition);
                 }
 
                 response.sendRedirect("/db-design-tool/home");
