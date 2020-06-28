@@ -57,62 +57,20 @@
                             <span class="input-group-text">型</span>
                         </div>
                         <select class="custom-select" name="fieldSourceDefinition.dataType">
-                            <c:choose>
-                                <c:when test="${fieldSourceDefinition.dataType == 1}">
-                                    <option value="1" selected>String</option>
-                                </c:when>
-                                <c:otherwise>
-                                    <option value="1">String</option>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:choose>
-                                <c:when test="${fieldSourceDefinition.dataType == 2}">
-                                    <option value="2" selected>Integer</option>
-                                </c:when>
-                                <c:otherwise>
-                                    <option value="2">Integer</option>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:choose>
-                                <c:when test="${fieldSourceDefinition.dataType == 3}">
-                                    <option value="3" selected>Long</option>
-                                </c:when>
-                                <c:otherwise>
-                                    <option value="3">Long</option>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:choose>
-                                <c:when test="${fieldSourceDefinition.dataType == 4}">
-                                    <option value="4" selected>Single</option>
-                                </c:when>
-                                <c:otherwise>
-                                    <option value="4">Single</option>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:choose>
-                                <c:when test="${fieldSourceDefinition.dataType == 5}">
-                                    <option value="5" selected>Double</option>
-                                </c:when>
-                                <c:otherwise>
-                                    <option value="5">Double</option>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:choose>
-                                <c:when test="${fieldSourceDefinition.dataType == 6}">
-                                    <option value="6" selected>Date</option>
-                                </c:when>
-                                <c:otherwise>
-                                    <option value="6">Date</option>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:choose>
-                                <c:when test="${fieldSourceDefinition.dataType == '7'}">
-                                    <option value="7" selected>Boolean</option>
-                                </c:when>
-                                <c:otherwise>
-                                    <option value="7">Boolean</option>
-                                </c:otherwise>
-                            </c:choose>
+                            <c:forEach var="dataType" items="${dataTypeList}">
+                                <c:choose>
+                                    <c:when test="${dataType.id == fieldSourceDefinition.dataType}">
+                                        <option value="${fn:escapeXml(dataType.id)}" selected>
+                                            <c:out value="${dataType.typeName}" />
+                                        </option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="${fn:escapeXml(dataType.id)}">
+                                            <c:out value="${dataType.typeName}" />
+                                        </option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
                         </select>
                     </div>
                     <div class="input-group">
