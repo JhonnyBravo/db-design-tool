@@ -36,6 +36,7 @@ public class TableDefinitionTestHelper {
         fieldMaster.setPhysicalName(params[2]);
         fieldMaster.setLogicalName(params[3]);
         fieldMaster.setDescription(params[4]);
+        fieldMaster.setDataType(1);
 
         if (params.length == 6) {
             fieldMaster.setDeleteFlag(Integer.parseInt(params[5]));
