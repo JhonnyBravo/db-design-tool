@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- data_type_master からレコードを取得する。 -->
+<mapper
+    namespace="db_design_tool.domain.repository.data_type_master.DataTypeMasterRepository">
+    <resultMap id="dataTypeMaster" type="db_design_tool.domain.model.DataTypeMaster">
+        <id property="id" column="id" />
+        <result property="typeName" column="name" />
+    </resultMap>
+    <!-- 登録されているレコードを全件取得する。 -->
+    <select id="findAll" resultMap="dataTypeMaster">
+        SELECT * FROM data_type_master;
+    </select>
+</mapper>
