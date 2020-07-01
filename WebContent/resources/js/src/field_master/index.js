@@ -5,7 +5,7 @@ export default {
      * No 列の自動採番を実行する。
      */
     resetNo () {
-        var entityType = parseInt( $( "input[name='tableMaster.entityType']" ).val() );
+        var entityType = parseInt( $( "input[name='tableMaster.entityType']" ).val(), 10 );
         var name;
 
         if ( entityType === 1 ) {
