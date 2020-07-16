@@ -24,7 +24,7 @@
             <ul class="list-group list-group-flush">
                 <c:forEach var="tableMaster" items="${tableList}">
                     <li class="list-group-item"><a
-                        href="table_definition?tableId=${fn:escapeXml(tableMaster.tableId)}"><c:out
+                        href="definition/table?tableId=${fn:escapeXml(tableMaster.tableId)}"><c:out
                                 value="${tableMaster.logicalName}" /></a></li>
                 </c:forEach>
             </ul>
@@ -34,7 +34,7 @@
             <ul class="list-group list-group-flush">
                 <c:forEach var="tableMaster" items="${queryList}">
                     <li class="list-group-item"><a
-                        href="select_definition?tableId=${fn:escapeXml(tableMaster.tableId)}"><c:out
+                        href="definition/query?tableId=${fn:escapeXml(tableMaster.tableId)}"><c:out
                                 value="${tableMaster.logicalName}" /></a></li>
                 </c:forEach>
             </ul>
