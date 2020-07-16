@@ -25,7 +25,7 @@ import db_design_tool.domain.service.select_definition.SelectDefinitionServiceIm
 /**
  * テーブル定義編集画面を管理する。
  */
-@WebServlet("/select_definition")
+@WebServlet("/definition/query")
 public class SelectDefinitionController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
