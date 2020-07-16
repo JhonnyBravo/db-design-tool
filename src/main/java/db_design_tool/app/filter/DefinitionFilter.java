@@ -13,8 +13,8 @@ import javax.servlet.annotation.WebFilter;
 /**
  * Servlet Filter implementation class ContentTypeFilter
  */
-@WebFilter("/*")
-public class ContentTypeFilter implements Filter {
+@WebFilter("/definition/*")
+public class DefinitionFilter implements Filter {
 
     /**
      * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
