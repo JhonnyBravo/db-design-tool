@@ -24,7 +24,7 @@ import db_design_tool.domain.service.table_definition.TableDefinitionServiceImpl
 /**
  * テーブル定義編集画面を管理する。
  */
-@WebServlet("/table_definition")
+@WebServlet("/definition/table")
 public class TableDefinitionController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
