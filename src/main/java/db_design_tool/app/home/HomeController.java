@@ -18,7 +18,7 @@ import db_design_tool.domain.service.table_definition.TableDefinitionServiceImpl
 /**
  * ホーム画面を管理する。
  */
-@WebServlet("/home")
+@WebServlet("/definition")
 public class HomeController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private final TableDefinitionService service;
