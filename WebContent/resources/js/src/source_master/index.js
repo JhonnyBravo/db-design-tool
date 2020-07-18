@@ -93,13 +93,14 @@ sourceMaster = $.extend( sourceMaster, {
      */
     getDefinition () {
         var record = $( this ).parent().parent();
-        var definition = {};
 
-        definition.no = record.find( "input[name='tableSourceDefinition.no']" ).val();
-        definition.tableId = record.find( "input[name='tableSourceDefinition.sourceId']" ).val();
-        definition.condition = record.find( "input[name='tableSourceDefinition.joinCondition']" ).val();
+        record.data( "tableSourceDefinition", {
+            no: record.find( "input[name='tableSourceDefinition.no']" ).val(),
+            tableId: record.find( "input[name='tableSourceDefinition.sourceId']" ).val(),
+            condition: record.find( "input[name='tableSourceDefinition.joinCondition']" ).val()
+        } );
 
-        return definition;
+        return record.data( "tableSourceDefinition" );
     }
 } );
 
