@@ -59,9 +59,7 @@ $( function () {
     $( "#tableSourceDefinition .addRecord" ).click(
         function ( e ) {
             e.preventDefault();
-            var definition = $( "#joinDefinitionModal" ).sourceDialog(
-                "createDefinition" );
-            $( "#joinDefinitionModal" ).sourceDialog( "init", definition );
+            $( "#joinDefinitionModal" ).sourceDialog( "init" );
             $( "#joinDefinitionModal" ).modal( "show" );
         } );
 
@@ -96,7 +94,7 @@ $( function () {
             $( "#tableSourceDefinition .updateRecord" ).click( function ( e ) {
                 e.preventDefault();
                 var definition = $( this ).sourceMaster( "getDefinition" );
-                $( "#joinDefinitionModal" ).sourceDialog( "init", definition );
+                $( "#joinDefinitionModal" ).sourceDialog( "setDefinition", definition );
                 $( "#joinDefinitionModal" ).modal( "show" );
             } );
 
@@ -128,7 +126,7 @@ $( function () {
     $( "#tableSourceDefinition .updateRecord" ).click( function ( e ) {
         e.preventDefault();
         var definition = $( this ).sourceMaster( "getDefinition" );
-        $( "#joinDefinitionModal" ).sourceDialog( "init", definition );
+        $( "#joinDefinitionModal" ).sourceDialog( "setDefinition", definition );
         $( "#joinDefinitionModal" ).modal( "show" );
     } );
     // 一つ上に移動する。
