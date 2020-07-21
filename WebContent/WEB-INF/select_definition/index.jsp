@@ -41,6 +41,7 @@
         </form>
     </main>
     <jsp:include page="../components/table_source_definition_dialog.jsp" />
+    <jsp:include page="../components/field_source_definition_dialog.jsp" />
     <section id="template">
         <jsp:include page="../components/table_source_definition_template.jsp" />
         <jsp:include page="../components/field_source_definition_template.jsp" />
