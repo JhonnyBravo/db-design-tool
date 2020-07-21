@@ -1,5 +1,5 @@
 import $ from "jquery";
-import FieldMaster from "../field_master";
+import FieldMaster from "../../field_master";
 
 var sourceMaster = $.extend( {}, FieldMaster );
 sourceMaster = $.extend( sourceMaster, {
