@@ -26,7 +26,7 @@
                 </p>
             </c:when>
         </c:choose>
-        <form method="post" action="table_definition">
+        <form method="post" action="table">
             <jsp:include page="../components/table_master.jsp" />
             <jsp:include page="../components/field_master.jsp" />
 
