@@ -64,11 +64,7 @@ public class SelectDefinitionController extends HttpServlet {
         try {
             List<DataTypeMaster> dataTypeList = dataTypeMasterService.findAll();
             request.setAttribute("dataTypeList", dataTypeList);
-        } catch (Exception e) {
-            throw new IOException(e);
-        }
 
-        try {
             final List<TableMaster> tableMasterList = selectDefinitionService
                     .findEntityAll();
             request.setAttribute("tableMasterList", tableMasterList);
