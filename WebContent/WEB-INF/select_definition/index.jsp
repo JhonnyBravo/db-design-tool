@@ -26,7 +26,7 @@
                 </p>
             </c:when>
         </c:choose>
-        <form method="post" action="select_definition">
+        <form method="post" action="query">
             <jsp:include page="../components/table_master.jsp" />
             <jsp:include page="../components/table_source_definition.jsp" />
             <jsp:include page="../components/field_source_definition.jsp" />
