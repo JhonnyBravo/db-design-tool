@@ -123,6 +123,7 @@ public class TableDefinitionController extends HttpServlet {
         }
 
         request.setAttribute("tableMaster", tableMaster);
+        request.setAttribute("tableId", tableMaster.getTableId());
 
         if (fieldMasterArray != null) {
             for (final FieldMaster fieldMaster : fieldMasterArray) {
@@ -157,7 +158,7 @@ public class TableDefinitionController extends HttpServlet {
             try {
                 tableDefinitionService
                         .deleteByTableId(tableMaster.getTableId());
-                response.sendRedirect("/db-design-tool/home");
+                response.sendRedirect("/db-design-tool/definition");
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -177,7 +178,7 @@ public class TableDefinitionController extends HttpServlet {
                     tableDefinitionService.create(tableDefinition);
                 }
 
-                response.sendRedirect("/db-design-tool/home");
+                response.sendRedirect("/db-design-tool/definition");
             } catch (final Exception e) {
                 e.printStackTrace();
                 request.setAttribute("error", "データの保存に失敗しました。");
