@@ -12,10 +12,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="no">
+                <input type="hidden" name="tableSourceDefinition.definitionId">
+                <input type="hidden" name="tableSourceDefinition.no">
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">テーブル名</label> <select
-                        class="form-control" name="tableName">
+                        class="form-control" name="tableSourceDefinition.sourceName">
                         <c:forEach var="tableMaster" items="${tableMasterList}">
                             <option value="${fn:escapeXml(tableMaster.tableId)}">
                                 <c:out value="${tableMaster.physicalName}" />
@@ -25,7 +26,7 @@
                 </div>
                 <div class="form-group">
                     <label for="message-text" class="col-form-label">結合条件</label>
-                    <textarea class="form-control" rows="5" name="condition"></textarea>
+                    <textarea class="form-control" rows="5" name="tableSourceDefinition.joinCondition"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
