@@ -3,8 +3,8 @@ const path = require( "path" );
 module.exports = {
     mode: "development",
     entry: {
-        "dist/table_definition": "./src/table_definition/index.js",
-        "dist/select_definition": "./src/select_definition/index.js"
+        "dist/table_definition": "./src/app/table_definition/index.js",
+        "dist/select_definition": "./src/app/select_definition/index.js"
     },
     output: {
         path: __dirname,
