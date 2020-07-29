@@ -15,13 +15,13 @@
                 <input type="hidden" name="no">
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">テーブル名</label> <select
-                        class="form-control" name="tableName">
+                        class="form-control" name="tableMaster.physicalName">
                         <option></option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">フィールド名</label> <select
-                        class="form-control" name="fieldName">
+                        class="form-control" name="fieldMaster.physicalName">
                         <option></option>
                     </select>
                 </div>
