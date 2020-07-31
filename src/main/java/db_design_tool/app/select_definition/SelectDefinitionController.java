@@ -137,6 +137,9 @@ public class SelectDefinitionController extends HttpServlet {
             hasError = true;
         }
 
+        request.setAttribute("tableMaster", tableMaster);
+        request.setAttribute("tableId", tableMaster.getTableId());
+
         if (tableSourceDefinitionArray != null) {
             for (final TableSourceDefinition tableSourceDefinition : tableSourceDefinitionArray) {
                 if (validator
@@ -193,7 +196,6 @@ public class SelectDefinitionController extends HttpServlet {
         }
 
         // 画面へデータを送信する。
-        request.setAttribute("tableMaster", tableMaster);
         request.setAttribute("tableSourceDefinitionArray",
                 tableSourceDefinitionArray);
         request.setAttribute("fieldSourceDefinitionArray",
@@ -206,7 +208,7 @@ public class SelectDefinitionController extends HttpServlet {
             try {
                 selectDefinitionService
                         .deleteByTableId(tableMaster.getTableId());
-                response.sendRedirect("/db-design-tool/home");
+                response.sendRedirect("/db-design-tool/definition");
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -226,7 +228,7 @@ public class SelectDefinitionController extends HttpServlet {
                     selectDefinitionService.create(selectDefinition);
                 }
 
-                response.sendRedirect("/db-design-tool/home");
+                response.sendRedirect("/db-design-tool/definition");
             } catch (final Exception e) {
                 e.printStackTrace();
                 request.setAttribute("error", "データの保存に失敗しました。");
