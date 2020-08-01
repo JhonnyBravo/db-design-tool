@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import db_design_tool.domain.model.FieldMaster;
 import db_design_tool.domain.model.TableDefinition;
 import db_design_tool.domain.service.table_definition.TableDefinitionService;
 import db_design_tool.domain.service.table_definition.TableDefinitionServiceImpl;
@@ -38,17 +39,25 @@ public class TableDefinitionAjaxController extends HttpServlet {
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         final String tableId = request.getParameter("tableId");
+        final String fieldId = request.getParameter("fieldId");
+
         String json = null;
 
-        if (tableId != null && !tableId.isEmpty()) {
-            try {
+        try {
+            if (tableId != null && !tableId.isEmpty()) {
+                // table_id をキーに TableDefinition を取得する。
                 TableDefinition tableDefinition = service
                         .findTableDefinitionByTableId(
                                 Integer.parseInt(tableId));
                 json = gson.toJson(tableDefinition);
-            } catch (Exception e) {
-                throw new IOException(e);
+            } else if (fieldId != null && !fieldId.isEmpty()) {
+                // field_id をキーに FieldMaster を取得する。
+                FieldMaster fieldMaster = service
+                        .findFieldByFieldId(Integer.parseInt(fieldId));
+                json = gson.toJson(fieldMaster);
             }
+        } catch (Exception e) {
+            throw new IOException(e);
         }
 
         response.getWriter().println(json);
