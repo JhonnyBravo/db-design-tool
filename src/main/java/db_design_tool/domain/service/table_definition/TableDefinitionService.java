@@ -2,6 +2,7 @@ package db_design_tool.domain.service.table_definition;
 
 import java.util.List;
 
+import db_design_tool.domain.model.FieldMaster;
 import db_design_tool.domain.model.TableDefinition;
 import db_design_tool.domain.model.TableMaster;
 
@@ -17,6 +18,17 @@ public interface TableDefinitionService {
     public List<TableMaster> findTableAll() throws Exception;
 
     /**
+     * field_id をキーにレコードを検索する。
+     *
+     * @param fieldId
+     *            検索対象とする field_id を指定する。
+     * @return record 条件に合致するレコードを取得する。
+     */
+    public FieldMaster findFieldByFieldId(int fieldId) throws Exception;
+
+    /**
+     * entity_type をキーにレコードを検索する。
+     *
      * @param entityType
      *            検索対象とする entity_type を指定する。
      * @return recordset 条件に合致するレコードを取得する。
@@ -70,7 +82,7 @@ public interface TableDefinitionService {
 
     /**
      * entity_type をキーにテーブル定義を削除する。
-     * 
+     *
      * @param entityType
      *            削除対象とするテーブル定義の entity_type を指定する。
      * @throws Exception
