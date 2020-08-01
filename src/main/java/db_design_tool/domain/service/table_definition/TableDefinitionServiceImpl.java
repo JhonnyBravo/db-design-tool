@@ -39,6 +39,19 @@ public class TableDefinitionServiceImpl implements TableDefinitionService {
     }
 
     @Override
+    public FieldMaster findFieldByFieldId(int fieldId) throws Exception {
+        FieldMaster record = new FieldMaster();
+
+        try (SqlSession session = factory.openSession()) {
+            fieldMasterRepository = session
+                    .getMapper(FieldMasterRepository.class);
+            record = fieldMasterRepository.findByFieldId(fieldId);
+        }
+
+        return record;
+    }
+
+    @Override
     public List<TableMaster> findTableByEntityType(int entityType)
             throws Exception {
         List<TableMaster> recordset = new ArrayList<>();
