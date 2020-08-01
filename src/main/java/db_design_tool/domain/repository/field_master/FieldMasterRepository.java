@@ -33,7 +33,7 @@ public interface FieldMasterRepository {
 
     /**
      * table_id と no をキーにレコードを検索する。
-     * 
+     *
      * @param tableId
      *            検索対象とする table_id を指定する。
      * @param no
@@ -44,6 +44,18 @@ public interface FieldMasterRepository {
      */
     public FieldMaster findByTableIdAndNo(@Param("tableId") int tableId,
             @Param("no") int no) throws Exception;
+
+    /**
+     * field_id をキーにレコードを検索する。
+     *
+     * @param fieldId
+     *            検索対象とする field_id を指定する。
+     * @return record 条件に合致するレコードを取得する。
+     * @throws Exception
+     *             {@link java.lang.Exception}
+     */
+    public FieldMaster findByFieldId(@Param("fieldId") int fieldId)
+            throws Exception;
 
     /**
      * レコードを新規登録する。
