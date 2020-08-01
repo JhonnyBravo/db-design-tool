@@ -61,7 +61,11 @@ export default class FieldSourceDefinitionService {
      *  },
      *  fieldMaster: {
      *      fieldId: フィールドを識別する為の ID,
-     *      physicalName: フィールドの物理名
+     *      physicalName: フィールドの物理名,
+     *      logicalName: フィールドの論理名,
+     *      dataType: フィールドのデータ型,
+     *      dataSize: 入力を許可する桁数,
+     *      description: フィールドの説明
      *  }
      * }
      */
@@ -71,7 +75,16 @@ export default class FieldSourceDefinitionService {
         var fieldMaster = fieldSourceDefinition.fieldMaster;
 
         if ( tableMaster.physicalName != "" && fieldMaster.physicalName != "" ) {
-            template.find( "textarea[name='fieldSourceDefinition.sourceDefinition']" ).val( `${ tableMaster.physicalName }.${ fieldMaster.physicalName }` );
+            $.get( "/db-design-tool/data/table", {fieldId: fieldMaster.fieldId} ).done( function ( data ) {
+                $.extend( fieldMaster, data );
+
+                template.find( "input[name='fieldSourceDefinition.physicalName']" ).val( fieldMaster.physicalName );
+                template.find( "input[name='fieldSourceDefinition.logicalName']" ).val( fieldMaster.logicalName );
+                template.find( "select[name='fieldSourceDefinition.dataType']" ).val( fieldMaster.dataType );
+                template.find( "input[name='fieldSourceDefinition.dataSize']" ).val( fieldMaster.dataSize );
+                template.find( "textarea[name='fieldSourceDefinition.sourceDefinition']" ).val( `${ tableMaster.physicalName }.${ fieldMaster.physicalName }` );
+                template.find( "textarea[name='fieldSourceDefinition.description']" ).val( fieldMaster.description );
+            } );
         }
 
         $( this.el ).append( template );
