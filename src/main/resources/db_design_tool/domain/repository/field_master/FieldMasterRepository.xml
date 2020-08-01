@@ -38,6 +38,15 @@
         table_id =
         #{tableId} AND no=#{no};
     </select>
+    <!-- field_id をキーにレコードを検索する。 -->
+    <select id="findByFieldId" resultMap="fieldMaster">
+        SELECT
+        *
+        FROM
+        field_master
+        WHERE
+        field_id=#{fieldId};
+    </select>
     <!-- 新規レコードを登録する。 -->
     <insert id="create" useGeneratedKeys="true" keyProperty="fieldId">
         INSERT INTO field_master (
