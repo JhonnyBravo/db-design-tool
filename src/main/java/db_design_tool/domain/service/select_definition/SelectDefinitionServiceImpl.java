@@ -181,6 +181,7 @@ public class SelectDefinitionServiceImpl implements SelectDefinitionService {
             fieldMasterRepository = session
                     .getMapper(FieldMasterRepository.class);
             fieldMasterRepository.update(Arrays.asList(fieldMasterArray));
+            fieldMasterRepository.deleteByDeleteFlag();
 
             // FieldSourceDefinition
             List<FieldMaster> fieldMasterList = fieldMasterRepository
@@ -191,12 +192,17 @@ public class SelectDefinitionServiceImpl implements SelectDefinitionService {
                         .setFieldId(fieldMasterList.get(i).getFieldId());
             }
 
+            List<FieldSourceDefinition> fieldSourceDefinitionList = new ArrayList<>();
+
+            for (FieldSourceDefinition definition : fieldSourceDefinitionArray) {
+                if (definition.getDeleteFlag() == 0) {
+                    fieldSourceDefinitionList.add(definition);
+                }
+            }
+
             fieldSourceDefinitionRepository = session
                     .getMapper(FieldSourceDefinitionRepository.class);
-            fieldSourceDefinitionRepository
-                    .update(Arrays.asList(fieldSourceDefinitionArray));
-
-            fieldMasterRepository.deleteByDeleteFlag();
+            fieldSourceDefinitionRepository.update(fieldSourceDefinitionList);
 
             session.commit();
         }
