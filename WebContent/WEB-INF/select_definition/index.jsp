@@ -34,7 +34,7 @@
             <button type="submit" class="btn btn-primary">保存</button>
 
             <c:choose>
-                <c:when test="${tableId != null}">
+                <c:when test="${tableId != null && tableId != 0}">
                     <button type="button" class="btn btn-danger">削除</button>
                 </c:when>
             </c:choose>
