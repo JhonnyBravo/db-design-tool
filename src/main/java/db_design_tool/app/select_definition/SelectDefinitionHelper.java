@@ -2,9 +2,9 @@ package db_design_tool.app.select_definition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -152,18 +152,14 @@ public class SelectDefinitionHelper extends TableDefinitionHelper {
     public TableSourceDefinition[] mergeTableSourceDefinition(
             TableSourceDefinition[] reffArray,
             TableSourceDefinition[] diffArray) {
-        List<TableSourceDefinition> mergedList = new ArrayList<>(
-                Arrays.asList(diffArray));
+        List<TableSourceDefinition> reffList = new ArrayList<>();
+        reffList.addAll(Arrays.asList(reffArray));
 
         // 削除フラグの設定
-        final List<TableSourceDefinition> reffList = Arrays.asList(reffArray);
-        final Iterator<TableSourceDefinition> reffIt = reffList.iterator();
-
-        while (reffIt.hasNext()) {
-            final TableSourceDefinition reff = reffIt.next();
+        reffList.forEach(reff -> {
             boolean isDeleted = true;
 
-            for (final TableSourceDefinition diff : diffArray) {
+            for (TableSourceDefinition diff : diffArray) {
                 if (reff.getDefinitionId() == diff.getDefinitionId()) {
                     isDeleted = false;
                 }
@@ -171,9 +167,19 @@ public class SelectDefinitionHelper extends TableDefinitionHelper {
 
             if (isDeleted) {
                 reff.setDeleteFlag(1);
-                mergedList.add(reff);
             }
-        }
+        });
+
+        // 削除されたレコードの抽出
+        List<TableSourceDefinition> deletedList = reffList.stream()
+                .filter(tableSourceDefinition -> (tableSourceDefinition
+                        .getDeleteFlag() == 1))
+                .collect(Collectors.toList());
+
+        // マージ処理
+        List<TableSourceDefinition> mergedList = new ArrayList<>();
+        mergedList.addAll(Arrays.asList(diffArray));
+        mergedList.addAll(deletedList);
 
         final TableSourceDefinition[] mergedArray = mergedList
                 .toArray(new TableSourceDefinition[mergedList.size()]);
@@ -192,28 +198,34 @@ public class SelectDefinitionHelper extends TableDefinitionHelper {
     public FieldSourceDefinition[] mergeFieldSourceDefinition(
             FieldSourceDefinition[] reffArray,
             FieldSourceDefinition[] diffArray) {
-        List<FieldSourceDefinition> mergedList = new ArrayList<>(
-                Arrays.asList(diffArray));
+        List<FieldSourceDefinition> reffList = new ArrayList<>();
+        reffList.addAll(Arrays.asList(reffArray));
 
         // 削除フラグの設定
-        final List<FieldSourceDefinition> reffList = Arrays.asList(reffArray);
-        final Iterator<FieldSourceDefinition> reffIt = reffList.iterator();
-
-        while (reffIt.hasNext()) {
-            final FieldSourceDefinition reff = reffIt.next();
+        reffList.forEach(reff -> {
             boolean isDeleted = true;
 
-            for (final FieldSourceDefinition diff : diffArray) {
-                if (reff.getFieldId() == diff.getFieldId()) {
+            for (FieldSourceDefinition diff : diffArray) {
+                if (reff.getDefinitionId() == diff.getDefinitionId()) {
                     isDeleted = false;
                 }
             }
 
             if (isDeleted) {
                 reff.setDeleteFlag(1);
-                mergedList.add(reff);
             }
-        }
+        });
+
+        // 削除されたレコードの抽出
+        List<FieldSourceDefinition> deletedList = reffList.stream()
+                .filter(fieldSourceDefinition -> (fieldSourceDefinition
+                        .getDeleteFlag() == 1))
+                .collect(Collectors.toList());
+
+        // マージ処理
+        List<FieldSourceDefinition> mergedList = new ArrayList<>();
+        mergedList.addAll(Arrays.asList(diffArray));
+        mergedList.addAll(deletedList);
 
         final FieldSourceDefinition[] mergedArray = mergedList
                 .toArray(new FieldSourceDefinition[mergedList.size()]);
