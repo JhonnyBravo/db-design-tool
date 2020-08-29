@@ -2,9 +2,9 @@ package db_design_tool.app.table_definition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -112,18 +112,15 @@ public class TableDefinitionHelper {
      */
     public FieldMaster[] mergeFieldMaster(FieldMaster[] reffArray,
             FieldMaster[] diffArray) {
-        List<FieldMaster> mergedList = new ArrayList<>(
-                Arrays.asList(diffArray));
+
+        List<FieldMaster> reffList = new ArrayList<>();
+        reffList.addAll(Arrays.asList(reffArray));
 
         // 削除フラグの設定
-        final List<FieldMaster> reffList = Arrays.asList(reffArray);
-        final Iterator<FieldMaster> reffIt = reffList.iterator();
-
-        while (reffIt.hasNext()) {
-            final FieldMaster reff = reffIt.next();
+        reffList.forEach(reff -> {
             boolean isDeleted = true;
 
-            for (final FieldMaster diff : diffArray) {
+            for (FieldMaster diff : diffArray) {
                 if (reff.getFieldId() == diff.getFieldId()) {
                     isDeleted = false;
                 }
@@ -131,9 +128,18 @@ public class TableDefinitionHelper {
 
             if (isDeleted) {
                 reff.setDeleteFlag(1);
-                mergedList.add(reff);
             }
-        }
+        });
+
+        // 削除されたレコードの抽出
+        List<FieldMaster> deletedList = reffList.stream()
+                .filter(fieldMaster -> (fieldMaster.getDeleteFlag() == 1))
+                .collect(Collectors.toList());
+
+        // マージ処理
+        List<FieldMaster> mergedList = new ArrayList<>();
+        mergedList.addAll(Arrays.asList(diffArray));
+        mergedList.addAll(deletedList);
 
         final FieldMaster[] mergedArray = mergedList
                 .toArray(new FieldMaster[mergedList.size()]);
