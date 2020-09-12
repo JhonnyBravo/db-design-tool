@@ -1,7 +1,7 @@
 package db_design_tool.domain.repository.table_master;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 
@@ -57,7 +57,7 @@ public class TableMasterRepositoryTest {
             try (SqlSession session = factory.openSession()) {
                 repository = session.getMapper(TableMasterRepository.class);
                 final List<TableMaster> recordset = repository.findAll();
-                assertThat(recordset.size(), is(0));
+                assertThat(recordset.size(), equalTo(0));
             }
         }
 
@@ -69,19 +69,20 @@ public class TableMasterRepositoryTest {
             try (SqlSession session = factory.openSession()) {
                 repository = session.getMapper(TableMasterRepository.class);
                 final boolean result = repository.create(expect);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 final List<TableMaster> recordset = repository.findAll();
-                assertThat(recordset.size(), is(1));
+                assertThat(recordset.size(), equalTo(1));
 
                 final TableMaster actual = repository.findByLatestTableId();
-                assertThat(actual.getTableId(), is(1));
+                assertThat(actual.getTableId(), equalTo(1));
                 assertThat(actual.getPhysicalName(),
-                        is(expect.getPhysicalName()));
+                        equalTo(expect.getPhysicalName()));
                 assertThat(actual.getLogicalName(),
-                        is(expect.getLogicalName()));
-                assertThat(actual.getDeleteFlag(), is(expect.getDeleteFlag()));
+                        equalTo(expect.getLogicalName()));
+                assertThat(actual.getDeleteFlag(),
+                        equalTo(expect.getDeleteFlag()));
             }
         }
     }
@@ -131,7 +132,7 @@ public class TableMasterRepositoryTest {
             try (SqlSession session = factory.openSession()) {
                 repository = session.getMapper(TableMasterRepository.class);
                 final List<TableMaster> recordset = repository.findAll();
-                assertThat(recordset.size(), is(2));
+                assertThat(recordset.size(), equalTo(2));
             }
         }
 
@@ -143,19 +144,20 @@ public class TableMasterRepositoryTest {
             try (SqlSession session = factory.openSession()) {
                 repository = session.getMapper(TableMasterRepository.class);
                 final boolean result = repository.create(expect);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 final List<TableMaster> recordset = repository.findAll();
-                assertThat(recordset.size(), is(3));
+                assertThat(recordset.size(), equalTo(3));
 
                 final TableMaster actual = repository.findByLatestTableId();
-                assertThat(actual.getTableId(), is(3));
+                assertThat(actual.getTableId(), equalTo(3));
                 assertThat(actual.getPhysicalName(),
-                        is(expect.getPhysicalName()));
+                        equalTo(expect.getPhysicalName()));
                 assertThat(actual.getLogicalName(),
-                        is(expect.getLogicalName()));
-                assertThat(actual.getDeleteFlag(), is(expect.getDeleteFlag()));
+                        equalTo(expect.getLogicalName()));
+                assertThat(actual.getDeleteFlag(),
+                        equalTo(expect.getDeleteFlag()));
             }
         }
 
@@ -173,19 +175,20 @@ public class TableMasterRepositoryTest {
                 original.setDeleteFlag(expect.getDeleteFlag());
 
                 final boolean result = repository.update(original);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 final List<TableMaster> recordset = repository.findAll();
-                assertThat(recordset.size(), is(2));
+                assertThat(recordset.size(), equalTo(2));
 
                 final TableMaster updated = repository.findByTableId(2);
-                assertThat(updated.getTableId(), is(2));
+                assertThat(updated.getTableId(), equalTo(2));
                 assertThat(updated.getPhysicalName(),
-                        is(expect.getPhysicalName()));
+                        equalTo(expect.getPhysicalName()));
                 assertThat(updated.getLogicalName(),
-                        is(expect.getLogicalName()));
-                assertThat(updated.getDeleteFlag(), is(expect.getDeleteFlag()));
+                        equalTo(expect.getLogicalName()));
+                assertThat(updated.getDeleteFlag(),
+                        equalTo(expect.getDeleteFlag()));
             }
         }
 
@@ -196,12 +199,12 @@ public class TableMasterRepositoryTest {
                 repository = session.getMapper(TableMasterRepository.class);
 
                 boolean result = repository.deleteByTableId(1);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 List<TableMaster> recordset = repository.findAll();
-                assertThat(recordset.size(), is(1));
-                assertThat(recordset.get(0).getTableId(), is(2));
+                assertThat(recordset.size(), equalTo(1));
+                assertThat(recordset.get(0).getTableId(), equalTo(2));
             }
         }
     }
