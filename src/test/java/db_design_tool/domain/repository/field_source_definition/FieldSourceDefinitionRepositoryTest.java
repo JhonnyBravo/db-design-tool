@@ -1,7 +1,7 @@
 package db_design_tool.domain.repository.field_source_definition;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,7 +128,7 @@ public class FieldSourceDefinitionRepositoryTest {
 
                 List<FieldSourceDefinition> definitionList = fieldSourceDefinitionRepository
                         .findAll();
-                assertThat(definitionList.size(), is(0));
+                assertThat(definitionList.size(), equalTo(0));
             }
         }
 
@@ -169,24 +169,24 @@ public class FieldSourceDefinitionRepositoryTest {
 
                 boolean result = fieldSourceDefinitionRepository
                         .create(expectDefinitionList);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 List<FieldSourceDefinition> actualDefinitionList = fieldSourceDefinitionRepository
                         .findAll();
-                assertThat(actualDefinitionList.size(), is(2));
+                assertThat(actualDefinitionList.size(), equalTo(2));
 
                 FieldSourceDefinition actualDefinition1 = actualDefinitionList
                         .get(0);
-                assertThat(actualDefinition1.getDefinitionId(), is(1));
+                assertThat(actualDefinition1.getDefinitionId(), equalTo(1));
                 assertThat(actualDefinition1.getSourceDefinition(),
-                        is(expectDefinition1.getSourceDefinition()));
+                        equalTo(expectDefinition1.getSourceDefinition()));
 
                 FieldSourceDefinition actualDefinition2 = actualDefinitionList
                         .get(1);
-                assertThat(actualDefinition2.getDefinitionId(), is(2));
+                assertThat(actualDefinition2.getDefinitionId(), equalTo(2));
                 assertThat(actualDefinition2.getSourceDefinition(),
-                        is(expectDefinition2.getSourceDefinition()));
+                        equalTo(expectDefinition2.getSourceDefinition()));
             }
         }
     }
@@ -318,7 +318,7 @@ public class FieldSourceDefinitionRepositoryTest {
 
                 List<FieldSourceDefinition> definitionList = fieldSourceDefinitionRepository
                         .findAll();
-                assertThat(definitionList.size(), is(2));
+                assertThat(definitionList.size(), equalTo(2));
             }
         }
 
@@ -341,21 +341,21 @@ public class FieldSourceDefinitionRepositoryTest {
 
                 List<FieldSourceDefinition> actualDefinitionList = fieldSourceDefinitionRepository
                         .findByTableId(query1.getTableId());
-                assertThat(actualDefinitionList.size(), is(2));
+                assertThat(actualDefinitionList.size(), equalTo(2));
 
                 FieldSourceDefinition actualDefinition1 = actualDefinitionList
                         .get(0);
                 assertThat(actualDefinition1.getDefinitionId(),
-                        is(expectDefinition1.getDefinitionId()));
+                        equalTo(expectDefinition1.getDefinitionId()));
                 assertThat(actualDefinition1.getSourceDefinition(),
-                        is(expectDefinition1.getSourceDefinition()));
+                        equalTo(expectDefinition1.getSourceDefinition()));
 
                 FieldSourceDefinition actualDefinition2 = actualDefinitionList
                         .get(1);
                 assertThat(actualDefinition2.getDefinitionId(),
-                        is(expectDefinition2.getDefinitionId()));
+                        equalTo(expectDefinition2.getDefinitionId()));
                 assertThat(actualDefinition2.getSourceDefinition(),
-                        is(expectDefinition2.getSourceDefinition()));
+                        equalTo(expectDefinition2.getSourceDefinition()));
             }
         }
 
@@ -410,12 +410,12 @@ public class FieldSourceDefinitionRepositoryTest {
 
                 boolean result = fieldSourceDefinitionRepository
                         .create(definitionList);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 List<FieldSourceDefinition> recordset = fieldSourceDefinitionRepository
                         .findAll();
-                assertThat(recordset.size(), is(4));
+                assertThat(recordset.size(), equalTo(4));
             }
         }
 
@@ -438,18 +438,18 @@ public class FieldSourceDefinitionRepositoryTest {
 
                 boolean result = fieldSourceDefinitionRepository
                         .update(expectList);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 FieldSourceDefinition actual1 = fieldSourceDefinitionRepository
                         .findByFieldId(1);
                 assertThat(actual1.getSourceDefinition(),
-                        is(expect1.getSourceDefinition()));
+                        equalTo(expect1.getSourceDefinition()));
 
                 FieldSourceDefinition actual2 = fieldSourceDefinitionRepository
                         .findByFieldId(2);
                 assertThat(actual2.getSourceDefinition(),
-                        is(expect2.getSourceDefinition()));
+                        equalTo(expect2.getSourceDefinition()));
             }
         }
     }
