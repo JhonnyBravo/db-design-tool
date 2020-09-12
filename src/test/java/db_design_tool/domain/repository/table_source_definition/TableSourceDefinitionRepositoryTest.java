@@ -1,7 +1,7 @@
 package db_design_tool.domain.repository.table_source_definition;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +108,7 @@ public class TableSourceDefinitionRepositoryTest {
 
                 final List<TableSourceDefinition> recordset = tableSourceDefinitionRepository
                         .findAll();
-                assertThat(recordset.size(), is(0));
+                assertThat(recordset.size(), equalTo(0));
             }
         }
 
@@ -132,32 +132,34 @@ public class TableSourceDefinitionRepositoryTest {
 
                 final boolean result = tableSourceDefinitionRepository
                         .create(expectList);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 final List<TableSourceDefinition> actualList = tableSourceDefinitionRepository
                         .findAll();
-                assertThat(actualList.size(), is(2));
+                assertThat(actualList.size(), equalTo(2));
 
                 final TableSourceDefinition actual1 = actualList.get(0);
-                assertThat(actual1.getDefinitionId(), is(1));
-                assertThat(actual1.getTableId(), is(expect1.getTableId()));
-                assertThat(actual1.getNo(), is(expect1.getNo()));
-                assertThat(actual1.getSourceId(), is(expect1.getSourceId()));
+                assertThat(actual1.getDefinitionId(), equalTo(1));
+                assertThat(actual1.getTableId(), equalTo(expect1.getTableId()));
+                assertThat(actual1.getNo(), equalTo(expect1.getNo()));
+                assertThat(actual1.getSourceId(),
+                        equalTo(expect1.getSourceId()));
                 assertThat(actual1.getJoinCondition(),
-                        is(expect1.getJoinCondition()));
+                        equalTo(expect1.getJoinCondition()));
                 assertThat(actual1.getDeleteFlag(),
-                        is(expect1.getDeleteFlag()));
+                        equalTo(expect1.getDeleteFlag()));
 
                 final TableSourceDefinition actual2 = actualList.get(1);
-                assertThat(actual2.getDefinitionId(), is(2));
-                assertThat(actual2.getTableId(), is(expect2.getTableId()));
-                assertThat(actual2.getNo(), is(expect2.getNo()));
-                assertThat(actual2.getSourceId(), is(expect2.getSourceId()));
+                assertThat(actual2.getDefinitionId(), equalTo(2));
+                assertThat(actual2.getTableId(), equalTo(expect2.getTableId()));
+                assertThat(actual2.getNo(), equalTo(expect2.getNo()));
+                assertThat(actual2.getSourceId(),
+                        equalTo(expect2.getSourceId()));
                 assertThat(actual2.getJoinCondition(),
-                        is(expect2.getJoinCondition()));
+                        equalTo(expect2.getJoinCondition()));
                 assertThat(actual2.getDeleteFlag(),
-                        is(expect2.getDeleteFlag()));
+                        equalTo(expect2.getDeleteFlag()));
             }
         }
     }
@@ -269,7 +271,7 @@ public class TableSourceDefinitionRepositoryTest {
 
                 final List<TableSourceDefinition> recordset = tableSourceDefinitionRepository
                         .findAll();
-                assertThat(recordset.size(), is(4));
+                assertThat(recordset.size(), equalTo(4));
             }
         }
 
@@ -293,36 +295,38 @@ public class TableSourceDefinitionRepositoryTest {
 
                 final boolean result = tableSourceDefinitionRepository
                         .create(expectList);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 final List<TableSourceDefinition> actualList1 = tableSourceDefinitionRepository
                         .findAll();
-                assertThat(actualList1.size(), is(6));
+                assertThat(actualList1.size(), equalTo(6));
 
                 final List<TableSourceDefinition> actualList2 = tableSourceDefinitionRepository
                         .findByTableId(1);
-                assertThat(actualList2.size(), is(4));
+                assertThat(actualList2.size(), equalTo(4));
 
                 final TableSourceDefinition actual1 = actualList2.get(2);
-                assertThat(actual1.getDefinitionId(), is(5));
-                assertThat(actual1.getTableId(), is(expect1.getTableId()));
-                assertThat(actual1.getNo(), is(expect1.getNo()));
-                assertThat(actual1.getSourceId(), is(expect1.getSourceId()));
+                assertThat(actual1.getDefinitionId(), equalTo(5));
+                assertThat(actual1.getTableId(), equalTo(expect1.getTableId()));
+                assertThat(actual1.getNo(), equalTo(expect1.getNo()));
+                assertThat(actual1.getSourceId(),
+                        equalTo(expect1.getSourceId()));
                 assertThat(actual1.getJoinCondition(),
-                        is(expect1.getJoinCondition()));
+                        equalTo(expect1.getJoinCondition()));
                 assertThat(actual1.getDeleteFlag(),
-                        is(expect1.getDeleteFlag()));
+                        equalTo(expect1.getDeleteFlag()));
 
                 final TableSourceDefinition actual2 = actualList2.get(3);
-                assertThat(actual2.getDefinitionId(), is(6));
-                assertThat(actual2.getTableId(), is(expect2.getTableId()));
-                assertThat(actual2.getNo(), is(expect2.getNo()));
-                assertThat(actual2.getSourceId(), is(expect2.getSourceId()));
+                assertThat(actual2.getDefinitionId(), equalTo(6));
+                assertThat(actual2.getTableId(), equalTo(expect2.getTableId()));
+                assertThat(actual2.getNo(), equalTo(expect2.getNo()));
+                assertThat(actual2.getSourceId(),
+                        equalTo(expect2.getSourceId()));
                 assertThat(actual2.getJoinCondition(),
-                        is(expect2.getJoinCondition()));
+                        equalTo(expect2.getJoinCondition()));
                 assertThat(actual2.getDeleteFlag(),
-                        is(expect2.getDeleteFlag()));
+                        equalTo(expect2.getDeleteFlag()));
             }
         }
 
@@ -347,24 +351,26 @@ public class TableSourceDefinitionRepositoryTest {
 
                 final boolean result = tableSourceDefinitionRepository
                         .update(expectList);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 final List<TableSourceDefinition> actualList = tableSourceDefinitionRepository
                         .findByTableId(2);
-                assertThat(actualList.size(), is(2));
+                assertThat(actualList.size(), equalTo(2));
 
                 final TableSourceDefinition actual1 = actualList.get(0);
-                assertThat(actual1.getNo(), is(expect2.getNo()));
-                assertThat(actual1.getSourceId(), is(expect2.getSourceId()));
+                assertThat(actual1.getNo(), equalTo(expect2.getNo()));
+                assertThat(actual1.getSourceId(),
+                        equalTo(expect2.getSourceId()));
                 assertThat(actual1.getJoinCondition(),
-                        is(expect2.getJoinCondition()));
+                        equalTo(expect2.getJoinCondition()));
 
                 final TableSourceDefinition actual2 = actualList.get(1);
-                assertThat(actual2.getNo(), is(expect1.getNo()));
-                assertThat(actual2.getSourceId(), is(expect1.getSourceId()));
+                assertThat(actual2.getNo(), equalTo(expect1.getNo()));
+                assertThat(actual2.getSourceId(),
+                        equalTo(expect1.getSourceId()));
                 assertThat(actual2.getJoinCondition(),
-                        is(expect1.getJoinCondition()));
+                        equalTo(expect1.getJoinCondition()));
             }
         }
 
@@ -376,12 +382,12 @@ public class TableSourceDefinitionRepositoryTest {
                         .getMapper(TableSourceDefinitionRepository.class);
                 boolean result = tableSourceDefinitionRepository
                         .deleteByDeleteFlag();
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 List<TableSourceDefinition> recordset = tableSourceDefinitionRepository
                         .findAll();
-                assertThat(recordset.size(), is(2));
+                assertThat(recordset.size(), equalTo(2));
             }
         }
     }
