@@ -1,7 +1,7 @@
 package db_design_tool.domain.service.data_type_master;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class DataTypeMasterServiceTest {
     @Test
     public void testFindAll() throws Exception {
         List<DataTypeMaster> recordset = service.findAll();
-        assertThat(recordset.size(), is(5));
+        assertThat(recordset.size(), equalTo(5));
     }
 
 }
