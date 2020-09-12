@@ -1,7 +1,7 @@
 package db_design_tool.domain.service.table_definition;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class TableDefinitionServiceTest {
         @Test
         public void findTableAll実行時に空のリストが返されること() throws Exception {
             final List<TableMaster> result = service.findTableAll();
-            assertThat(result.size(), is(0));
+            assertThat(result.size(), equalTo(0));
         }
 
         @Test
@@ -73,43 +73,43 @@ public class TableDefinitionServiceTest {
                     .findTableDefinitionByTableId(1);
 
             final TableMaster actualTable = actualDefinition.getTableMaster();
-            assertThat(actualTable.getTableId(), is(1));
-            assertThat(actualTable.getEntityType(), is(1));
+            assertThat(actualTable.getTableId(), equalTo(1));
+            assertThat(actualTable.getEntityType(), equalTo(1));
             assertThat(actualTable.getPhysicalName(),
-                    is(expectTable.getPhysicalName()));
+                    equalTo(expectTable.getPhysicalName()));
             assertThat(actualTable.getLogicalName(),
-                    is(expectTable.getLogicalName()));
+                    equalTo(expectTable.getLogicalName()));
             assertThat(actualTable.getDeleteFlag(),
-                    is(expectTable.getDeleteFlag()));
+                    equalTo(expectTable.getDeleteFlag()));
 
             final FieldMaster[] actualFieldArray = actualDefinition
                     .getFieldMaster();
 
             final FieldMaster actualField1 = actualFieldArray[0];
-            assertThat(actualField1.getFieldId(), is(1));
-            assertThat(actualField1.getTableId(), is(1));
-            assertThat(actualField1.getNo(), is(expectField1.getNo()));
+            assertThat(actualField1.getFieldId(), equalTo(1));
+            assertThat(actualField1.getTableId(), equalTo(1));
+            assertThat(actualField1.getNo(), equalTo(expectField1.getNo()));
             assertThat(actualField1.getPhysicalName(),
-                    is(expectField1.getPhysicalName()));
+                    equalTo(expectField1.getPhysicalName()));
             assertThat(actualField1.getLogicalName(),
-                    is(expectField1.getLogicalName()));
+                    equalTo(expectField1.getLogicalName()));
             assertThat(actualField1.getDescription(),
-                    is(expectField1.getDescription()));
+                    equalTo(expectField1.getDescription()));
             assertThat(actualField1.getDeleteFlag(),
-                    is(expectField1.getDeleteFlag()));
+                    equalTo(expectField1.getDeleteFlag()));
 
             final FieldMaster actualField2 = actualFieldArray[1];
-            assertThat(actualField2.getFieldId(), is(2));
-            assertThat(actualField2.getTableId(), is(1));
-            assertThat(actualField2.getNo(), is(expectField2.getNo()));
+            assertThat(actualField2.getFieldId(), equalTo(2));
+            assertThat(actualField2.getTableId(), equalTo(1));
+            assertThat(actualField2.getNo(), equalTo(expectField2.getNo()));
             assertThat(actualField2.getPhysicalName(),
-                    is(expectField2.getPhysicalName()));
+                    equalTo(expectField2.getPhysicalName()));
             assertThat(actualField2.getLogicalName(),
-                    is(expectField2.getLogicalName()));
+                    equalTo(expectField2.getLogicalName()));
             assertThat(actualField2.getDescription(),
-                    is(expectField2.getDescription()));
+                    equalTo(expectField2.getDescription()));
             assertThat(actualField2.getDeleteFlag(),
-                    is(expectField2.getDeleteFlag()));
+                    equalTo(expectField2.getDeleteFlag()));
         }
     }
 
@@ -157,7 +157,7 @@ public class TableDefinitionServiceTest {
         @Test
         public void findTableAll実行時に1件のレコードが返されること() throws Exception {
             final List<TableMaster> result = service.findTableAll();
-            assertThat(result.size(), is(1));
+            assertThat(result.size(), equalTo(1));
         }
 
         @Test
@@ -189,49 +189,49 @@ public class TableDefinitionServiceTest {
 
             // Assertion
             final List<TableMaster> tables = service.findTableAll();
-            assertThat(tables.size(), is(2));
+            assertThat(tables.size(), equalTo(2));
 
             final TableDefinition actualDefinition = service
                     .findTableDefinitionByTableId(2);
 
             final TableMaster actualTable = actualDefinition.getTableMaster();
-            assertThat(actualTable.getTableId(), is(2));
-            assertThat(actualTable.getEntityType(), is(1));
+            assertThat(actualTable.getTableId(), equalTo(2));
+            assertThat(actualTable.getEntityType(), equalTo(1));
             assertThat(actualTable.getPhysicalName(),
-                    is(expectTable.getPhysicalName()));
+                    equalTo(expectTable.getPhysicalName()));
             assertThat(actualTable.getLogicalName(),
-                    is(expectTable.getLogicalName()));
+                    equalTo(expectTable.getLogicalName()));
             assertThat(actualTable.getDeleteFlag(),
-                    is(expectTable.getDeleteFlag()));
+                    equalTo(expectTable.getDeleteFlag()));
 
             final FieldMaster[] actualFieldArray = actualDefinition
                     .getFieldMaster();
 
             final FieldMaster actualField1 = actualFieldArray[0];
-            assertThat(actualField1.getFieldId(), is(3));
-            assertThat(actualField1.getTableId(), is(2));
-            assertThat(actualField1.getNo(), is(expectField1.getNo()));
+            assertThat(actualField1.getFieldId(), equalTo(3));
+            assertThat(actualField1.getTableId(), equalTo(2));
+            assertThat(actualField1.getNo(), equalTo(expectField1.getNo()));
             assertThat(actualField1.getPhysicalName(),
-                    is(expectField1.getPhysicalName()));
+                    equalTo(expectField1.getPhysicalName()));
             assertThat(actualField1.getLogicalName(),
-                    is(expectField1.getLogicalName()));
+                    equalTo(expectField1.getLogicalName()));
             assertThat(actualField1.getDescription(),
-                    is(expectField1.getDescription()));
+                    equalTo(expectField1.getDescription()));
             assertThat(actualField1.getDeleteFlag(),
-                    is(expectField1.getDeleteFlag()));
+                    equalTo(expectField1.getDeleteFlag()));
 
             final FieldMaster actualField2 = actualFieldArray[1];
-            assertThat(actualField2.getFieldId(), is(4));
-            assertThat(actualField2.getTableId(), is(2));
-            assertThat(actualField2.getNo(), is(expectField2.getNo()));
+            assertThat(actualField2.getFieldId(), equalTo(4));
+            assertThat(actualField2.getTableId(), equalTo(2));
+            assertThat(actualField2.getNo(), equalTo(expectField2.getNo()));
             assertThat(actualField2.getPhysicalName(),
-                    is(expectField2.getPhysicalName()));
+                    equalTo(expectField2.getPhysicalName()));
             assertThat(actualField2.getLogicalName(),
-                    is(expectField2.getLogicalName()));
+                    equalTo(expectField2.getLogicalName()));
             assertThat(actualField2.getDescription(),
-                    is(expectField2.getDescription()));
+                    equalTo(expectField2.getDescription()));
             assertThat(actualField2.getDeleteFlag(),
-                    is(expectField2.getDeleteFlag()));
+                    equalTo(expectField2.getDeleteFlag()));
         }
 
         @Test
@@ -266,28 +266,29 @@ public class TableDefinitionServiceTest {
                     .findTableDefinitionByTableId(1);
 
             final TableMaster actualTable = actualDefinition.getTableMaster();
-            assertThat(actualTable.getTableId(), is(expectTable.getTableId()));
+            assertThat(actualTable.getTableId(),
+                    equalTo(expectTable.getTableId()));
             assertThat(actualTable.getPhysicalName(),
-                    is(expectTable.getPhysicalName()));
+                    equalTo(expectTable.getPhysicalName()));
             assertThat(actualTable.getLogicalName(),
-                    is(expectTable.getLogicalName()));
+                    equalTo(expectTable.getLogicalName()));
             assertThat(actualTable.getDeleteFlag(),
-                    is(expectTable.getDeleteFlag()));
+                    equalTo(expectTable.getDeleteFlag()));
 
             final FieldMaster[] actualFieldArray = actualDefinition
                     .getFieldMaster();
-            assertThat(actualFieldArray.length, is(1));
+            assertThat(actualFieldArray.length, equalTo(1));
 
             final FieldMaster actualField2 = actualFieldArray[0];
             assertThat(actualField2.getFieldId(),
-                    is(expectField2.getFieldId()));
-            assertThat(actualField2.getNo(), is(expectField2.getNo()));
+                    equalTo(expectField2.getFieldId()));
+            assertThat(actualField2.getNo(), equalTo(expectField2.getNo()));
             assertThat(actualField2.getPhysicalName(),
-                    is(expectField2.getPhysicalName()));
+                    equalTo(expectField2.getPhysicalName()));
             assertThat(actualField2.getLogicalName(),
-                    is(expectField2.getLogicalName()));
+                    equalTo(expectField2.getLogicalName()));
             assertThat(actualField2.getDescription(),
-                    is(expectField2.getDescription()));
+                    equalTo(expectField2.getDescription()));
         }
     }
 }
