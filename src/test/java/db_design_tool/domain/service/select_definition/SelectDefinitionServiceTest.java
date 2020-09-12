@@ -1,7 +1,7 @@
 package db_design_tool.domain.service.select_definition;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +109,7 @@ public class SelectDefinitionServiceTest {
         public void findQueryAll実行時に空のリストが返されること() throws Exception {
             List<TableMaster> tableMasterList = selectDefinitionService
                     .findQueryAll();
-            assertThat(tableMasterList.size(), is(0));
+            assertThat(tableMasterList.size(), equalTo(0));
         }
 
         @Test
@@ -182,67 +182,67 @@ public class SelectDefinitionServiceTest {
 
             // クエリ名が登録できること
             TableMaster actualTable = actualDefinition.getTableMaster();
-            assertThat(actualTable.getEntityType(), is(2));
+            assertThat(actualTable.getEntityType(), equalTo(2));
             assertThat(actualTable.getPhysicalName(),
-                    is(expectTable.getPhysicalName()));
+                    equalTo(expectTable.getPhysicalName()));
             assertThat(actualTable.getLogicalName(),
-                    is(expectTable.getLogicalName()));
+                    equalTo(expectTable.getLogicalName()));
 
             // クエリのフィールド定義が登録できること
             FieldMaster[] actualFieldArray = actualDefinition.getFieldMaster();
-            assertThat(actualFieldArray.length, is(2));
+            assertThat(actualFieldArray.length, equalTo(2));
 
             FieldMaster actualField1 = actualFieldArray[0];
-            assertThat(actualField1.getNo(), is(expectField1.getNo()));
+            assertThat(actualField1.getNo(), equalTo(expectField1.getNo()));
             assertThat(actualField1.getPhysicalName(),
-                    is(expectField1.getPhysicalName()));
+                    equalTo(expectField1.getPhysicalName()));
             assertThat(actualField1.getLogicalName(),
-                    is(expectField1.getLogicalName()));
+                    equalTo(expectField1.getLogicalName()));
 
             FieldMaster actualField2 = actualFieldArray[1];
-            assertThat(actualField2.getNo(), is(expectField2.getNo()));
+            assertThat(actualField2.getNo(), equalTo(expectField2.getNo()));
             assertThat(actualField2.getPhysicalName(),
-                    is(expectField2.getPhysicalName()));
+                    equalTo(expectField2.getPhysicalName()));
             assertThat(actualField2.getLogicalName(),
-                    is(expectField2.getLogicalName()));
+                    equalTo(expectField2.getLogicalName()));
 
             // 取得元テーブルの定義が登録できること
             TableSourceDefinition[] actualTableSourceArray = actualDefinition
                     .getTableSourceDefinition();
-            assertThat(actualTableSourceArray.length, is(2));
+            assertThat(actualTableSourceArray.length, equalTo(2));
 
             TableSourceDefinition actualTableSource1 = actualTableSourceArray[0];
             assertThat(actualTableSource1.getNo(),
-                    is(expectTableSource1.getNo()));
+                    equalTo(expectTableSource1.getNo()));
             assertThat(actualTableSource1.getSourceId(),
-                    is(expectTableSource1.getSourceId()));
+                    equalTo(expectTableSource1.getSourceId()));
             assertThat(actualTableSource1.getJoinCondition(),
-                    is(expectTableSource1.getJoinCondition()));
+                    equalTo(expectTableSource1.getJoinCondition()));
 
             TableSourceDefinition actualTableSource2 = actualTableSourceArray[1];
             assertThat(actualTableSource2.getNo(),
-                    is(expectTableSource2.getNo()));
+                    equalTo(expectTableSource2.getNo()));
             assertThat(actualTableSource2.getSourceId(),
-                    is(expectTableSource2.getSourceId()));
+                    equalTo(expectTableSource2.getSourceId()));
             assertThat(actualTableSource2.getJoinCondition(),
-                    is(expectTableSource2.getJoinCondition()));
+                    equalTo(expectTableSource2.getJoinCondition()));
 
             // 取得元フィールドの定義が登録できること
             FieldSourceDefinition[] actualFieldSourceArray = expectDefinition
                     .getFieldSourceDefinition();
-            assertThat(actualFieldSourceArray.length, is(2));
+            assertThat(actualFieldSourceArray.length, equalTo(2));
 
             FieldSourceDefinition actualFieldSource1 = actualFieldSourceArray[0];
             assertThat(actualFieldSource1.getFieldId(),
-                    is(actualField1.getFieldId()));
+                    equalTo(actualField1.getFieldId()));
             assertThat(actualFieldSource1.getSourceDefinition(),
-                    is(expectFieldSource1.getSourceDefinition()));
+                    equalTo(expectFieldSource1.getSourceDefinition()));
 
             FieldSourceDefinition actualFieldSource2 = actualFieldSourceArray[1];
             assertThat(actualFieldSource2.getFieldId(),
-                    is(actualField2.getFieldId()));
+                    equalTo(actualField2.getFieldId()));
             assertThat(actualFieldSource2.getSourceDefinition(),
-                    is(expectFieldSource2.getSourceDefinition()));
+                    equalTo(expectFieldSource2.getSourceDefinition()));
         }
     }
 
@@ -387,7 +387,7 @@ public class SelectDefinitionServiceTest {
         public void findQueryAll実行時に1件のレコードが返されること() throws Exception {
             List<TableMaster> tableMasterList = selectDefinitionService
                     .findQueryAll();
-            assertThat(tableMasterList.size(), is(1));
+            assertThat(tableMasterList.size(), equalTo(1));
         }
 
         @Test
@@ -449,7 +449,7 @@ public class SelectDefinitionServiceTest {
             // Assertion
             List<TableMaster> actualTableList = selectDefinitionService
                     .findQueryAll();
-            assertThat(actualTableList.size(), is(2));
+            assertThat(actualTableList.size(), equalTo(2));
         }
 
         @Test
@@ -483,20 +483,20 @@ public class SelectDefinitionServiceTest {
 
             TableSourceDefinition actualTableSource = actualTableSourceArray[1];
             assertThat(actualTableSource.getNo(),
-                    is(expectTableSource.getNo()));
+                    equalTo(expectTableSource.getNo()));
             assertThat(actualTableSource.getSourceId(),
-                    is(expectTableSource.getSourceId()));
+                    equalTo(expectTableSource.getSourceId()));
             assertThat(actualTableSource.getJoinCondition(),
-                    is(expectTableSource.getJoinCondition()));
+                    equalTo(expectTableSource.getJoinCondition()));
 
             FieldSourceDefinition[] actualFieldSourceArray = actualDefinition
                     .getFieldSourceDefinition();
 
             FieldSourceDefinition actualFieldSource = actualFieldSourceArray[1];
             assertThat(actualFieldSource.getFieldId(),
-                    is(expectFieldSource.getFieldId()));
+                    equalTo(expectFieldSource.getFieldId()));
             assertThat(actualFieldSource.getSourceDefinition(),
-                    is(expectFieldSource.getSourceDefinition()));
+                    equalTo(expectFieldSource.getSourceDefinition()));
         }
     }
 }
