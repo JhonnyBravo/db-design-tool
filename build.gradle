@@ -31,7 +31,7 @@ repositories {
 
 dependencies {
     // Tomcat
-    def tomcatVersion='8.0.36'
+    def tomcatVersion='8.5.2'
 
     tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
