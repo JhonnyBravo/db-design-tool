@@ -1,7 +1,7 @@
 package db_design_tool.domain.repository.field_master;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +95,7 @@ public class FieldMasterRepositoryTest {
 
                 final List<FieldMaster> recordset = fieldMasterRepository
                         .findAll();
-                assertThat(recordset.size(), is(0));
+                assertThat(recordset.size(), equalTo(0));
             }
         }
 
@@ -118,44 +118,44 @@ public class FieldMasterRepositoryTest {
                         .getMapper(FieldMasterRepository.class);
 
                 final boolean result = fieldMasterRepository.create(expectList);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 final List<FieldMaster> actualList = fieldMasterRepository
                         .findAll();
-                assertThat(actualList.size(), is(expectList.size()));
+                assertThat(actualList.size(), equalTo(expectList.size()));
 
                 final FieldMaster actual1 = fieldMasterRepository
                         .findByTableIdAndNo(expect1.getTableId(),
                                 expect1.getNo());
 
-                assertThat(actual1.getFieldId(), is(1));
-                assertThat(actual1.getTableId(), is(expect1.getTableId()));
-                assertThat(actual1.getNo(), is(expect1.getNo()));
+                assertThat(actual1.getFieldId(), equalTo(1));
+                assertThat(actual1.getTableId(), equalTo(expect1.getTableId()));
+                assertThat(actual1.getNo(), equalTo(expect1.getNo()));
                 assertThat(actual1.getPhysicalName(),
-                        is(expect1.getPhysicalName()));
+                        equalTo(expect1.getPhysicalName()));
                 assertThat(actual1.getLogicalName(),
-                        is(expect1.getLogicalName()));
+                        equalTo(expect1.getLogicalName()));
                 assertThat(actual1.getDescription(),
-                        is(expect1.getDescription()));
+                        equalTo(expect1.getDescription()));
                 assertThat(actual1.getDeleteFlag(),
-                        is(expect1.getDeleteFlag()));
+                        equalTo(expect1.getDeleteFlag()));
 
                 final FieldMaster actual2 = fieldMasterRepository
                         .findByTableIdAndNo(expect2.getTableId(),
                                 expect2.getNo());
 
-                assertThat(actual2.getFieldId(), is(2));
-                assertThat(actual2.getTableId(), is(expect2.getTableId()));
-                assertThat(actual2.getNo(), is(expect2.getNo()));
+                assertThat(actual2.getFieldId(), equalTo(2));
+                assertThat(actual2.getTableId(), equalTo(expect2.getTableId()));
+                assertThat(actual2.getNo(), equalTo(expect2.getNo()));
                 assertThat(actual2.getPhysicalName(),
-                        is(expect2.getPhysicalName()));
+                        equalTo(expect2.getPhysicalName()));
                 assertThat(actual2.getLogicalName(),
-                        is(expect2.getLogicalName()));
+                        equalTo(expect2.getLogicalName()));
                 assertThat(actual2.getDescription(),
-                        is(expect2.getDescription()));
+                        equalTo(expect2.getDescription()));
                 assertThat(actual2.getDeleteFlag(),
-                        is(expect2.getDeleteFlag()));
+                        equalTo(expect2.getDeleteFlag()));
             }
         }
     }
@@ -256,7 +256,7 @@ public class FieldMasterRepositoryTest {
 
                 final List<FieldMaster> recordset = fieldMasterRepository
                         .findAll();
-                assertThat(recordset.size(), is(4));
+                assertThat(recordset.size(), equalTo(4));
             }
         }
 
@@ -279,48 +279,48 @@ public class FieldMasterRepositoryTest {
                         .getMapper(FieldMasterRepository.class);
 
                 final boolean result = fieldMasterRepository.create(expectList);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 final List<FieldMaster> actualList1 = fieldMasterRepository
                         .findAll();
-                assertThat(actualList1.size(), is(6));
+                assertThat(actualList1.size(), equalTo(6));
 
                 final List<FieldMaster> actualList2 = fieldMasterRepository
                         .findByTableId(1);
-                assertThat(actualList2.size(), is(4));
+                assertThat(actualList2.size(), equalTo(4));
 
                 final FieldMaster actual1 = fieldMasterRepository
                         .findByTableIdAndNo(expect1.getTableId(),
                                 expect1.getNo());
 
-                assertThat(actual1.getFieldId(), is(5));
-                assertThat(actual1.getTableId(), is(expect1.getTableId()));
-                assertThat(actual1.getNo(), is(expect1.getNo()));
+                assertThat(actual1.getFieldId(), equalTo(5));
+                assertThat(actual1.getTableId(), equalTo(expect1.getTableId()));
+                assertThat(actual1.getNo(), equalTo(expect1.getNo()));
                 assertThat(actual1.getPhysicalName(),
-                        is(expect1.getPhysicalName()));
+                        equalTo(expect1.getPhysicalName()));
                 assertThat(actual1.getLogicalName(),
-                        is(expect1.getLogicalName()));
+                        equalTo(expect1.getLogicalName()));
                 assertThat(actual1.getDescription(),
-                        is(expect1.getDescription()));
+                        equalTo(expect1.getDescription()));
                 assertThat(actual1.getDeleteFlag(),
-                        is(expect1.getDeleteFlag()));
+                        equalTo(expect1.getDeleteFlag()));
 
                 final FieldMaster actual2 = fieldMasterRepository
 
                         .findByTableIdAndNo(expect2.getTableId(),
                                 expect2.getNo());
-                assertThat(actual2.getFieldId(), is(6));
-                assertThat(actual2.getTableId(), is(expect2.getTableId()));
-                assertThat(actual2.getNo(), is(expect2.getNo()));
+                assertThat(actual2.getFieldId(), equalTo(6));
+                assertThat(actual2.getTableId(), equalTo(expect2.getTableId()));
+                assertThat(actual2.getNo(), equalTo(expect2.getNo()));
                 assertThat(actual2.getPhysicalName(),
-                        is(expect2.getPhysicalName()));
+                        equalTo(expect2.getPhysicalName()));
                 assertThat(actual2.getLogicalName(),
-                        is(expect2.getLogicalName()));
+                        equalTo(expect2.getLogicalName()));
                 assertThat(actual2.getDescription(),
-                        is(expect2.getDescription()));
+                        equalTo(expect2.getDescription()));
                 assertThat(actual2.getDeleteFlag(),
-                        is(expect2.getDeleteFlag()));
+                        equalTo(expect2.getDeleteFlag()));
             }
         }
 
@@ -347,40 +347,40 @@ public class FieldMasterRepositoryTest {
                 expectList.add(expect2);
 
                 boolean result = fieldMasterRepository.update(expectList);
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 List<FieldMaster> actualList = fieldMasterRepository
                         .findByTableId(2);
-                assertThat(actualList.size(), is(2));
+                assertThat(actualList.size(), equalTo(2));
 
                 final FieldMaster actual1 = fieldMasterRepository
                         .findByTableIdAndNo(expect1.getTableId(),
                                 expect1.getNo());
 
-                assertThat(actual1.getNo(), is(expect1.getNo()));
+                assertThat(actual1.getNo(), equalTo(expect1.getNo()));
                 assertThat(actual1.getPhysicalName(),
-                        is(expect1.getPhysicalName()));
+                        equalTo(expect1.getPhysicalName()));
                 assertThat(actual1.getLogicalName(),
-                        is(expect1.getLogicalName()));
+                        equalTo(expect1.getLogicalName()));
                 assertThat(actual1.getDescription(),
-                        is(expect1.getDescription()));
+                        equalTo(expect1.getDescription()));
                 assertThat(actual1.getDeleteFlag(),
-                        is(expect1.getDeleteFlag()));
+                        equalTo(expect1.getDeleteFlag()));
 
                 final FieldMaster actual2 = fieldMasterRepository
                         .findByTableIdAndNo(expect2.getTableId(),
                                 expect2.getNo());
 
-                assertThat(actual2.getNo(), is(expect2.getNo()));
+                assertThat(actual2.getNo(), equalTo(expect2.getNo()));
                 assertThat(actual2.getPhysicalName(),
-                        is(expect2.getPhysicalName()));
+                        equalTo(expect2.getPhysicalName()));
                 assertThat(actual2.getLogicalName(),
-                        is(expect2.getLogicalName()));
+                        equalTo(expect2.getLogicalName()));
                 assertThat(actual2.getDescription(),
-                        is(expect2.getDescription()));
+                        equalTo(expect2.getDescription()));
                 assertThat(actual2.getDeleteFlag(),
-                        is(expect2.getDeleteFlag()));
+                        equalTo(expect2.getDeleteFlag()));
             }
         }
 
@@ -391,11 +391,11 @@ public class FieldMasterRepositoryTest {
                 fieldMasterRepository = session
                         .getMapper(FieldMasterRepository.class);
                 boolean result = fieldMasterRepository.deleteByDeleteFlag();
-                assertThat(result, is(true));
+                assertThat(result, equalTo(true));
                 session.commit();
 
                 List<FieldMaster> recordset = fieldMasterRepository.findAll();
-                assertThat(recordset.size(), is(2));
+                assertThat(recordset.size(), equalTo(2));
             }
         }
     }
