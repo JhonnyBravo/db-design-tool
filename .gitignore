@@ -127,3 +127,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Docker
+mysql/data
+tomcat/data
