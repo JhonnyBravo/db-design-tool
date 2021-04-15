@@ -2,9 +2,9 @@ package db_design_tool.domain.model;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.Range;
+
+import jakarta.validation.constraints.Size;
 
 public class FieldMaster implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -36,8 +36,7 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param tableId
-     *            フィールド定義が紐づくテーブルの ID を指定する。
+     * @param tableId フィールド定義が紐づくテーブルの ID を指定する。
      */
     public void setTableId(int tableId) {
         this.tableId = tableId;
@@ -51,8 +50,7 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param fieldId
-     *            フィールド定義の ID を指定する。
+     * @param fieldId フィールド定義の ID を指定する。
      */
     public void setFieldId(int fieldId) {
         this.fieldId = fieldId;
@@ -66,8 +64,7 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param no
-     *            no を指定する。
+     * @param no no を指定する。
      */
     public void setNo(int no) {
         this.no = no;
@@ -81,8 +78,7 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param physicalName
-     *            physicalName フィールドの物理名を指定する。
+     * @param physicalName physicalName フィールドの物理名を指定する。
      */
     public void setPhysicalName(String physicalName) {
         this.physicalName = physicalName;
@@ -96,8 +92,7 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param logicalName
-     *            logicalName フィールドの論理名を指定する。
+     * @param logicalName logicalName フィールドの論理名を指定する。
      */
     public void setLogicalName(String logicalName) {
         this.logicalName = logicalName;
@@ -111,17 +106,16 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param dataType
-     *            dataType データ型を指定する。
-     *            <ol>
-     *            <li>String</li>
-     *            <li>Integer</li>
-     *            <li>Long</li>
-     *            <li>Single</li>
-     *            <li>Double</li>
-     *            <li>Boolean</li>
-     *            <li>Date</li>
-     *            </ol>
+     * @param dataType dataType データ型を指定する。
+     *                 <ol>
+     *                 <li>String</li>
+     *                 <li>Integer</li>
+     *                 <li>Long</li>
+     *                 <li>Single</li>
+     *                 <li>Double</li>
+     *                 <li>Boolean</li>
+     *                 <li>Date</li>
+     *                 </ol>
      */
     public void setDataType(int dataType) {
         this.dataType = dataType;
@@ -135,8 +129,7 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param dataSize
-     *            dataSize データの桁数を指定する。
+     * @param dataSize dataSize データの桁数を指定する。
      */
     public void setDataSize(int dataSize) {
         this.dataSize = dataSize;
@@ -150,8 +143,7 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param description
-     *            description フィールドの説明を指定する。
+     * @param description description フィールドの説明を指定する。
      */
     public void setDescription(String description) {
         this.description = description;
@@ -165,12 +157,11 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param deleteFlag
-     *            削除フラグを指定する。
-     *            <ul>
-     *            <li>0: フィールドが削除されていないことを表す。</li>
-     *            <li>1: フィールドが削除されていることを表す。</li>
-     *            </ul>
+     * @param deleteFlag 削除フラグを指定する。
+     *                   <ul>
+     *                   <li>0: フィールドが削除されていないことを表す。</li>
+     *                   <li>1: フィールドが削除されていることを表す。</li>
+     *                   </ul>
      */
     public void setDeleteFlag(int deleteFlag) {
         this.deleteFlag = deleteFlag;
@@ -184,8 +175,7 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param physicalNameError
-     *            フィールドの物理名に関するエラーメッセージを指定する。
+     * @param physicalNameError フィールドの物理名に関するエラーメッセージを指定する。
      */
     public void setPhysicalNameError(String physicalNameError) {
         this.physicalNameError = physicalNameError;
@@ -199,8 +189,7 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param logicalNameError
-     *            フィールドの論理名に関するエラーメッセージを指定する。
+     * @param logicalNameError フィールドの論理名に関するエラーメッセージを指定する。
      */
     public void setLogicalNameError(String logicalNameError) {
         this.logicalNameError = logicalNameError;
@@ -214,8 +203,7 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param dataSizeError
-     *            フィールドのデータサイズに関するエラーメッセージを指定する。
+     * @param dataSizeError フィールドのデータサイズに関するエラーメッセージを指定する。
      */
     public void setDataSizeError(String dataSizeError) {
         this.dataSizeError = dataSizeError;
@@ -229,8 +217,7 @@ public class FieldMaster implements Serializable {
     }
 
     /**
-     * @param descriptionError
-     *            フィールドの説明に関するエラーメッセージを指定する。
+     * @param descriptionError フィールドの説明に関するエラーメッセージを指定する。
      */
     public void setDescriptionError(String descriptionError) {
         this.descriptionError = descriptionError;
