@@ -2,26 +2,23 @@ package db_design_tool.app.select_definition;
 
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-
 import db_design_tool.app.table_definition.TableDefinitionValidator;
 import db_design_tool.domain.model.FieldSourceDefinition;
 import db_design_tool.domain.model.TableSourceDefinition;
+import jakarta.validation.ConstraintViolation;
 
 public class SelectDefinitionValidator extends TableDefinitionValidator {
     /**
      * TableSourceDefinition のバリデーションチェックを実行する。
      *
-     * @param tableSourceDefinition
-     *            チェック対象とする TableSourceDefinition を指定する。
+     * @param tableSourceDefinition チェック対象とする TableSourceDefinition を指定する。
      * @return hasError エラーの有無を真偽値で返す。
      *         <ul>
      *         <li>true: エラーが有ることを表す。</li>
      *         <li>false: エラーが無いことを表す。</li>
      *         </ul>
      */
-    public boolean validateTableSourceDefinition(
-            TableSourceDefinition tableSourceDefinition) {
+    public boolean validateTableSourceDefinition(TableSourceDefinition tableSourceDefinition) {
         boolean hasError = false;
         final Set<ConstraintViolation<TableSourceDefinition>> tableSourceDefinitionViolation = validator
                 .validate(tableSourceDefinition);
@@ -44,16 +41,14 @@ public class SelectDefinitionValidator extends TableDefinitionValidator {
     /**
      * FieldMaster のバリデーションチェックを実行する。
      *
-     * @param fieldSourceDefinition
-     *            チェック対象とする FieldMaster を指定する。
+     * @param fieldSourceDefinition チェック対象とする FieldMaster を指定する。
      * @return hasError エラーの有無を真偽値で返す。
      *         <ul>
      *         <li>true: エラーが有ることを表す。</li>
      *         <li>false: エラーが無いことを表す。</li>
      *         </ul>
      */
-    public boolean validateFieldSourceDefinition(
-            FieldSourceDefinition fieldSourceDefinition) {
+    public boolean validateFieldSourceDefinition(FieldSourceDefinition fieldSourceDefinition) {
         boolean hasError = false;
         final Set<ConstraintViolation<FieldSourceDefinition>> fieldSourceDefinitionViolation = validator
                 .validate(fieldSourceDefinition);
@@ -71,8 +66,7 @@ public class SelectDefinitionValidator extends TableDefinitionValidator {
                 } else if (path.equals("description")) {
                     fieldSourceDefinition.setDescriptionError(e.getMessage());
                 } else if (path.equals("sourceDefinition")) {
-                    fieldSourceDefinition
-                            .setSourceDefinitionError(e.getMessage());
+                    fieldSourceDefinition.setSourceDefinitionError(e.getMessage());
                 }
             });
 
