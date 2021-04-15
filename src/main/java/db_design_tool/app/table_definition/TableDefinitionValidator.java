@@ -2,12 +2,11 @@ package db_design_tool.app.table_definition;
 
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-
 import db_design_tool.domain.model.FieldMaster;
 import db_design_tool.domain.model.TableMaster;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 
 public class TableDefinitionValidator {
     protected final Validator validator;
@@ -19,8 +18,7 @@ public class TableDefinitionValidator {
     /**
      * TableMaster のバリデーションチェックを実行する。
      *
-     * @param tableMaster
-     *            チェック対象とする TableMaster を指定する。
+     * @param tableMaster チェック対象とする TableMaster を指定する。
      * @return hasError エラーの有無を真偽値で返す。
      *         <ul>
      *         <li>true: エラーが有ることを表す。</li>
@@ -29,8 +27,7 @@ public class TableDefinitionValidator {
      */
     public boolean validateTableMaster(TableMaster tableMaster) {
         boolean hasError = false;
-        final Set<ConstraintViolation<TableMaster>> tableMasterViolation = validator
-                .validate(tableMaster);
+        final Set<ConstraintViolation<TableMaster>> tableMasterViolation = validator.validate(tableMaster);
 
         if (tableMasterViolation.size() > 0) {
             hasError = true;
@@ -52,8 +49,7 @@ public class TableDefinitionValidator {
     /**
      * FieldMaster のバリデーションチェックを実行する。
      *
-     * @param fieldMaster
-     *            チェック対象とする FieldMaster を指定する。
+     * @param fieldMaster チェック対象とする FieldMaster を指定する。
      * @return hasError エラーの有無を真偽値で返す。
      *         <ul>
      *         <li>true: エラーが有ることを表す。</li>
@@ -62,8 +58,7 @@ public class TableDefinitionValidator {
      */
     public boolean validateFieldMaster(FieldMaster fieldMaster) {
         boolean hasError = false;
-        final Set<ConstraintViolation<FieldMaster>> fieldMasterViolation = validator
-                .validate(fieldMaster);
+        final Set<ConstraintViolation<FieldMaster>> fieldMasterViolation = validator.validate(fieldMaster);
 
         if (fieldMasterViolation.size() > 0) {
             hasError = true;
