@@ -1,4 +1,3 @@
-create database if not exists db_design_tool;
 use db_design_tool;
 
 CREATE TABLE IF NOT EXISTS table_master (
@@ -51,5 +50,3 @@ CREATE TABLE IF NOT EXISTS field_source_definition (
         REFERENCES field_master (field_id)
         ON DELETE CASCADE
 );
-
--- grant all privileges on db_design_tool.* to user@localhost;
