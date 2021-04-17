@@ -2,9 +2,9 @@ package db_design_tool.domain.model;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.Range;
+
+import jakarta.validation.constraints.Size;
 
 public class TableMaster implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -28,8 +28,7 @@ public class TableMaster implements Serializable {
     }
 
     /**
-     * @param tableId
-     *            テーブルの ID を指定する。
+     * @param tableId テーブルの ID を指定する。
      */
     public void setTableId(int tableId) {
         this.tableId = tableId;
@@ -43,8 +42,7 @@ public class TableMaster implements Serializable {
     }
 
     /**
-     * @param physicalName
-     *            テーブルの物理名を指定する。
+     * @param physicalName テーブルの物理名を指定する。
      */
     public void setPhysicalName(String physicalName) {
         this.physicalName = physicalName;
@@ -58,8 +56,7 @@ public class TableMaster implements Serializable {
     }
 
     /**
-     * @param logicalName
-     *            テーブルの論理名を指定する。
+     * @param logicalName テーブルの論理名を指定する。
      */
     public void setLogicalName(String logicalName) {
         this.logicalName = logicalName;
@@ -73,12 +70,11 @@ public class TableMaster implements Serializable {
     }
 
     /**
-     * @param deleteFlag
-     *            削除フラグを指定する。
-     *            <ul>
-     *            <li>0: 削除されていないことを表す。</li>
-     *            <li>1: 削除されていることを表す。</li>
-     *            </ul>
+     * @param deleteFlag 削除フラグを指定する。
+     *                   <ul>
+     *                   <li>0: 削除されていないことを表す。</li>
+     *                   <li>1: 削除されていることを表す。</li>
+     *                   </ul>
      */
     public void setDeleteFlag(int deleteFlag) {
         this.deleteFlag = deleteFlag;
@@ -92,12 +88,11 @@ public class TableMaster implements Serializable {
     }
 
     /**
-     * @param entityType
-     *            エンティティタイプを指定する。
-     *            <ul>
-     *            <li>1: テーブル</li>
-     *            <li>2: クエリ</li>
-     *            </ul>
+     * @param entityType エンティティタイプを指定する。
+     *                   <ul>
+     *                   <li>1: テーブル</li>
+     *                   <li>2: クエリ</li>
+     *                   </ul>
      */
     public void setEntityType(int entityType) {
         this.entityType = entityType;
@@ -111,8 +106,7 @@ public class TableMaster implements Serializable {
     }
 
     /**
-     * @param physicalNameError
-     *            テーブルの物理名に関するエラーメッセージを指定する。
+     * @param physicalNameError テーブルの物理名に関するエラーメッセージを指定する。
      */
     public void setPhysicalNameError(String physicalNameError) {
         this.physicalNameError = physicalNameError;
@@ -126,8 +120,7 @@ public class TableMaster implements Serializable {
     }
 
     /**
-     * @param logicalNameError
-     *            テーブルの論理名に関するエラーメッセージを指定する。
+     * @param logicalNameError テーブルの論理名に関するエラーメッセージを指定する。
      */
     public void setLogicalNameError(String logicalNameError) {
         this.logicalNameError = logicalNameError;
