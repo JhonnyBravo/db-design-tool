@@ -2,7 +2,7 @@ package db_design_tool.domain.model;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 
 public class FieldSourceDefinition extends FieldMaster implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -20,8 +20,7 @@ public class FieldSourceDefinition extends FieldMaster implements Serializable {
     }
 
     /**
-     * @param definitionId
-     *            定義の ID を指定する。
+     * @param definitionId 定義の ID を指定する。
      */
     public void setDefinitionId(int definitionId) {
         this.definitionId = definitionId;
@@ -35,8 +34,7 @@ public class FieldSourceDefinition extends FieldMaster implements Serializable {
     }
 
     /**
-     * @param sourceDefinition
-     *            データ取得元の定義を指定する。
+     * @param sourceDefinition データ取得元の定義を指定する。
      */
     public void setSourceDefinition(String sourceDefinition) {
         this.sourceDefinition = sourceDefinition;
@@ -50,8 +48,7 @@ public class FieldSourceDefinition extends FieldMaster implements Serializable {
     }
 
     /**
-     * @param sourceDefinitionError
-     *            データ取得元の定義に関するエラーメッセージを指定する。
+     * @param sourceDefinitionError データ取得元の定義に関するエラーメッセージを指定する。
      */
     public void setSourceDefinitionError(String sourceDefinitionError) {
         this.sourceDefinitionError = sourceDefinitionError;
