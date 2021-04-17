@@ -1,7 +1,8 @@
 package db_design_tool.domain.repository.table_master;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 
@@ -28,8 +29,7 @@ public class TableMasterRepositoryTest {
 
         @BeforeClass
         public static void setUpBeforeClass() throws Exception {
-            factory = new SqlSessionFactoryBuilder()
-                    .build(Resources.getResourceAsStream("mybatis-config.xml"));
+            factory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsStream("mybatis-config.xml"));
         }
 
         @Before
@@ -63,7 +63,7 @@ public class TableMasterRepositoryTest {
 
         @Test
         public void create実行時にレコードを登録できてtrueが返されること() throws Exception {
-            final String[] params = {"table1", "テーブル1"};
+            final String[] params = { "table1", "テーブル1" };
             final TableMaster expect = helper.createTableMaster(params);
 
             try (SqlSession session = factory.openSession()) {
@@ -77,10 +77,8 @@ public class TableMasterRepositoryTest {
 
                 final TableMaster actual = repository.findByLatestTableId();
                 assertThat(actual.getTableId(), is(1));
-                assertThat(actual.getPhysicalName(),
-                        is(expect.getPhysicalName()));
-                assertThat(actual.getLogicalName(),
-                        is(expect.getLogicalName()));
+                assertThat(actual.getPhysicalName(), is(expect.getPhysicalName()));
+                assertThat(actual.getLogicalName(), is(expect.getLogicalName()));
                 assertThat(actual.getDeleteFlag(), is(expect.getDeleteFlag()));
             }
         }
@@ -93,16 +91,15 @@ public class TableMasterRepositoryTest {
 
         @BeforeClass
         public static void setUpBeforeClass() throws Exception {
-            factory = new SqlSessionFactoryBuilder()
-                    .build(Resources.getResourceAsStream("mybatis-config.xml"));
+            factory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsStream("mybatis-config.xml"));
         }
 
         @Before
         public void setUp() throws Exception {
-            final String[] params1 = {"table1", "テーブル1"};
+            final String[] params1 = { "table1", "テーブル1" };
             final TableMaster record1 = helper.createTableMaster(params1);
 
-            final String[] params2 = {"table2", "テーブル2"};
+            final String[] params2 = { "table2", "テーブル2" };
             final TableMaster record2 = helper.createTableMaster(params2);
 
             try (SqlSession session = factory.openSession()) {
@@ -137,7 +134,7 @@ public class TableMasterRepositoryTest {
 
         @Test
         public void create実行時にレコードを追加できてtrueが返されること() throws Exception {
-            final String[] params = {"table3", "テーブル3", "1"};
+            final String[] params = { "table3", "テーブル3", "1" };
             final TableMaster expect = helper.createTableMaster(params);
 
             try (SqlSession session = factory.openSession()) {
@@ -151,10 +148,8 @@ public class TableMasterRepositoryTest {
 
                 final TableMaster actual = repository.findByLatestTableId();
                 assertThat(actual.getTableId(), is(3));
-                assertThat(actual.getPhysicalName(),
-                        is(expect.getPhysicalName()));
-                assertThat(actual.getLogicalName(),
-                        is(expect.getLogicalName()));
+                assertThat(actual.getPhysicalName(), is(expect.getPhysicalName()));
+                assertThat(actual.getLogicalName(), is(expect.getLogicalName()));
                 assertThat(actual.getDeleteFlag(), is(expect.getDeleteFlag()));
             }
         }
@@ -164,7 +159,7 @@ public class TableMasterRepositoryTest {
             try (SqlSession session = factory.openSession()) {
                 repository = session.getMapper(TableMasterRepository.class);
 
-                final String[] params = {"updated", "更新", "1"};
+                final String[] params = { "updated", "更新", "1" };
                 final TableMaster expect = helper.createTableMaster(params);
 
                 final TableMaster original = repository.findByTableId(2);
@@ -181,25 +176,22 @@ public class TableMasterRepositoryTest {
 
                 final TableMaster updated = repository.findByTableId(2);
                 assertThat(updated.getTableId(), is(2));
-                assertThat(updated.getPhysicalName(),
-                        is(expect.getPhysicalName()));
-                assertThat(updated.getLogicalName(),
-                        is(expect.getLogicalName()));
+                assertThat(updated.getPhysicalName(), is(expect.getPhysicalName()));
+                assertThat(updated.getLogicalName(), is(expect.getLogicalName()));
                 assertThat(updated.getDeleteFlag(), is(expect.getDeleteFlag()));
             }
         }
 
         @Test
-        public void deleteByTableId実行時にレコードを削除できてTrueが返されること()
-                throws Exception {
+        public void deleteByTableId実行時にレコードを削除できてTrueが返されること() throws Exception {
             try (SqlSession session = factory.openSession()) {
                 repository = session.getMapper(TableMasterRepository.class);
 
-                boolean result = repository.deleteByTableId(1);
+                final boolean result = repository.deleteByTableId(1);
                 assertThat(result, is(true));
                 session.commit();
 
-                List<TableMaster> recordset = repository.findAll();
+                final List<TableMaster> recordset = repository.findAll();
                 assertThat(recordset.size(), is(1));
                 assertThat(recordset.get(0).getTableId(), is(2));
             }
