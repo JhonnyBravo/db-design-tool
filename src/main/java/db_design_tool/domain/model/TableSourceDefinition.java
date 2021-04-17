@@ -2,9 +2,9 @@ package db_design_tool.domain.model;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.Range;
+
+import jakarta.validation.constraints.Size;
 
 public class TableSourceDefinition implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -28,8 +28,7 @@ public class TableSourceDefinition implements Serializable {
     }
 
     /**
-     * @param tableId
-     *            定義が紐づくテーブルの ID を指定する。
+     * @param tableId 定義が紐づくテーブルの ID を指定する。
      */
     public void setTableId(int tableId) {
         this.tableId = tableId;
@@ -43,8 +42,7 @@ public class TableSourceDefinition implements Serializable {
     }
 
     /**
-     * @param definitionId
-     *            定義の ID を指定する。
+     * @param definitionId 定義の ID を指定する。
      */
     public void setDefinitionId(int definitionId) {
         this.definitionId = definitionId;
@@ -58,8 +56,7 @@ public class TableSourceDefinition implements Serializable {
     }
 
     /**
-     * @param sourceId
-     *            取得元テーブルの ID を指定する。
+     * @param sourceId 取得元テーブルの ID を指定する。
      */
     public void setSourceId(int sourceId) {
         this.sourceId = sourceId;
@@ -73,8 +70,7 @@ public class TableSourceDefinition implements Serializable {
     }
 
     /**
-     * @param sourceName
-     *            取得元テーブルの物理名を指定する。
+     * @param sourceName 取得元テーブルの物理名を指定する。
      */
     public void setSourceName(String sourceName) {
         this.sourceName = sourceName;
@@ -88,8 +84,7 @@ public class TableSourceDefinition implements Serializable {
     }
 
     /**
-     * @param no
-     *            no を指定する。
+     * @param no no を指定する。
      */
     public void setNo(int no) {
         this.no = no;
@@ -103,8 +98,7 @@ public class TableSourceDefinition implements Serializable {
     }
 
     /**
-     * @param joinCondition
-     *            結合条件を指定する。
+     * @param joinCondition 結合条件を指定する。
      */
     public void setJoinCondition(String joinCondition) {
         this.joinCondition = joinCondition;
@@ -118,12 +112,11 @@ public class TableSourceDefinition implements Serializable {
     }
 
     /**
-     * @param deleteFlag
-     *            削除フラグを指定する。
-     *            <ul>
-     *            <li>0: 定義が削除されていないことを表す。</li>
-     *            <li>1: 定義が削除されていることを表す。</li>
-     *            </ul>
+     * @param deleteFlag 削除フラグを指定する。
+     *                   <ul>
+     *                   <li>0: 定義が削除されていないことを表す。</li>
+     *                   <li>1: 定義が削除されていることを表す。</li>
+     *                   </ul>
      */
     public void setDeleteFlag(int deleteFlag) {
         this.deleteFlag = deleteFlag;
@@ -137,8 +130,7 @@ public class TableSourceDefinition implements Serializable {
     }
 
     /**
-     * @param joinConditionError
-     *            結合条件に関するエラーメッセージを指定する。
+     * @param joinConditionError 結合条件に関するエラーメッセージを指定する。
      */
     public void setJoinConditionError(String joinConditionError) {
         this.joinConditionError = joinConditionError;
