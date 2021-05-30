@@ -1,15 +1,16 @@
 package db_design_tool.domain.service.data_type_master;
 
+import db_design_tool.domain.model.DataTypeMaster;
 import java.util.List;
 
-import db_design_tool.domain.model.DataTypeMaster;
-
 /**
- * DataTypeMaster のレコードを管理する。
+ * data_type_master からのデータ入出力を管理する。
  */
 public interface DataTypeMasterService {
-    /**
-     * @return recordset DataTypeMaster に登録されているレコードを全件取得する。
-     */
-    public List<DataTypeMaster> findAll() throws Exception;
+  /**
+   * テーブルに登録されている全レコードを取得する。
+   *
+   * @return recordset {@link DataTypeMaster} の {@link List}
+   */
+  List<DataTypeMaster> findAll() throws Exception;
 }
