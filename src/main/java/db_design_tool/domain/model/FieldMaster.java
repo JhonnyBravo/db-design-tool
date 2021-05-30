@@ -1,225 +1,278 @@
 package db_design_tool.domain.model;
 
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-
 import org.hibernate.validator.constraints.Range;
 
-import jakarta.validation.constraints.Size;
-
+/**
+ * field_master のエンティティ。
+ */
 public class FieldMaster implements Serializable {
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private int tableId;
-    private int fieldId;
-    private int no;
-    @Size(min = 1, max = 100)
-    private String physicalName;
-    @Size(min = 1, max = 100)
-    private String logicalName;
-    @Range(min = 1, max = 7)
-    private int dataType;
-    private int dataSize;
-    @Size(min = 0, max = 255)
-    private String description;
-    @Range(min = 0, max = 1)
-    private int deleteFlag;
-    private String physicalNameError;
-    private String logicalNameError;
-    private String dataSizeError;
-    private String descriptionError;
+  private int tableId;
+  private int fieldId;
+  private int no;
+  @Size(min = 1, max = 100)
+  private String physicalName;
+  @Size(min = 1, max = 100)
+  private String logicalName;
+  @Range(min = 1, max = 7)
+  private int dataType;
+  private int dataSize;
+  @Size(min = 0, max = 255)
+  private String description;
+  @Range(min = 0, max = 1)
+  private int deleteFlag;
+  private String physicalNameError;
+  private String logicalNameError;
+  private String dataSizeError;
+  private String descriptionError;
 
-    /**
-     * @return tableId フィールド定義が紐づくテーブルの ID を返す。
-     */
-    public int getTableId() {
-        return tableId;
-    }
+  /**
+   * フィールド定義が紐づくテーブルの ID を返す。
+   *
+   * @return tableId テーブル ID
+   */
+  public int getTableId() {
+    return tableId;
+  }
 
-    /**
-     * @param tableId フィールド定義が紐づくテーブルの ID を指定する。
-     */
-    public void setTableId(int tableId) {
-        this.tableId = tableId;
-    }
+  /**
+   * フィールド定義が紐づくテーブルの ID を設定する。
+   *
+   * @param tableId 紐づけ先テーブルの ID を指定する。
+   */
+  public void setTableId(int tableId) {
+    this.tableId = tableId;
+  }
 
-    /**
-     * @return fieldId フィールド定義の ID を返す。
-     */
-    public int getFieldId() {
-        return fieldId;
-    }
+  /**
+   * フィールド定義の ID を返す。
+   *
+   * @return fieldId フィールド定義の ID
+   */
+  public int getFieldId() {
+    return fieldId;
+  }
 
-    /**
-     * @param fieldId フィールド定義の ID を指定する。
-     */
-    public void setFieldId(int fieldId) {
-        this.fieldId = fieldId;
-    }
+  /**
+   * フィールド定義の ID を設定する。
+   *
+   * @param fieldId フィールド定義の ID として設定する数値を指定する。
+   */
+  public void setFieldId(int fieldId) {
+    this.fieldId = fieldId;
+  }
 
-    /**
-     * @return no を返す。
-     */
-    public int getNo() {
-        return no;
-    }
+  /**
+   * フィールド No を返す。
+   *
+   * @return no フィールドの No
+   */
+  public int getNo() {
+    return no;
+  }
 
-    /**
-     * @param no no を指定する。
-     */
-    public void setNo(int no) {
-        this.no = no;
-    }
+  /**
+   * フィールド No を設定する。
+   *
+   * @param no フィールド No として設定する数値を指定する。
+   */
+  public void setNo(int no) {
+    this.no = no;
+  }
 
-    /**
-     * @return physicalName フィールドの物理名を返す。
-     */
-    public String getPhysicalName() {
-        return physicalName;
-    }
+  /**
+   * フィールドの物理名を返す。
+   *
+   * @return physicalName フィールドの物理名
+   */
+  public String getPhysicalName() {
+    return physicalName;
+  }
 
-    /**
-     * @param physicalName physicalName フィールドの物理名を指定する。
-     */
-    public void setPhysicalName(String physicalName) {
-        this.physicalName = physicalName;
-    }
+  /**
+   * フィールドの物理名を設定する。
+   *
+   * @param physicalName フィールドの物理名として設定する文字列を指定する。
+   */
+  public void setPhysicalName(String physicalName) {
+    this.physicalName = physicalName;
+  }
 
-    /**
-     * @return logicalName フィールドの論理名を返す。
-     */
-    public String getLogicalName() {
-        return logicalName;
-    }
+  /**
+   * フィールドの論理名を返す。
+   *
+   * @return logicalName フィールドの論理名
+   */
+  public String getLogicalName() {
+    return logicalName;
+  }
 
-    /**
-     * @param logicalName logicalName フィールドの論理名を指定する。
-     */
-    public void setLogicalName(String logicalName) {
-        this.logicalName = logicalName;
-    }
+  /**
+   * フィールドの論理名を設定する。
+   *
+   * @param logicalName フィールドの論理名として設定する文字列を指定する。
+   */
+  public void setLogicalName(String logicalName) {
+    this.logicalName = logicalName;
+  }
 
-    /**
-     * @return dataType データ型を返す。
-     */
-    public int getDataType() {
-        return dataType;
-    }
+  /**
+   * データ型の ID を返す。
+   *
+   * @return dataType データ型の ID
+   */
+  public int getDataType() {
+    return dataType;
+  }
 
-    /**
-     * @param dataType dataType データ型を指定する。
-     *                 <ol>
-     *                 <li>String</li>
-     *                 <li>Integer</li>
-     *                 <li>Long</li>
-     *                 <li>Single</li>
-     *                 <li>Double</li>
-     *                 <li>Boolean</li>
-     *                 <li>Date</li>
-     *                 </ol>
-     */
-    public void setDataType(int dataType) {
-        this.dataType = dataType;
-    }
+  /**
+   * データ型の ID を設定する。
+   *
+   * @param dataType データ型の ID を指定する。
+   *        <ol>
+   *        <li>String</li>
+   *        <li>Integer</li>
+   *        <li>Long</li>
+   *        <li>Single</li>
+   *        <li>Double</li>
+   *        <li>Boolean</li>
+   *        <li>Date</li>
+   *        </ol>
+   */
+  public void setDataType(int dataType) {
+    this.dataType = dataType;
+  }
 
-    /**
-     * @return dataSize データの桁数を返す。
-     */
-    public int getDataSize() {
-        return dataSize;
-    }
+  /**
+   * データの桁数を返す。
+   *
+   * @return dataSize データの桁数
+   */
+  public int getDataSize() {
+    return dataSize;
+  }
 
-    /**
-     * @param dataSize dataSize データの桁数を指定する。
-     */
-    public void setDataSize(int dataSize) {
-        this.dataSize = dataSize;
-    }
+  /**
+   * データの桁数を設定する。
+   *
+   * @param dataSize データの桁数として設定する数値を指定する。
+   */
+  public void setDataSize(int dataSize) {
+    this.dataSize = dataSize;
+  }
 
-    /**
-     * @return description フィールドの説明を返す。
-     */
-    public String getDescription() {
-        return description;
-    }
+  /**
+   * フィールドの説明を返す。
+   *
+   * @return description フィールドの説明
+   */
+  public String getDescription() {
+    return description;
+  }
 
-    /**
-     * @param description description フィールドの説明を指定する。
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  /**
+   * フィールドの説明を設定する。
+   *
+   * @param description フィールドの説明として設定する文字列を指定する。
+   */
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    /**
-     * @return deleteFlag 削除フラグを返す。
-     */
-    public int getDeleteFlag() {
-        return deleteFlag;
-    }
+  /**
+   * 削除フラグを返す。
+   *
+   * @return deleteFlag 削除フラグ
+   */
+  public int getDeleteFlag() {
+    return deleteFlag;
+  }
 
-    /**
-     * @param deleteFlag 削除フラグを指定する。
-     *                   <ul>
-     *                   <li>0: フィールドが削除されていないことを表す。</li>
-     *                   <li>1: フィールドが削除されていることを表す。</li>
-     *                   </ul>
-     */
-    public void setDeleteFlag(int deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
+  /**
+   * 削除フラグを設定する。
+   *
+   * @param deleteFlag 削除フラグとして設定する数値を指定する。
+   *        <ul>
+   *        <li>0: フィールドが削除されていないことを表す。</li>
+   *        <li>1: フィールドが削除されていることを表す。</li>
+   *        </ul>
+   */
+  public void setDeleteFlag(int deleteFlag) {
+    this.deleteFlag = deleteFlag;
+  }
 
-    /**
-     * @return physicalNameError フィールドの物理名に関するエラーメッセージを返す。
-     */
-    public String getPhysicalNameError() {
-        return physicalNameError;
-    }
+  /**
+   * フィールドの物理名に関するエラーメッセージを関する。
+   *
+   * @return physicalNameError フィールドの物理名に関するエラーメッセージ
+   */
+  public String getPhysicalNameError() {
+    return physicalNameError;
+  }
 
-    /**
-     * @param physicalNameError フィールドの物理名に関するエラーメッセージを指定する。
-     */
-    public void setPhysicalNameError(String physicalNameError) {
-        this.physicalNameError = physicalNameError;
-    }
+  /**
+   * フィールドの物理名に関するエラーメッセージを設定する。
+   *
+   * @param physicalNameError エラーメッセージとして設定する文字列を指定する。
+   */
+  public void setPhysicalNameError(String physicalNameError) {
+    this.physicalNameError = physicalNameError;
+  }
 
-    /**
-     * @return logicalNameError フィールドの論理名に関するエラーメッセージを返す。
-     */
-    public String getLogicalNameError() {
-        return logicalNameError;
-    }
+  /**
+   * フィールドの論理名に関するエラーメッセージを返す。
+   *
+   * @return logicalNameError フィールドの論理名に関するエラーメッセージ
+   */
+  public String getLogicalNameError() {
+    return logicalNameError;
+  }
 
-    /**
-     * @param logicalNameError フィールドの論理名に関するエラーメッセージを指定する。
-     */
-    public void setLogicalNameError(String logicalNameError) {
-        this.logicalNameError = logicalNameError;
-    }
+  /**
+   * フィールドの論理名に関するエラーメッセージを設定する。
+   *
+   * @param logicalNameError エラーメッセージとして設定する文字列を指定する。
+   */
+  public void setLogicalNameError(String logicalNameError) {
+    this.logicalNameError = logicalNameError;
+  }
 
-    /**
-     * @return dataSizeError フィールドのデータサイズに関するエラーメッセージを返す。
-     */
-    public String getDataSizeError() {
-        return dataSizeError;
-    }
+  /**
+   * フィールドのデータ桁数に関するエラーメッセージを返す。
+   *
+   * @return dataSizeError フィールドのデータサイズに関するエラーメッセージ
+   */
+  public String getDataSizeError() {
+    return dataSizeError;
+  }
 
-    /**
-     * @param dataSizeError フィールドのデータサイズに関するエラーメッセージを指定する。
-     */
-    public void setDataSizeError(String dataSizeError) {
-        this.dataSizeError = dataSizeError;
-    }
+  /**
+   * フィールドのデータ桁数に関するエラーメッセージを設定する。
+   *
+   * @param dataSizeError エラーメッセージとして設定する文字列を指定する。
+   */
+  public void setDataSizeError(String dataSizeError) {
+    this.dataSizeError = dataSizeError;
+  }
 
-    /**
-     * @return descriptionError フィールドの説明に関するエラーメッセージを返す。
-     */
-    public String getDescriptionError() {
-        return descriptionError;
-    }
+  /**
+   * フィールドの説明に関するエラーメッセージを返す。
+   *
+   * @return descriptionError フィールドの説明に関するエラーメッセージ
+   */
+  public String getDescriptionError() {
+    return descriptionError;
+  }
 
-    /**
-     * @param descriptionError フィールドの説明に関するエラーメッセージを指定する。
-     */
-    public void setDescriptionError(String descriptionError) {
-        this.descriptionError = descriptionError;
-    }
+  /**
+   * フィールドの説明に関するエラーメッセージを設定する。
+   *
+   * @param descriptionError エラーメッセージとして設定する文字列を指定する。
+   */
+  public void setDescriptionError(String descriptionError) {
+    this.descriptionError = descriptionError;
+  }
 }
