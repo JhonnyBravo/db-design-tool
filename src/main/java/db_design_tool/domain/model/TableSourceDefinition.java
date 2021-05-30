@@ -1,138 +1,171 @@
 package db_design_tool.domain.model;
 
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
-
 import org.hibernate.validator.constraints.Range;
 
-import jakarta.validation.constraints.Size;
-
+/**
+ * table_source_definition のエンティティ。
+ */
 public class TableSourceDefinition implements Serializable {
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private int tableId;
-    private int definitionId;
-    private int no;
-    private int sourceId;
-    private String sourceName;
-    @Size(min = 0, max = 255)
-    private String joinCondition;
-    @Range(min = 0, max = 1)
-    private int deleteFlag;
-    private String joinConditionError;
+  private int tableId;
+  private int definitionId;
+  private int no;
+  private int sourceId;
+  private String sourceName;
+  @Size(min = 0, max = 255)
+  private String joinCondition;
+  @Range(min = 0, max = 1)
+  private int deleteFlag;
+  private String joinConditionError;
 
-    /**
-     * @return tableId 定義が紐づくテーブルの ID を返す。
-     */
-    public int getTableId() {
-        return tableId;
-    }
+  /**
+   * 定義が紐づくテーブルの ID を返す。
+   *
+   * @return tableId 定義が紐づくテーブルの ID
+   */
+  public int getTableId() {
+    return tableId;
+  }
 
-    /**
-     * @param tableId 定義が紐づくテーブルの ID を指定する。
-     */
-    public void setTableId(int tableId) {
-        this.tableId = tableId;
-    }
+  /**
+   * 定義が紐づくテーブルの ID を設定する。
+   *
+   * @param tableId 定義が紐づくテーブルの ID
+   */
+  public void setTableId(int tableId) {
+    this.tableId = tableId;
+  }
 
-    /**
-     * @return definitionId 定義の ID を返す。
-     */
-    public int getDefinitionId() {
-        return definitionId;
-    }
+  /**
+   * 定義の ID を返す。
+   *
+   * @return definitionId 定義の ID
+   */
+  public int getDefinitionId() {
+    return definitionId;
+  }
 
-    /**
-     * @param definitionId 定義の ID を指定する。
-     */
-    public void setDefinitionId(int definitionId) {
-        this.definitionId = definitionId;
-    }
+  /**
+   * 定義の ID を設定する。
+   *
+   * @param definitionId 定義の ID として設定する数値を指定する。
+   */
+  public void setDefinitionId(int definitionId) {
+    this.definitionId = definitionId;
+  }
 
-    /**
-     * @return sourceId 取得元テーブルの ID を返す。
-     */
-    public int getSourceId() {
-        return sourceId;
-    }
+  /**
+   * 取得元テーブルの ID を返す。
+   *
+   * @return sourceId 取得元テーブルの ID
+   */
+  public int getSourceId() {
+    return sourceId;
+  }
 
-    /**
-     * @param sourceId 取得元テーブルの ID を指定する。
-     */
-    public void setSourceId(int sourceId) {
-        this.sourceId = sourceId;
-    }
+  /**
+   * 取得元テーブルの ID を設定する。
+   *
+   * @param sourceId 取得元テーブルの ID として設定する数値を指定する。
+   */
+  public void setSourceId(int sourceId) {
+    this.sourceId = sourceId;
+  }
 
-    /**
-     * @return sourceName 取得元テーブルの物理名を返す。
-     */
-    public String getSourceName() {
-        return sourceName;
-    }
+  /**
+   * 取得元テーブルの物理名を返す。
+   *
+   * @return sourceName 取得元テーブルの物理名
+   */
+  public String getSourceName() {
+    return sourceName;
+  }
 
-    /**
-     * @param sourceName 取得元テーブルの物理名を指定する。
-     */
-    public void setSourceName(String sourceName) {
-        this.sourceName = sourceName;
-    }
+  /**
+   * 取得元テーブルの物理名を設定する。
+   *
+   * @param sourceName 取得元テーブルの物理名として設定する文字列を指定する。
+   */
+  public void setSourceName(String sourceName) {
+    this.sourceName = sourceName;
+  }
 
-    /**
-     * @return no no を返す。
-     */
-    public int getNo() {
-        return no;
-    }
+  /**
+   * No を返す。
+   *
+   * @return no no
+   */
+  public int getNo() {
+    return no;
+  }
 
-    /**
-     * @param no no を指定する。
-     */
-    public void setNo(int no) {
-        this.no = no;
-    }
+  /**
+   * No を設定する。
+   *
+   * @param no no として設定する数値を指定する。
+   */
+  public void setNo(int no) {
+    this.no = no;
+  }
 
-    /**
-     * @return joinCondition 結合条件を返す。
-     */
-    public String getJoinCondition() {
-        return joinCondition;
-    }
+  /**
+   * 結合条件を返す。
+   *
+   * @return joinCondition 結合条件
+   */
+  public String getJoinCondition() {
+    return joinCondition;
+  }
 
-    /**
-     * @param joinCondition 結合条件を指定する。
-     */
-    public void setJoinCondition(String joinCondition) {
-        this.joinCondition = joinCondition;
-    }
+  /**
+   * 結合条件を設定する。
+   *
+   * @param joinCondition 結合条件として設定する文字列を指定する。
+   */
+  public void setJoinCondition(String joinCondition) {
+    this.joinCondition = joinCondition;
+  }
 
-    /**
-     * @return deleteFlag 削除フラグを返す。
-     */
-    public int getDeleteFlag() {
-        return deleteFlag;
-    }
+  /**
+   * 削除フラグを返す。
+   *
+   * @return deleteFlag 削除フラグ
+   */
+  public int getDeleteFlag() {
+    return deleteFlag;
+  }
 
-    /**
-     * @param deleteFlag 削除フラグを指定する。
-     *                   <ul>
-     *                   <li>0: 定義が削除されていないことを表す。</li>
-     *                   <li>1: 定義が削除されていることを表す。</li>
-     *                   </ul>
-     */
-    public void setDeleteFlag(int deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
+  /**
+   * 削除フラグを設定する。
+   *
+   * @param deleteFlag 削除フラグとして設定する数値を指定する。
+   *        <ul>
+   *        <li>0: 定義が削除されていないことを表す。</li>
+   *        <li>1: 定義が削除されていることを表す。</li>
+   *        </ul>
+   */
+  public void setDeleteFlag(int deleteFlag) {
+    this.deleteFlag = deleteFlag;
+  }
 
-    /**
-     * @return joinConditionError 結合条件に関するエラーメッセージを返す。
-     */
-    public String getJoinConditionError() {
-        return joinConditionError;
-    }
+  /**
+   * 結合条件をに関するエラーメッセージを返す。
+   *
+   * @return joinConditionError 結合条件に関するエラーメッセージ
+   */
+  public String getJoinConditionError() {
+    return joinConditionError;
+  }
 
-    /**
-     * @param joinConditionError 結合条件に関するエラーメッセージを指定する。
-     */
-    public void setJoinConditionError(String joinConditionError) {
-        this.joinConditionError = joinConditionError;
-    }
+  /**
+   * 結合条件に関するエラーメッセージを設定する。
+   *
+   * @param joinConditionError エラーメッセージとして設定する文字列を指定する。
+   */
+  public void setJoinConditionError(String joinConditionError) {
+    this.joinConditionError = joinConditionError;
+  }
 }
