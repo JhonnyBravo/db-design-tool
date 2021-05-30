@@ -2,39 +2,48 @@ package db_design_tool.domain.model;
 
 import java.io.Serializable;
 
+/**
+ * data_type_master のエンティティ。
+ */
 public class DataTypeMaster implements Serializable {
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private int id;
-    private String typeName;
+  private int id;
+  private String typeName;
 
-    /**
-     * @return id id を返す。
-     */
-    public int getId() {
-        return id;
-    }
+  /**
+   * データ型の ID を返す。
+   *
+   * @return id データ型の ID
+   */
+  public int getId() {
+    return id;
+  }
 
-    /**
-     * @param id
-     *            id を指定する。
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
+  /**
+   * データ型の ID を設定する。
+   *
+   * @param id データ型の ID として設定する数値を指定する。
+   */
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    /**
-     * @return typeName 型名を返す。
-     */
-    public String getTypeName() {
-        return typeName;
-    }
+  /**
+   * 型名を返す。
+   *
+   * @return typeName 型名
+   */
+  public String getTypeName() {
+    return typeName;
+  }
 
-    /**
-     * @param typeName
-     *            型名を指定する。
-     */
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
+  /**
+   * 型名を設定する。
+   *
+   * @param typeName 型名として設定する文字列を指定する。
+   */
+  public void setTypeName(String typeName) {
+    this.typeName = typeName;
+  }
 }
